@@ -6,7 +6,8 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { useLanguage } from "@/components/language-selector"
-
+import Email from "smtpjs";
+import { toast } from "@/components/ui/use-toast"; 
 // Translations for key elements
 const translations = {
   zh: {
@@ -442,7 +443,30 @@ export default function Home() {
                 <div className="md:col-span-3 p-12">
                   <h3 className="text-2xl font-bold text-gray-900 mb-8">{t.contact.title}</h3>
 
-                  <form className="space-y-6">
+                  <form className="space-y-6" onSubmit={(e) => {e.preventDefault();
+                    const name = (document.getElementById('name') as HTMLInputElement).value;
+                    const email = (document.getElementById('email') as HTMLInputElement).value;
+                    const message = (document.getElementById('message') as HTMLTextAreaElement).value;
+                    
+                    Email.send({
+                      SecureToken: "your-unique-token",
+                      From: email,
+                      To: 'renyizheng@landsea.cc',
+                      Subject: "New Contact Form Submission",
+                      Body: `姓名: ${name}\n邮箱: ${email}\n内容: ${message}`
+                    }).then(
+                      message => toast({
+                        title: "发送成功",
+                        description: message,
+                      })
+                    ).catch(error => {
+                      toast({
+                        title: "发送失败",
+                        description: error.message,
+                        variant: "destructive"
+                      })
+                    });}}>
+                
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
                         <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
@@ -504,7 +528,7 @@ export default function Home() {
                       ></textarea>
                     </div>
 
-                    <Button size="lg" className="w-full bg-blue-600 hover:bg-blue-700">
+                    <Button size="lg" className="w-full bg-blue-600 hover:bg-blue-700" type="submit">
                       Send Message
                     </Button>
 
