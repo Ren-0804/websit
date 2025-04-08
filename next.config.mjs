@@ -27,6 +27,15 @@ const nextConfig = {
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
   },
+  webpack: (config) => {
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      tls: false,
+      fs: false,
+      net: false,
+     };
+     return config;
+   },
 }
 
 if (userConfig) {

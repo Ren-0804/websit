@@ -81,6 +81,7 @@ export default function Navbar() {
             >
               Contact
             </Link>
+          
           </nav>
 
           <div className="hidden md:flex items-center space-x-2">

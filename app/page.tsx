@@ -220,10 +220,10 @@ export default function Home() {
           </div>
 
           <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
-            <Card className="bg-white border-0 shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+            <Card className="bg-white border-0 shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden rounded-xl">
               <div className="h-2 bg-blue-600 w-full"></div>
               <div className="h-48 relative">
-                <Image src="/service-blocktrain.jpg" alt="International Blocktrain" fill className="object-cover" />
+                <Image src="/service-blocktrain.jpg" alt="International Blocktrain" fill className="object-cover rounded-t-xl" />
               </div>
               <CardContent className="p-8">
                 <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-6 -mt-10 border-4 border-white">
@@ -346,7 +346,7 @@ export default function Home() {
                   <div className="w-full h-full bg-gradient-to-br from-blue-600/5 to-blue-100/50 flex items-center justify-center">
                     <div className="relative w-full h-full flex items-center justify-center">
                       <Image
-                        src="/global-network-map.jpg"
+                        src="/route-map.jpg"
                         alt="Global network map"
                         fill
                         className="object-cover opacity-30"
