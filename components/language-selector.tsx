@@ -23,12 +23,12 @@ type LanguageContextType = {
 }
 
 const LanguageContext = createContext<LanguageContextType>({
-  currentLanguage: languages[0],
+  currentLanguage: languages[1], // 默认中文
   setLanguage: () => {},
 })
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [currentLanguage, setCurrentLanguage] = useState(languages[0])
+  const [currentLanguage, setCurrentLanguage] = useState(languages[1]) // 默认中文
 
   useEffect(() => {
     const savedLanguage = localStorage.getItem("language")

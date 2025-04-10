@@ -161,18 +161,51 @@ export default function Home() {
   const { currentLanguage } = useLanguage()
   const t = translations[currentLanguage.code as keyof typeof translations]
 
+  // 结构化数据
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "LandSea",
+    "url": "https://landsea.cc",
+    "logo": "https://landsea.cc/placeholder-logo.png",
+    "description": "LandSea提供专业的国际物流服务，包括中亚集装箱回程班列、跨境多式联运、清关仓储一体化等服务。",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Room 2403, Building C, Sunshine International",
+      "addressLocality": "Lianyungang",
+      "addressRegion": "Jiangsu",
+      "addressCountry": "CN"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+86 17374932331",
+      "contactType": "customer service",
+      "email": "renyizheng@landsea.cc",
+      "availableLanguage": ["Chinese", "English", "Russian", "Uzbek"]
+    },
+    "sameAs": [
+      "https://www.linkedin.com/company/landsea",
+      "https://twitter.com/landsea"
+    ]
+  }
+
   return (
     <main className="min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Hero Section with Logistics Background */}
       <section className="relative overflow-hidden">
         {/* Background image with overlay */}
         <div className="absolute inset-0 z-0">
           <Image
             src="/logistics-background.jpg"
-            alt="International logistics and rail freight"
+            alt="International logistics and transportation network"
             fill
             className="object-cover"
             priority
+            quality={100}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 via-blue-800/80 to-blue-900/90"></div>
         </div>
@@ -192,7 +225,7 @@ export default function Home() {
           <div className="max-w-4xl mx-auto text-center mb-16">
             <div className="inline-flex items-center justify-center bg-white/10 backdrop-blur-sm px-4 py-1.5 rounded-full text-blue-100 text-sm font-medium mb-6 border border-white/10">
               <Train className="h-3.5 w-3.5 mr-2" />
-              <span className="mr-2">International Blocktrain Services</span>
+              <span className="mr-2">{t.services.items[0].title}</span>
               <ChevronRight className="h-3.5 w-3.5" />
             </div>
 
@@ -208,7 +241,7 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/services">
                 <Button size="lg" className="bg-white text-blue-700 hover:bg-blue-50 hover:text-blue-800">
-                  {t.hero.cta}
+                  {t.hero.cta} <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
               <Link href="mailto:renyizheng@landsea.cc">
@@ -217,41 +250,24 @@ export default function Home() {
                   variant="outline"
                   className="bg-transparent border-white/20 text-white hover:bg-white/10"
                 >
-                  Contact Us
+                  {t.contact.title}
                 </Button>
               </Link>
-  
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            <div className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl p-6 text-white hover:bg-white/20 transition duration-300">
-              <div className="bg-white/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                <Train className="h-6 w-6 text-blue-100" />
+            {t.services.items.map((service, index) => (
+              <div key={index} className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl p-6 text-white hover:bg-white/20 transition duration-300">
+                <div className="bg-white/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                  {service.icon === "train" && <Train className="h-6 w-6 text-blue-100" />}
+                  {service.icon === "container" && <Container className="h-6 w-6 text-blue-100" />}
+                  {service.icon === "consulting" && <BarChart3 className="h-6 w-6 text-blue-100" />}
+                </div>
+                <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
+                <p className="text-blue-100 text-sm">{service.description}</p>
               </div>
-              <h3 className="text-xl font-semibold mb-2">{t.services.items[0].title}</h3>
-              <p className="text-blue-100 text-sm">
-                Specialized rail transport connecting China with Europe, Central Asia and Russia
-              </p>
-            </div>
-
-            <div className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl p-6 text-white hover:bg-white/20 transition duration-300">
-              <div className="bg-white/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                <Container className="h-6 w-6 text-blue-100" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">{t.services.items[1].title}</h3>
-              <p className="text-blue-100 text-sm">
-                Efficient container transport solutions for your international cargo needs
-              </p>
-            </div>
-
-            <div className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl p-6 text-white hover:bg-white/20 transition duration-300">
-              <div className="bg-white/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                <Globe className="h-6 w-6 text-blue-100" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Global Network</h3>
-              <p className="text-blue-100 text-sm">Strategic presence across key logistics hubs in Asia and beyond</p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -273,11 +289,19 @@ export default function Home() {
               <div key={index} className="bg-white border-0 shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden rounded-xl">
                 <div className="h-2 bg-blue-600 w-full"></div>
                 <div className="h-48 relative">
-                  <Image src="/service-blocktrain.jpg" alt="International Blocktrain" fill className="object-cover rounded-t-xl" />
+                  <Image 
+                    src={`/service-${index + 1}.jpg`} 
+                    alt={service.title}
+                    fill 
+                    className="object-cover rounded-t-xl"
+                    quality={90}
+                  />
                 </div>
                 <CardContent className="p-8">
                   <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-6 -mt-10 border-4 border-white">
-                    <Train className="h-6 w-6 text-blue-600" />
+                    {service.icon === "train" && <Train className="h-6 w-6 text-blue-600" />}
+                    {service.icon === "container" && <Container className="h-6 w-6 text-blue-600" />}
+                    {service.icon === "consulting" && <BarChart3 className="h-6 w-6 text-blue-600" />}
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">{service.title}</h3>
                   <p className="text-gray-600 mb-6">{service.description}</p>
@@ -286,7 +310,7 @@ export default function Home() {
                       href="/services"
                       className="inline-flex items-center text-blue-600 font-medium hover:text-blue-800"
                     >
-                      Learn more <ArrowRight className="ml-2 h-4 w-4" />
+                      {t.hero.cta} <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </div>
                 </CardContent>
@@ -302,7 +326,7 @@ export default function Home() {
           <div className="max-w-3xl mx-auto text-center mb-16">
             <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-50 text-blue-700 mb-6">
               <Globe className="h-4 w-4 mr-2" />
-              Global Network
+              {t.network.title}
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">{t.network.title}</h2>
             <p className="text-gray-600">{t.network.subtitle}</p>
@@ -319,17 +343,18 @@ export default function Home() {
                         alt="Global network map"
                         fill
                         className="object-cover opacity-30"
+                        quality={90}
                       />
 
                       {/* Map dots */}
                       {[
-                        { name: "塔什干", left: "30%", top: "40%" },
-                        { name: "撒马尔罕", left: "32%", top: "42%" },
-                        { name: "阿拉木图", left: "35%", top: "38%" },
-                        { name: "连云港", left: "70%", top: "40%" },
-                        { name: "西安", left: "65%", top: "42%" },
-                        { name: "义乌", left: "72%", top: "45%" },
-                        { name: "青岛", left: "73%", top: "38%" },
+                        { name: "塔什干", left: "45%", top: "35%" },
+                        { name: "撒马尔罕", left: "48%", top: "38%" },
+                        { name: "阿拉木图", left: "55%", top: "32%" },
+                        { name: "连云港", left: "75%", top: "42%" },
+                        { name: "西安", left: "70%", top: "45%" },
+                        { name: "义乌", left: "78%", top: "48%" },
+                        { name: "青岛", left: "80%", top: "40%" },
                       ].map((location) => (
                         <div
                           key={location.name}
