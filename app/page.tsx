@@ -8,21 +8,35 @@ import { Card, CardContent } from "@/components/ui/card"
 import { useLanguage } from "@/components/language-selector"
 import Email from "smtpjs";
 import { toast } from "@/components/ui/use-toast"; 
-// Translations for key elements
+import { ContactForm } from "@/components/contact-form"
+
 const translations = {
   zh: {
     hero: {
-      title: "丰吉国际",
-      subtitle: "连接全球市场，畅通供应链管理和国际物流解决方案",
-      services: "我们的服务",
-      contact: "联系我们",
+      title: "欢迎来到 LandSea",
+      subtitle: "您值得信赖的国际运输合作伙伴",
+      cta: "开始",
     },
     services: {
-      title: "综合物流解决方案",
+      title: "我们的服务",
       subtitle: "我们提供连接亚洲与欧洲、中亚及其他地区的端到端供应链管理服务，高效可靠。",
-      blocktrain: "国际班列",
-      container: "集装箱运输",
-      consulting: "供应链咨询",
+      items: [
+        {
+          title: "国际班列",
+          description: "连接中国与欧洲、中亚和俄罗斯的专列运输服务，定期发车。",
+          icon: "train",
+        },
+        {
+          title: "集装箱运输",
+          description: "连接东南亚、日本、韩国与中亚和欧洲的集装箱运输解决方案。",
+          icon: "container",
+        },
+        {
+          title: "供应链咨询",
+          description: "优化国际供应链运营和物流的专业咨询服务。",
+          icon: "consulting",
+        },
+      ],
     },
     network: {
       title: "全球战略布局",
@@ -35,88 +49,117 @@ const translations = {
   },
   en: {
     hero: {
-      title: "Fengji International",
-      subtitle: "Connecting global markets with seamless supply chain management and international logistics solutions",
-      services: "Our Services",
-      contact: "Contact Us",
+      title: "Welcome to LandSea",
+      subtitle: "Your Trusted Partner in International Transportation",
+      cta: "Get Started",
     },
     services: {
-      title: "Comprehensive Logistics Solutions",
-      subtitle:
-        "We provide end-to-end supply chain management services connecting Asia with Europe, Central Asia, and beyond with efficiency and reliability.",
-      blocktrain: "International Blocktrain",
-      container: "Container Transport",
-      consulting: "Supply Chain Consulting",
+      title: "Our Services",
+      subtitle: "We provide end-to-end supply chain management services connecting Asia with Europe, Central Asia, and beyond with efficiency and reliability.",
+      items: [
+        {
+          title: "International Blocktrain",
+          description: "Specialized rail transport connecting China with Europe, Central Asia and Russia with regular scheduled departures.",
+          icon: "train",
+        },
+        {
+          title: "Container Transport",
+          description: "Comprehensive container solutions connecting Southeast Asia, Japan, South Korea with Central Asia and Europe.",
+          icon: "container",
+        },
+        {
+          title: "Supply Chain Consulting",
+          description: "Expert consulting services to optimize your international supply chain operations and logistics.",
+          icon: "consulting",
+        },
+      ],
     },
     network: {
       title: "Strategic Presence Worldwide",
-      subtitle:
-        "With offices strategically located across key logistics hubs, we provide seamless service across continents.",
+      subtitle: "With offices strategically located across key logistics hubs, we provide seamless service across continents.",
     },
     contact: {
       title: "Contact Us",
-      subtitle:
-        "Get in touch with our team to discuss your international logistics needs and discover how we can help optimize your supply chain.",
+      subtitle: "Get in touch with our team to discuss your international logistics needs and discover how we can help optimize your supply chain.",
     },
   },
   uz: {
     hero: {
-      title: "Fengji International",
-      subtitle: "Global bozorlarni uzluksiz ta'minot zanjiri boshqaruvi va xalqaro logistika yechimlari bilan bog'lash",
-      services: "Bizning xizmatlar",
-      contact: "Biz bilan bog'laning",
+      title: "LandSea ga xush kelibsiz",
+      subtitle: "Xalqaro yuk tashishda ishonchli hamkoringiz",
+      cta: "Boshlash",
     },
     services: {
-      title: "Keng qamrovli logistika yechimlari",
-      subtitle:
-        "Biz Osiyoni Yevropa, Markaziy Osiyo va undan tashqari hududlar bilan bog'lovchi samarali va ishonchli ta'minot zanjiri boshqaruvi xizmatlarini taqdim etamiz.",
-      blocktrain: "Xalqaro bloktreyn",
-      container: "Konteyner transporti",
-      consulting: "Ta'minot zanjiri konsaltingi",
+      title: "Bizning xizmatlar",
+      subtitle: "Biz Osiyoni Yevropa, Markaziy Osiyo va undan tashqari hududlar bilan bog'lovchi samarali va ishonchli ta'minot zanjiri boshqaruvi xizmatlarini taqdim etamiz.",
+      items: [
+        {
+          title: "Xalqaro bloktreyn",
+          description: "Xitoyni Yevropa, Markaziy Osiyo va Rossiya bilan bog'lovchi maxsus temir yo'l transporti, muntazam rejalashtirilgan jo'nashlar bilan.",
+          icon: "train",
+        },
+        {
+          title: "Konteyner transporti",
+          description: "Janubiy Osiyo, Yaponiya, Janubiy Koreyani Markaziy Osiyo va Yevropa bilan bog'lovchi keng qamrovli konteyner yechimlari.",
+          icon: "container",
+        },
+        {
+          title: "Ta'minot zanjiri konsaltingi",
+          description: "Xalqaro ta'minot zanjiri operatsiyalari va logistikasini optimallashtirish uchun mutaxassis konsalting xizmatlari.",
+          icon: "consulting",
+        },
+      ],
     },
     network: {
       title: "Dunyo bo'ylab strategik mavjudlik",
-      subtitle:
-        "Asosiy logistika markazlarida strategik joylashgan ofislarimiz bilan biz qit'alar bo'ylab uzluksiz xizmat ko'rsatamiz.",
+      subtitle: "Asosiy logistika markazlarida strategik joylashgan ofislarimiz bilan biz qit'alar bo'ylab uzluksiz xizmat ko'rsatamiz.",
     },
     contact: {
       title: "Biz bilan bog'laning",
-      subtitle:
-        "Xalqaro logistika ehtiyojlaringizni muhokama qilish va ta'minot zanjiringizni optimallashtirishda qanday yordam bera olishimizni bilish uchun jamoamiz bilan bog'laning.",
+      subtitle: "Xalqaro logistika ehtiyojlaringizni muhokama qilish va ta'minot zanjiringizni optimallashtirishda qanday yordam bera olishimizni bilish uchun jamoamiz bilan bog'laning.",
     },
   },
   ru: {
     hero: {
-      title: "Fengji International",
-      subtitle:
-        "Соединяем глобальные рынки с бесперебойным управлением цепочками поставок и международными логистическими решениями",
-      services: "Наши услуги",
-      contact: "Связаться с нами",
+      title: "Добро пожаловать в LandSea",
+      subtitle: "Ваш надежный партнер в международных перевозках",
+      cta: "Начать",
     },
     services: {
-      title: "Комплексные логистические решения",
-      subtitle:
-        "Мы предоставляем комплексные услуги по управлению цепочками поставок, соединяющие Азию с Европой, Центральной Азией и другими регионами, эффективно и надежно.",
-      blocktrain: "Международный блок-поезд",
-      container: "Контейнерные перевозки",
-      consulting: "Консалтинг по цепочкам поставок",
+      title: "Наши услуги",
+      subtitle: "Мы предоставляем комплексные услуги по управлению цепочками поставок, соединяющие Азию с Европой, Центральной Азией и другими регионами, эффективно и надежно.",
+      items: [
+        {
+          title: "Международный блок-поезд",
+          description: "Специализированные железнодорожные перевозки, соединяющие Китай с Европой, Центральной Азией и Россией, с регулярными отправлениями.",
+          icon: "train",
+        },
+        {
+          title: "Контейнерные перевозки",
+          description: "Комплексные контейнерные решения, соединяющие Юго-Восточную Азию, Японию, Южную Корею с Центральной Азией и Европой.",
+          icon: "container",
+        },
+        {
+          title: "Консалтинг по цепочкам поставок",
+          description: "Экспертные консультационные услуги по оптимизации международных операций цепочки поставок и логистики.",
+          icon: "consulting",
+        },
+      ],
     },
     network: {
       title: "Стратегическое присутствие по всему миру",
-      subtitle:
-        "Благодаря стратегически расположенным офисам в ключевых логистических центрах, мы обеспечиваем бесперебойное обслуживание на разных континентах.",
+      subtitle: "Благодаря стратегически расположенным офисам в ключевых логистических центрах, мы обеспечиваем бесперебойное обслуживание на разных континентах.",
     },
     contact: {
       title: "Связаться с нами",
-      subtitle:
-        "Свяжитесь с нашей командой, чтобы обсудить ваши потребности в международной логистике и узнать, как мы можем помочь оптимизировать вашу цепочку поставок.",
+      subtitle: "Свяжитесь с нашей командой, чтобы обсудить ваши потребности в международной логистике и узнать, как мы можем помочь оптимизировать вашу цепочку поставок.",
     },
   },
 }
 
 export default function Home() {
   const { currentLanguage } = useLanguage()
-  const t = translations[currentLanguage.code as keyof typeof translations] || translations.en
+  const t = translations[currentLanguage.code as keyof typeof translations]
 
   return (
     <main className="min-h-screen">
@@ -163,16 +206,21 @@ export default function Home() {
             <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">{t.hero.subtitle}</p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-white text-blue-700 hover:bg-blue-50 hover:text-blue-800">
-                {t.hero.services} <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="bg-transparent border-white/20 text-white hover:bg-white/10"
-              >
-                {t.hero.contact}
-              </Button>
+              <Link href="/services">
+                <Button size="lg" className="bg-white text-blue-700 hover:bg-blue-50 hover:text-blue-800">
+                  {t.hero.cta}
+                </Button>
+              </Link>
+              <Link href="mailto:renyizheng@landsea.cc">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="bg-transparent border-white/20 text-white hover:bg-white/10"
+                >
+                  Contact Us
+                </Button>
+              </Link>
+  
             </div>
           </div>
 
@@ -181,7 +229,7 @@ export default function Home() {
               <div className="bg-white/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
                 <Train className="h-6 w-6 text-blue-100" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">{t.services.blocktrain}</h3>
+              <h3 className="text-xl font-semibold mb-2">{t.services.items[0].title}</h3>
               <p className="text-blue-100 text-sm">
                 Specialized rail transport connecting China with Europe, Central Asia and Russia
               </p>
@@ -191,7 +239,7 @@ export default function Home() {
               <div className="bg-white/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
                 <Container className="h-6 w-6 text-blue-100" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">{t.services.container}</h3>
+              <h3 className="text-xl font-semibold mb-2">{t.services.items[1].title}</h3>
               <p className="text-blue-100 text-sm">
                 Efficient container transport solutions for your international cargo needs
               </p>
@@ -214,116 +262,36 @@ export default function Home() {
           <div className="max-w-3xl mx-auto text-center mb-16">
             <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-50 text-blue-700 mb-6">
               <Truck className="h-4 w-4 mr-2" />
-              {t.hero.services}
+              {t.services.title}
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">{t.services.title}</h2>
             <p className="text-gray-600">{t.services.subtitle}</p>
           </div>
 
           <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
-            <Card className="bg-white border-0 shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden rounded-xl">
-              <div className="h-2 bg-blue-600 w-full"></div>
-              <div className="h-48 relative">
-                <Image src="/service-blocktrain.jpg" alt="International Blocktrain" fill className="object-cover rounded-t-xl" />
+            {t.services.items.map((service, index) => (
+              <div key={index} className="bg-white border-0 shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden rounded-xl">
+                <div className="h-2 bg-blue-600 w-full"></div>
+                <div className="h-48 relative">
+                  <Image src="/service-blocktrain.jpg" alt="International Blocktrain" fill className="object-cover rounded-t-xl" />
+                </div>
+                <CardContent className="p-8">
+                  <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-6 -mt-10 border-4 border-white">
+                    <Train className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">{service.title}</h3>
+                  <p className="text-gray-600 mb-6">{service.description}</p>
+                  <div className="pt-4 border-t border-gray-100">
+                    <Link
+                      href="/services"
+                      className="inline-flex items-center text-blue-600 font-medium hover:text-blue-800"
+                    >
+                      Learn more <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </div>
+                </CardContent>
               </div>
-              <CardContent className="p-8">
-                <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-6 -mt-10 border-4 border-white">
-                  <Train className="h-6 w-6 text-blue-600" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{t.services.blocktrain}</h3>
-                <p className="text-gray-600 mb-6">
-                  Specialized rail transport services connecting China with Europe, Central Asia and Russia with regular
-                  scheduled departures.
-                </p>
-                <ul className="space-y-3 mb-6">
-                  {["Regular scheduled routes", "Customs clearance", "Door-to-door delivery"].map((item) => (
-                    <li key={item} className="flex items-start">
-                      <div className="mr-3 mt-1 h-4 w-4 rounded-full bg-blue-100 flex items-center justify-center">
-                        <div className="h-1.5 w-1.5 rounded-full bg-blue-600"></div>
-                      </div>
-                      <span className="text-gray-600 text-sm">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="pt-4 border-t border-gray-100">
-                  <Link
-                    href="/services"
-                    className="inline-flex items-center text-blue-600 font-medium hover:text-blue-800"
-                  >
-                    Learn more <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-white border-0 shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden">
-              <div className="h-2 bg-blue-600 w-full"></div>
-              <div className="h-48 relative">
-                <Image src="/service-container.jpg" alt="Container Transport" fill className="object-cover" />
-              </div>
-              <CardContent className="p-8">
-                <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-6 -mt-10 border-4 border-white">
-                  <Container className="h-6 w-6 text-blue-600" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{t.services.container}</h3>
-                <p className="text-gray-600 mb-6">
-                  Comprehensive container solutions connecting Southeast Asia, Japan, South Korea with Central Asia and
-                  Europe.
-                </p>
-                <ul className="space-y-3 mb-6">
-                  {["Multimodal transportation", "Route optimization", "Real-time tracking"].map((item) => (
-                    <li key={item} className="flex items-start">
-                      <div className="mr-3 mt-1 h-4 w-4 rounded-full bg-blue-100 flex items-center justify-center">
-                        <div className="h-1.5 w-1.5 rounded-full bg-blue-600"></div>
-                      </div>
-                      <span className="text-gray-600 text-sm">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="pt-4 border-t border-gray-100">
-                  <Link
-                    href="/services"
-                    className="inline-flex items-center text-blue-600 font-medium hover:text-blue-800"
-                  >
-                    Learn more <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-white border-0 shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden">
-              <div className="h-2 bg-blue-600 w-full"></div>
-              <div className="h-48 relative">
-                <Image src="/service-consulting.jpg" alt="Supply Chain Consulting" fill className="object-cover" />
-              </div>
-              <CardContent className="p-8">
-                <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-6 -mt-10 border-4 border-white">
-                  <BarChart3 className="h-6 w-6 text-blue-600" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{t.services.consulting}</h3>
-                <p className="text-gray-600 mb-6">
-                  Expert consulting services to optimize your international supply chain operations and logistics.
-                </p>
-                <ul className="space-y-3 mb-6">
-                  {["Supply chain optimization", "Logistics planning", "Cost reduction strategies"].map((item) => (
-                    <li key={item} className="flex items-start">
-                      <div className="mr-3 mt-1 h-4 w-4 rounded-full bg-blue-100 flex items-center justify-center">
-                        <div className="h-1.5 w-1.5 rounded-full bg-blue-600"></div>
-                      </div>
-                      <span className="text-gray-600 text-sm">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="pt-4 border-t border-gray-100">
-                  <Link
-                    href="/services"
-                    className="inline-flex items-center text-blue-600 font-medium hover:text-blue-800"
-                  >
-                    Learn more <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
+            ))}
           </div>
         </div>
       </section>
@@ -391,7 +359,7 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section className="py-24 bg-gradient-to-br from-blue-50 to-white relative overflow-hidden">
+      <section id="contact" className="py-24 bg-gradient-to-br from-blue-50 to-white relative overflow-hidden">
         <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-gray-50 to-transparent"></div>
 
         <div className="container mx-auto px-4 relative z-10">
@@ -442,98 +410,7 @@ export default function Home() {
 
                 <div className="md:col-span-3 p-12">
                   <h3 className="text-2xl font-bold text-gray-900 mb-8">{t.contact.title}</h3>
-
-                  <form className="space-y-6" onSubmit={(e) => {e.preventDefault();
-                    const name = (document.getElementById('name') as HTMLInputElement).value;
-                    const email = (document.getElementById('email') as HTMLInputElement).value;
-                    const message = (document.getElementById('message') as HTMLTextAreaElement).value;
-                    
-                    Email.send({
-                      SecureToken: "your-unique-token",
-                      From: email,
-                      To: 'renyizheng@landsea.cc',
-                      Subject: "New Contact Form Submission",
-                      Body: `姓名: ${name}\n邮箱: ${email}\n内容: ${message}`
-                    }).then(
-                      message => toast({
-                        title: "发送成功",
-                        description: message,
-                      })
-                    ).catch(error => {
-                      toast({
-                        title: "发送失败",
-                        description: error.message,
-                        variant: "destructive"
-                      })
-                    });}}>
-                
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                          Full Name
-                        </label>
-                        <input
-                          type="text"
-                          id="name"
-                          className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                          placeholder="Your name"
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                          Email Address
-                        </label>
-                        <input
-                          type="email"
-                          id="email"
-                          className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                          placeholder="you@company.com"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-2">
-                        Company
-                      </label>
-                      <input
-                        type="text"
-                        id="company"
-                        className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                        placeholder="Your company name"
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
-                        Subject
-                      </label>
-                      <input
-                        type="text"
-                        id="subject"
-                        className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                        placeholder="How can we help you?"
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                        Message
-                      </label>
-                      <textarea
-                        id="message"
-                        rows={4}
-                        className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                        placeholder="Your message..."
-                      ></textarea>
-                    </div>
-
-                    <Button size="lg" className="w-full bg-blue-600 hover:bg-blue-700" type="submit">
-                      Send Message
-                    </Button>
-
-                    <p className="text-sm text-gray-500 text-center">We'll get back to you within 24 hours</p>
-                  </form>
+                  <ContactForm />
                 </div>
               </div>
             </div>

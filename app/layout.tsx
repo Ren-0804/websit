@@ -3,9 +3,9 @@ import { Analytics } from "@vercel/analytics/react"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import { Inter } from "next/font/google"
-import { LanguageProvider } from "@/components/language-selector"
 import "./globals.css"
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { LanguageProvider } from "@/components/language-selector"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -22,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="ru">
       <body className={inter.className}>
         <LanguageProvider>
           <Navbar />
@@ -31,12 +31,9 @@ export default function RootLayout({
           <Analytics />
           <Footer />
         </LanguageProvider>
-        
       </body>
     </html>
   )
 }
-
-
 
 import './globals.css'

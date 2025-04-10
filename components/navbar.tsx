@@ -4,7 +4,7 @@ import { Menu, X } from "lucide-react"
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import LanguageSelector from "@/components/language-selector"
+import { LanguageSelector } from "./language-selector"
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
