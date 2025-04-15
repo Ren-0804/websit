@@ -13,7 +13,7 @@ import { ContactForm } from "@/components/contact-form"
 const translations = {
   zh: {
     hero: {
-      title: "欢迎来到 LandSea",
+      title: "丰吉国际供应链管理有限公司",
       subtitle: "您值得信赖的国际运输合作伙伴",
       cta: "开始",
     },
@@ -168,7 +168,7 @@ export default function Home() {
     "name": "LandSea",
     "url": "https://landsea.cc",
     "logo": "https://landsea.cc/placeholder-logo.png",
-    "description": "LandSea提供专业的国际物流服务，包括中亚集装箱回程班列、跨境多式联运、清关仓储一体化等服务。",
+    "description": "丰吉国际供应链管理(江苏)有限公司提供专业的国际物流服务，包括中亚集装箱回程班列、跨境多式联运、清关仓储一体化等服务。",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Room 2403, Building C, Sunshine International",

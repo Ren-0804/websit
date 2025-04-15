@@ -13,10 +13,10 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: {
-    default: "LandSea - 国际物流与供应链解决方案",
+    default: "丰吉国际供应链管理(江苏)有限公司 - 国际物流与供应链解决方案",
     template: "%s | LandSea"
   },
-  description: "LandSea提供专业的国际物流服务，包括中亚集装箱回程班列、跨境多式联运、清关仓储一体化等服务。连接中国与中亚、欧洲的可靠物流合作伙伴。",
+  description: "丰吉国际供应链管理(江苏)有限公司提供专业的国际物流服务，包括中亚集装箱回程班列、跨境多式联运、清关仓储一体化等服务。连接中国与中亚、欧洲的可靠物流合作伙伴。",
   keywords: ["国际物流", "中亚班列", "多式联运", "清关服务", "仓储物流", "供应链管理", "跨境运输", "集装箱运输", "物流解决方案"],
   authors: [{ name: "LandSea" }],
   creator: "LandSea",
@@ -37,10 +37,10 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "LandSea - 国际物流与供应链解决方案",
-    description: "LandSea提供专业的国际物流服务，包括中亚集装箱回程班列、跨境多式联运、清关仓储一体化等服务。连接中国与中亚、欧洲的可靠物流合作伙伴。",
+    title: "丰吉国际供应链管理(江苏)有限公司 - 国际物流与供应链解决方案",
+    description: "丰吉国际供应链管理(江苏)有限公司提供专业的国际物流服务，包括中亚集装箱回程班列、跨境多式联运、清关仓储一体化等服务。连接中国与中亚、欧洲的可靠物流合作伙伴。",
     url: 'https://landsea.cc',
-    siteName: 'LandSea',
+    siteName: '丰吉国际供应链管理(江苏)有限公司',
     images: [
       {
         url: '/logistics-background.jpg',
@@ -54,8 +54,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "LandSea - 国际物流与供应链解决方案",
-    description: "LandSea提供专业的国际物流服务，包括中亚集装箱回程班列、跨境多式联运、清关仓储一体化等服务。",
+    title: "丰吉国际供应链管理(江苏)有限公司 - 国际物流与供应链解决方案",
+    description: "丰吉国际供应链管理(江苏)有限公司提供专业的国际物流服务，包括中亚集装箱回程班列、跨境多式联运、清关仓储一体化等服务。",
     images: ['/logistics-background.jpg'],
   },
   robots: {
