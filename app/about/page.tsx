@@ -96,6 +96,98 @@ const translations = {
         "Received multiple industry certifications and honors"
       ]
     }
+  },
+  ru: {
+    title: "О нас",
+    subtitle: "Профессиональный поставщик логистических услуг, соединяющий мировые рынки",
+    mission: {
+      title: "Наша миссия",
+      content: "Обеспечивать эффективные, надежные и экономически эффективные международные транспортные услуги с помощью инновационных логистических решений, способствуя развитию мировой торговли."
+    },
+    vision: {
+      title: "Наше видение",
+      content: "Стать ведущим поставщиком логистических услуг в Центральной Азии, построив логистический мост, соединяющий Восток и Запад."
+    },
+    values: {
+      title: "Ключевые ценности",
+      items: [
+        {
+          title: "Профессионализм и надежность",
+          description: "С профессиональной командой и богатым опытом мы гарантируем качество и надежность услуг."
+        },
+        {
+          title: "Клиент прежде всего",
+          description: "Всегда ориентируемся на потребности клиентов, предоставляя индивидуальные решения."
+        },
+        {
+          title: "Инновации и развитие",
+          description: "Постоянные инновации, оптимизация процессов обслуживания, повышение операционной эффективности."
+        },
+        {
+          title: "Взаимовыгодное сотрудничество",
+          description: "Установление долгосрочных стабильных партнерских отношений для взаимного развития."
+        }
+      ]
+    },
+    team: {
+      title: "Профессиональная команда",
+      content: "У нас есть опытная профессиональная команда с глубокими знаниями и богатым практическим опытом в области логистики, торговли, таможенного оформления и других сферах."
+    },
+    achievements: {
+      title: "Наши достижения",
+      items: [
+        "Годовой объем перевозок превышает 10 000 стандартных контейнеров",
+        "Сеть обслуживания охватывает основные города Центральной Азии",
+        "Установлены долгосрочные партнерские отношения с несколькими международно признанными предприятиями",
+        "Получены многочисленные отраслевые сертификаты и награды"
+      ]
+    }
+  },
+  uz: {
+    title: "Biz haqimizda",
+    subtitle: "Global bozorlarni bog'lovchi professional logistika xizmati provayderi",
+    mission: {
+      title: "Bizning missiyamiz",
+      content: "Innovatsion logistika yechimlari orqali samarali, ishonchli va arzon xalqaro transport xizmatlarini taqdim etish, global savdo rivojiga hissa qo'shish."
+    },
+    vision: {
+      title: "Bizning ko'rinishimiz",
+      content: "Markaziy Osiyoda yetakchi logistika xizmati provayderiga aylanish, Sharq va G'arbni bog'lovchi logistika ko'prigini qurish."
+    },
+    values: {
+      title: "Asosiy qadriyatlar",
+      items: [
+        {
+          title: "Professional va ishonchli",
+          description: "Professional jamoa va boy tajriba bilan xizmat sifatini va ishonchliligini ta'minlash."
+        },
+        {
+          title: "Mijoz birinchi o'rinda",
+          description: "Har doim mijozlar ehtiyojlariga qaratilgan holda, shaxsiylashtirilgan yechimlarni taqdim etish."
+        },
+        {
+          title: "Innovatsiya va rivojlanish",
+          description: "Doimiy innovatsiyalar, xizmat jarayonlarini optimallashtirish, operatsion samaradorlikni oshirish."
+        },
+        {
+          title: "O'zaro manfaatli hamkorlik",
+          description: "O'zaro rivojlanish uchun uzoq muddatli barqaror hamkorlik munosabatlarini o'rnatish."
+        }
+      ]
+    },
+    team: {
+      title: "Professional jamoa",
+      content: "Bizda logistika, savdo, bojxona rasmiylashtirish va boshqa sohalarda chuqur bilim va boy amaliy tajribaga ega bo'lgan tajribali professional jamoa mavjud."
+    },
+    achievements: {
+      title: "Bizning yutuqlarimiz",
+      items: [
+        "Yillik tashish hajmi 10 000 standart konteynerdan oshadi",
+        "Xizmat ko'rsatish tarmog'i Markaziy Osiyoning asosiy shaharlarini qamrab oladi",
+        "Bir qancha xalqaro miqyosda tan olingan korxonalar bilan uzoq muddatli hamkorlik aloqalari o'rnatilgan",
+        "Ko'plab sanoat sertifikatlari va mukofotlari qo'lga kiritilgan"
+      ]
+    }
   }
 }
 
@@ -192,4 +284,4 @@ export default function AboutPage() {
       </section>
     </main>
   )
-} 
+}

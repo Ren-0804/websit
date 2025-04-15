@@ -36,8 +36,44 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       const language = languages.find((lang) => lang.code === savedLanguage)
       if (language) {
         setCurrentLanguage(language)
+        return
       }
     }
+    
+    // IP检测逻辑
+    fetch('https://ipapi.co/json/')
+      .then(res => res.json())
+      .then(data => {
+        const countryCode = data.country_code?.toLowerCase()
+        let detectedLang = languages.find(lang => lang.code === countryCode)
+        
+        if (!detectedLang) {
+          // 根据国家代码映射到支持的语言
+          const countryToLang = {
+            'ru': 'ru', // 俄罗斯
+            'cn': 'zh', // 中国
+            'uz': 'uz', // 乌兹别克斯坦
+          }
+          const mappedCode = countryToLang[countryCode]
+          detectedLang = languages.find(lang => lang.code === mappedCode)
+        }
+        
+        // 如果没有匹配的语言，使用英语
+        if (!detectedLang) {
+          detectedLang = languages.find(lang => lang.code === 'en')
+        }
+        
+        if (detectedLang) {
+          setCurrentLanguage(detectedLang)
+        }
+      })
+      .catch(() => {
+        // 如果IP检测失败，使用英语
+        const englishLang = languages.find(lang => lang.code === 'en')
+        if (englishLang) {
+          setCurrentLanguage(englishLang)
+        }
+      })
   }, [])
 
   const setLanguage = (code: string) => {
@@ -45,6 +81,8 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     if (language) {
       setCurrentLanguage(language)
       localStorage.setItem("language", code)
+      // 强制重新加载页面以应用语言更改
+      window.location.href = window.location.href
     }
   }
 
