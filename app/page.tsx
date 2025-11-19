@@ -94,7 +94,7 @@ export default function Home() {
           {/* Main background image */}
           <Image
             src="/logistics-background.jpg"
-            alt="International logistics and transportation network"
+            alt="国际物流与运输网络"
             fill
             className="object-cover"
             priority
@@ -359,7 +359,7 @@ export default function Home() {
                   {/* Map background image */}
                   <Image
                     src="/route-map.jpg"
-                    alt="Global network map"
+                    alt="全球网络地图"
                     fill
                     className="object-cover opacity-20"
                     quality={90}

@@ -14,10 +14,10 @@ export default function Navbar() {
 
   // Simple translations for navigation
   const translations = {
-    zh: { home: '首页', services: '服务', about: '关于我们', network: '全球网络', contact: '联系我们', getQuote: '获取报价' },
-    en: { home: 'Home', services: 'Services', about: 'About', network: 'Network', contact: 'Contact', getQuote: 'Get Quote' },
-    ru: { home: 'Главная', services: 'Услуги', about: 'О нас', network: 'Сеть', contact: 'Контакты', getQuote: 'Получить предложение' },
-    uz: { home: 'Asosiy', services: 'Xizmatlar', about: 'Biz haqimizda', network: 'Tarmoq', contact: 'Aloqa', getQuote: 'Taklif olish' }
+    zh: { home: '首页', services: '服务', regions: '区域', about: '关于我们', network: '全球网络', contact: '联系我们', getQuote: '获取报价' },
+    en: { home: 'Home', services: 'Services', regions: 'Regions', about: 'About', network: 'Network', contact: 'Contact', getQuote: 'Get Quote' },
+    ru: { home: 'Главная', services: 'Услуги', regions: 'Регионы', about: 'О нас', network: 'Сеть', contact: 'Контакты', getQuote: 'Получить предложение' },
+    uz: { home: 'Asosiy', services: 'Xizmatlar', regions: 'Hududlar', about: 'Biz haqimizda', network: 'Tarmoq', contact: 'Aloqa', getQuote: 'Taklif olish' }
   }
 
   const t = translations[currentLanguage.code as keyof typeof translations]
@@ -72,6 +72,7 @@ export default function Navbar() {
               {[
                 { href: "/", key: "home" },
                 { href: "/services", key: "services" },
+                { href: "/regions", key: "regions" },
                 { href: "/about", key: "about" },
                 { href: "/network", key: "network" },
                 { href: "/contact", key: "contact" }
@@ -170,6 +171,7 @@ export default function Navbar() {
               {[
                 { href: "/", key: "home" },
                 { href: "/services", key: "services" },
+                { href: "/regions", key: "regions" },
                 { href: "/about", key: "about" },
                 { href: "/network", key: "network" },
                 { href: "/contact", key: "contact" }

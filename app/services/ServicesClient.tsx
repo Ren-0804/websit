@@ -1,52 +1,23 @@
+"use client"
+
 import { ArrowRight, Train, Container, Globe, CheckCircle2 } from "lucide-react"
+import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import type { Metadata } from "next"
-import ServicesDashboardClient from "./ServicesDashboardClient"
 
-//
-
-export default function ServicesPage() {
+export default function ServicesClient() {
   return (
-    <main className="min-h-screen">
-      <nav className="container mx-auto px-4 pt-6 text-sm text-gray-600">
-        <ol className="flex items-center space-x-2">
-          <li><Link href="/">首页</Link></li>
-          <li>/</li>
-          <li>服务</li>
-        </ol>
-      </nav>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-              { "@type": "ListItem", "position": 1, "name": "首页", "item": "https://landsea.cc" },
-              { "@type": "ListItem", "position": 2, "name": "服务", "item": "https://landsea.cc/services" }
-            ]
-          })
-        }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Service",
-            "name": "国际物流与供应链服务",
-            "provider": { "@type": "Organization", "name": "丰吉国际供应链管理(江苏)有限公司", "url": "https://landsea.cc" },
-            "areaServed": ["中国", "乌兹别克斯坦", "哈萨克斯坦", "俄罗斯", "欧洲"],
-            "serviceType": ["中亚集装箱回程班列", "跨境多式联运", "清关仓储一体化"],
-            "offers": { "@type": "Offer", "availability": "https://schema.org/InStock" }
-          })
-        }}
-      />
-      {/* Hero Section */}
+    <>
       <section className="relative overflow-hidden bg-gradient-to-br from-blue-900 to-blue-800">
-        <div className="absolute inset-0 z-0 bg-[url('/services-hero.jpg')] bg-cover bg-center opacity-20" />
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/services-hero.jpg"
+            alt="物流服务"
+            fill
+            className="object-cover opacity-20"
+          />
+        </div>
         <div className="container mx-auto px-4 py-24 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">我们的服务</h1>
@@ -57,9 +28,8 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Core Services Section */}
-      <section className="section bg-gray-50">
-        <div className="container mx-auto">
+      <section className="py-24 bg-gray-50">
+        <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-6">核心业务</h2>
             <p className="text-gray-600">
@@ -68,10 +38,10 @@ export default function ServicesPage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <Card className="bg-white border border-gray-200/80 shadow-sm hover:shadow-lg hover:border-blue-600/40 transition-all duration-300 rounded-xl">
+            <Card className="bg-white border-0 shadow-md hover:shadow-xl transition-shadow duration-300">
               <div className="h-2 bg-blue-600 w-full"></div>
               <CardContent className="p-8">
-                <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-6 -mt-10 border-4 border-white shadow-sm">
+                <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-6 -mt-10 border-4 border-white">
                   <Train className="h-6 w-6 text-blue-600" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">中亚集装箱回程班列</h3>
@@ -84,22 +54,22 @@ export default function ServicesPage() {
                     "北哈地区→西部枢纽：12天时效",
                     "全程控箱，减少甩柜风险",
                   ].map((item) => (
-                    <li key={item} className="flex items-start group">
+                    <li key={item} className="flex items-start">
                       <CheckCircle2 className="h-5 w-5 text-blue-600 mr-2 flex-shrink-0" />
-                      <span className="text-gray-700 group-hover:text-gray-900 transition-colors">{item}</span>
+                      <span className="text-gray-600">{item}</span>
                     </li>
                   ))}
                 </ul>
                 <Link href="/services/central-asia-rail">
-                  <Button className="bg-blue-600 text-white hover:bg-blue-700 shadow-sm hover:shadow-md">了解详情</Button>
+                  <Button className="bg-blue-600 text-white hover:bg-blue-700">了解详情</Button>
                 </Link>
               </CardContent>
             </Card>
 
-            <Card className="bg-white border border-gray-200/80 shadow-sm hover:shadow-lg hover:border-blue-600/40 transition-all duration-300 rounded-xl">
+            <Card className="bg-white border-0 shadow-md hover:shadow-xl transition-shadow duration-300">
               <div className="h-2 bg-blue-600 w-full"></div>
               <CardContent className="p-8">
-                <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-6 -mt-10 border-4 border-white shadow-sm">
+                <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-6 -mt-10 border-4 border-white">
                   <Globe className="h-6 w-6 text-blue-600" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">跨境多式联运</h3>
@@ -112,22 +82,22 @@ export default function ServicesPage() {
                     "新能源车笼车专线",
                     "大件工程机械运输",
                   ].map((item) => (
-                    <li key={item} className="flex items-start group">
+                    <li key={item} className="flex items-start">
                       <CheckCircle2 className="h-5 w-5 text-blue-600 mr-2 flex-shrink-0" />
-                      <span className="text-gray-700 group-hover:text-gray-900 transition-colors">{item}</span>
+                      <span className="text-gray-600">{item}</span>
                     </li>
                   ))}
                 </ul>
                 <Link href="/services/multimodal">
-                  <Button className="bg-blue-600 text-white hover:bg-blue-700 shadow-sm hover:shadow-md">了解详情</Button>
+                  <Button className="bg-blue-600 text-white hover:bg-blue-700">了解详情</Button>
                 </Link>
               </CardContent>
             </Card>
 
-            <Card className="bg-white border border-gray-200/80 shadow-sm hover:shadow-lg hover:border-blue-600/40 transition-all duration-300 rounded-xl">
+            <Card className="bg-white border-0 shadow-md hover:shadow-xl transition-shadow duration-300">
               <div className="h-2 bg-blue-600 w-full"></div>
               <CardContent className="p-8">
-                <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-6 -mt-10 border-4 border-white shadow-sm">
+                <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-6 -mt-10 border-4 border-white">
                   <Container className="h-6 w-6 text-blue-600" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">清关仓储一体化</h3>
@@ -140,14 +110,14 @@ export default function ServicesPage() {
                     "清关误差率<0.5%",
                     "喀什自贸区保税仓储",
                   ].map((item) => (
-                    <li key={item} className="flex items-start group">
+                    <li key={item} className="flex items-start">
                       <CheckCircle2 className="h-5 w-5 text-blue-600 mr-2 flex-shrink-0" />
-                      <span className="text-gray-700 group-hover:text-gray-900 transition-colors">{item}</span>
+                      <span className="text-gray-600">{item}</span>
                     </li>
                   ))}
                 </ul>
                 <Link href="/services/customs-warehousing">
-                  <Button className="bg-blue-600 text-white hover:bg-blue-700 shadow-sm hover:shadow-md">了解详情</Button>
+                  <Button className="bg-blue-600 text-white hover:bg-blue-700">了解详情</Button>
                 </Link>
               </CardContent>
             </Card>
@@ -155,9 +125,8 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Why Choose Us Section */}
-      <section className="section bg-white">
-        <div className="container mx-auto">
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-6">选择我们的理由</h2>
             <p className="text-gray-600">
@@ -201,9 +170,8 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="section bg-gradient-to-br from-blue-600 to-blue-700">
-        <div className="container mx-auto">
+      <section className="py-24 bg-gradient-to-br from-blue-600 to-blue-700">
+        <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl font-bold text-white mb-6">准备好开始合作了吗？</h2>
             <p className="text-blue-100 mb-8">
@@ -217,16 +185,6 @@ export default function ServicesPage() {
           </div>
         </div>
       </section>
-
-      <section className="section bg-gray-50">
-        <div className="container mx-auto">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">数据看板</h2>
-            <p className="text-gray-600 mb-8">近月运输量趋势与服务占比，助力运营决策。</p>
-            <ServicesDashboardClient />
-          </div>
-        </div>
-      </section>
-    </main>
+    </>
   )
 }

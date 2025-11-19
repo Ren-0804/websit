@@ -8,8 +8,9 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import { LanguageProvider } from "@/components/language-selector"
 import { Metadata } from "next"
 import { Toaster } from "@/components/ui/toaster"
+import Script from "next/script"
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({ subsets: ["latin"], display: "swap" })
 
 export const metadata: Metadata = {
   title: {
@@ -93,6 +94,14 @@ export default function RootLayout({
           {children}
           <SpeedInsights />
           <Analytics />
+          {process.env.NEXT_PUBLIC_GA_ID && (
+            <>
+              <Script src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`} strategy="afterInteractive" />
+              <Script id="ga-init" strategy="afterInteractive">
+                {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${process.env.NEXT_PUBLIC_GA_ID}');`}
+              </Script>
+            </>
+          )}
           <Footer />
           <Toaster />
         </LanguageProvider>

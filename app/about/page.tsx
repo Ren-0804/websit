@@ -1,8 +1,13 @@
-"use client"
-
-import { Building2, Globe, Users, Target, Award, Handshake } from "lucide-react"
 import Image from "next/image"
-import { useLanguage } from "@/components/language-selector"
+import type { Metadata } from "next"
+import Link from "next/link"
+import AboutClient from "./AboutClient"
+
+export const metadata: Metadata = {
+  title: "关于我们 | 专业物流服务提供商 | 丰吉国际供应链",
+  description: "通过创新物流方案，提供高效、可靠、经济的国际运输服务，致力于成为中亚领先的物流服务提供商。",
+  alternates: { canonical: "/about" },
+}
 
 const translations = {
   zh: {
@@ -100,96 +105,29 @@ const translations = {
 }
 
 export default function AboutPage() {
-  const { currentLanguage } = useLanguage()
-  const t = translations[currentLanguage.code as keyof typeof translations] || translations.en
-
   return (
     <main className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative py-24 bg-gradient-to-br from-blue-50 to-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">{t.title}</h1>
-            <p className="text-xl text-gray-600">{t.subtitle}</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Mission & Vision */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
-            <div className="bg-blue-50 p-8 rounded-2xl">
-              <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
-                <Target className="h-6 w-6 text-blue-600" />
-              </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">{t.mission.title}</h2>
-              <p className="text-gray-600">{t.mission.content}</p>
-            </div>
-            <div className="bg-blue-50 p-8 rounded-2xl">
-              <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
-                <Globe className="h-6 w-6 text-blue-600" />
-              </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">{t.vision.title}</h2>
-              <p className="text-gray-600">{t.vision.content}</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Values */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">{t.values.title}</h2>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-            {t.values.items.map((value, index) => (
-              <div key={index} className="bg-white p-6 rounded-xl shadow-sm">
-                <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mb-4">
-                  {index === 0 && <Building2 className="h-6 w-6 text-blue-600" />}
-                  {index === 1 && <Users className="h-6 w-6 text-blue-600" />}
-                  {index === 2 && <Award className="h-6 w-6 text-blue-600" />}
-                  {index === 3 && <Handshake className="h-6 w-6 text-blue-600" />}
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">{value.title}</h3>
-                <p className="text-gray-600">{value.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Team */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">{t.team.title}</h2>
-            <p className="text-gray-600">{t.team.content}</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Achievements */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">{t.achievements.title}</h2>
-          </div>
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {t.achievements.items.map((achievement, index) => (
-              <div key={index} className="bg-white p-6 rounded-xl shadow-sm">
-                <div className="flex items-start">
-                  <div className="mr-4 mt-1 h-4 w-4 rounded-full bg-blue-100 flex items-center justify-center">
-                    <div className="h-1.5 w-1.5 rounded-full bg-blue-600"></div>
-                  </div>
-                  <p className="text-gray-600">{achievement}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <nav className="container mx-auto px-4 pt-6 text-sm text-gray-600">
+        <ol className="flex items-center space-x-2">
+          <li><Link href="/">首页</Link></li>
+          <li>/</li>
+          <li>关于我们</li>
+        </ol>
+      </nav>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "首页", "item": "https://landsea.cc" },
+              { "@type": "ListItem", "position": 2, "name": "关于我们", "item": "https://landsea.cc/about" }
+            ]
+          })
+        }}
+      />
+      <AboutClient />
     </main>
   )
-} 
+}
