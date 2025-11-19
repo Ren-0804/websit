@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(claude mcp add:*)",
+      "WebFetch(domain:www.byai.com)",
+      "WebSearch",
+      "Bash(npm run dev)",
+      "Bash(node:*)",
+      "Bash(npm --version)",
+      "Bash(npm install)",
+      "Bash(npm install:*)",
+      "Bash(curl:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

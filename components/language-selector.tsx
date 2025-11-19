@@ -86,3 +86,30 @@ export function LanguageSelector() {
   )
 }
 
+// Compact version for mobile
+export function LanguageSelectorCompact() {
+  const { currentLanguage, setLanguage } = useLanguage()
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="sm" className="h-8 w-8 px-0">
+          <span className="text-lg">{currentLanguage.flag}</span>
+          <span className="sr-only">切换语言</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-40">
+        {languages.map((language) => (
+          <DropdownMenuItem
+            key={language.code}
+            onClick={() => setLanguage(language.code)}
+            className={currentLanguage.code === language.code ? "bg-accent" : ""}
+          >
+            <span className="mr-2">{language.flag}</span>
+            <span className="text-sm">{language.name}</span>
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
