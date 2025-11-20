@@ -21,52 +21,69 @@ export default function Footer() {
 
           <div>
             <h3 className="text-white font-semibold mb-6">Quick Links</h3>
-            <ul className="space-y-4">
-              {["Home", "Services", "About Us", "Network", "Contact"].map((item) => (
+            <nav aria-label="Quick Links">
+              <ul className="space-y-4">
+                {["Home", "Services", "About Us", "Network", "Contact"].map((item) => (
                 <li key={item}>
                   <Link
-                    href={`/${item === "Home" ? "" : item.toLowerCase().replace(" ", "-")}`}
-                    className="text-gray-400 hover:text-white transition-colors text-sm"
+                    href={`/${item === "Home" ? "" : item.toLowerCase().replace(/\s+/g, "-")}`}
+                    className="text-gray-400 hover:text-white transition-colors text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 rounded"
                   >
                     {item}
                   </Link>
                 </li>
-              ))}
-            </ul>
+                ))}
+              </ul>
+            </nav>
           </div>
 
           <div>
             <h3 className="text-white font-semibold mb-6">Our Services</h3>
-            <ul className="space-y-4">
-              {[
-                "International Blocktrain",
-                "Transit Transport",
-                "Supply Chain Consulting",
-                "Customs Clearance",
-                "Warehousing & Distribution",
-              ].map((item) => (
-                <li key={item}>
-                  <Link href="/services" className="text-gray-400 hover:text-white transition-colors text-sm">
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <nav aria-label="Services">
+              <ul className="space-y-4">
+                {[
+                  "International Blocktrain",
+                  "Transit Transport",
+                  "Supply Chain Consulting",
+                  "Customs Clearance",
+                  "Warehousing & Distribution",
+                ].map((item) => (
+                  <li key={item}>
+                    <Link
+                      href="/services"
+                      className="text-gray-400 hover:text-white transition-colors text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 rounded"
+                    >
+                      {item}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </div>
 
           <div>
             <h3 className="text-white font-semibold mb-6">Contact Information</h3>
             <ul className="space-y-4">
               <li className="flex">
-                <Phone className="h-5 w-5 text-blue-400 mr-3 flex-shrink-0" />
-                <span className="text-gray-400 text-sm">+86 17374932331 (China/WeChat)</span>
+                <Phone aria-hidden="true" className="h-5 w-5 text-blue-400 mr-3 flex-shrink-0" />
+                <a
+                  href="tel:+8617374932331"
+                  className="text-gray-400 text-sm hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 rounded"
+                >
+                  +86 17374932331 (China/WeChat)
+                </a>
               </li>
               <li className="flex">
-                <Mail className="h-5 w-5 text-blue-400 mr-3 flex-shrink-0" />
-                <span className="text-gray-400 text-sm">renyizheng@landsea.cc</span>
+                <Mail aria-hidden="true" className="h-5 w-5 text-blue-400 mr-3 flex-shrink-0" />
+                <a
+                  href="mailto:renyizheng@landsea.cc"
+                  className="text-gray-400 text-sm hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 rounded"
+                >
+                  renyizheng@landsea.cc
+                </a>
               </li>
               <li className="flex">
-                <MapPin className="h-5 w-5 text-blue-400 mr-3 flex-shrink-0 mt-0.5" />
+                <MapPin aria-hidden="true" className="h-5 w-5 text-blue-400 mr-3 flex-shrink-0 mt-0.5" />
                 <div className="text-gray-400 text-sm">
                   <p>Room 2403, Building C, Sunshine International,</p>
                   <p>Lianyungang District, China (Jiangsu)</p>
@@ -82,13 +99,17 @@ export default function Footer() {
             <p className="text-gray-500 text-sm mb-4 md:mb-0">
               © {new Date().getFullYear()} Fengji International. All rights reserved.
             </p>
-            <div className="flex space-x-6">
+            <nav aria-label="Legal" className="flex space-x-6">
               {["Terms", "Privacy", "Cookies"].map((item) => (
-                <Link key={item} href="#" className="text-gray-500 hover:text-gray-300 transition-colors text-sm">
+                <Link
+                  key={item}
+                  href="#"
+                  className="text-gray-500 hover:text-gray-300 transition-colors text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 rounded"
+                >
                   {item}
                 </Link>
               ))}
-            </div>
+            </nav>
           </div>
         </div>
       </div>

@@ -136,13 +136,9 @@ export default function Home() {
               <ChevronRight className="h-4 w-4 animate-bounce" />
             </div>
 
-            {/* Enhanced logo */}
             <div className="flex justify-center mb-8 animate-fade-in-up delay-100">
-              <div className="relative group">
-                <div className="absolute -inset-4 bg-white/20 rounded-3xl blur-xl group-hover:bg-white/30 transition-all duration-500"></div>
-                <div className="relative h-20 w-20 bg-white rounded-3xl flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-500">
-                  <div className="text-transparent bg-clip-text bg-gradient-to-br from-blue-600 to-indigo-700 font-black text-4xl">丰</div>
-                </div>
+              <div className="relative group h-20 w-20 rounded-3xl overflow-hidden shadow-2xl">
+                <Image src="/brand-mark.svg" alt="丰吉国际品牌标识" width={80} height={80} priority className="group-hover:scale-105 transition-transform duration-500" />
               </div>
             </div>
 
@@ -163,7 +159,7 @@ export default function Home() {
             {/* Enhanced CTA buttons */}
             <div className="flex flex-col sm:flex-row gap-6 justify-center animate-fade-in-up delay-300">
               <Link href="/services">
-                <Button size="lg" className="group bg-white hover:bg-blue-50 text-blue-700 hover:text-blue-800 px-8 py-4 text-lg font-semibold rounded-2xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300">
+                <Button size="lg" className="group bg-white hover:bg-blue-50 text-blue-700 hover:text-blue-800 px-8 py-4 text-lg font-semibold rounded-2xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white">
                   <span className="mr-3">{t.hero.cta}</span>
                   <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
                 </Button>
@@ -172,7 +168,7 @@ export default function Home() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="group bg-transparent border-2 border-white/30 text-white hover:bg-white/10 hover:border-white/50 px-8 py-4 text-lg font-semibold rounded-2xl backdrop-blur-sm transition-all duration-300"
+                  className="group bg-transparent border-2 border-white/30 text-white hover:bg白/10 hover:border-white/50 px-8 py-4 text-lg font-semibold rounded-2xl backdrop-blur-sm transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
                 >
                   <span className="mr-3">{t.contact.title}</span>
                   <Mail className="h-5 w-5 group-hover:scale-110 transition-transform duration-300" />

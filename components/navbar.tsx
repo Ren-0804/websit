@@ -6,6 +6,7 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { LanguageSelector, LanguageSelectorCompact } from "./language-selector"
 import { useLanguage } from "./language-selector"
+import Image from "next/image"
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -48,14 +49,8 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-18 py-4">
             {/* Logo */}
             <Link href="/" className="group flex items-center transition-transform duration-300 hover:scale-105">
-              <div className={`h-12 w-12 rounded-2xl flex items-center justify-center mr-3 transition-all duration-500 ${
-                scrolled
-                  ? "bg-gradient-to-br from-blue-600 to-blue-700 shadow-lg shadow-blue-600/25"
-                  : "bg-white/20 backdrop-blur-md border border-white/30 shadow-xl"
-              }`}>
-                <div className={`font-bold text-2xl transition-colors duration-300 ${
-                  scrolled ? "text-white" : "text-white"
-                }`}>丰</div>
+              <div className="h-12 w-12 rounded-2xl mr-3 overflow-hidden">
+                <Image src="/brand-mark.svg" alt="丰吉国际品牌标识" width={48} height={48} priority />
               </div>
               <div>
                 <span className={`font-bold text-xl transition-colors duration-300 block ${
@@ -68,7 +63,7 @@ export default function Navbar() {
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center space-x-1">
+            <nav className="hidden lg:flex items-center space-x-1" aria-label="Primary">
               {[
                 { href: "/", key: "home" },
                 { href: "/services", key: "services" },
@@ -80,10 +75,10 @@ export default function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`group relative px-4 py-2 rounded-xl font-medium transition-all duration-300 ${
+                  className={`group relative px-4 py-2 rounded-xl font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${
                     scrolled
-                      ? "text-gray-700 hover:text-blue-600 hover:bg-blue-50/50"
-                      : "text-white/90 hover:text-white hover:bg-white/10"
+                      ? "text-gray-700 hover:text-blue-600 hover:bg-blue-50/50 focus-visible:ring-offset-white"
+                      : "text-white/90 hover:text-white hover:bg-white/10 focus-visible:ring-offset-blue-900"
                   }`}
                 >
                   <span className="relative z-10">{t[item.key as keyof typeof t]}</span>
@@ -96,7 +91,7 @@ export default function Navbar() {
             <div className="hidden lg:flex items-center space-x-3">
               <LanguageSelector />
               <Button
-                className={`bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-2.5 rounded-xl font-medium shadow-lg shadow-blue-600/25 hover:shadow-xl hover:shadow-blue-600/30 transition-all duration-300 hover:scale-105`}
+                className={`bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-2.5 rounded-xl font-medium shadow-lg shadow-blue-600/25 hover:shadow-xl hover:shadow-blue-600/30 transition-all duration-300 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white`}
               >
                 {t.getQuote}
               </Button>
@@ -107,10 +102,11 @@ export default function Navbar() {
               <LanguageSelectorCompact />
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className={`relative p-2 rounded-xl transition-all duration-300 ${
+                aria-label="Toggle menu"
+                className={`relative p-2 rounded-xl transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${
                   scrolled
-                    ? "text-gray-700 hover:bg-gray-100"
-                    : "text-white hover:bg-white/10"
+                    ? "text-gray-700 hover:bg-gray-100 focus-visible:ring-offset-white"
+                    : "text-white hover:bg-white/10 focus-visible:ring-offset-blue-900"
                 }`}
               >
                 <div className={`w-6 h-6 relative transition-transform duration-300 ${
@@ -149,9 +145,9 @@ export default function Navbar() {
           <div className="h-full flex flex-col">
             {/* Menu Header */}
             <div className="flex items-center justify-between p-6 border-b border-gray-100">
-              <div className="flex items-center">
-                <div className="h-10 w-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center mr-3">
-                  <div className="text-white font-bold text-lg">丰</div>
+            <div className="flex items-center">
+                <div className="h-10 w-10 rounded-xl overflow-hidden mr-3">
+                  <Image src="/brand-mark.svg" alt="丰吉国际品牌标识" width={40} height={40} />
                 </div>
                 <div>
                   <span className="font-bold text-lg text-gray-900">丰吉国际</span>
@@ -167,7 +163,7 @@ export default function Navbar() {
             </div>
 
             {/* Menu Links */}
-            <nav className="flex-1 p-6 space-y-2">
+            <nav className="flex-1 p-6 space-y-2" aria-label="Mobile">
               {[
                 { href: "/", key: "home" },
                 { href: "/services", key: "services" },
@@ -179,7 +175,7 @@ export default function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="flex items-center justify-between p-4 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 group"
+                  className="flex items-center justify-between p-4 rounded-xl text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all duration-300 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <div>
@@ -194,7 +190,7 @@ export default function Navbar() {
             {/* CTA Button */}
             <div className="p-6 border-t border-gray-100">
               <Button
-                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-3 rounded-xl font-medium shadow-lg"
+                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-3 rounded-xl font-medium shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {t.getQuote}
