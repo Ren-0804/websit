@@ -1,10 +1,12 @@
 "use client"
 
 import { Building2, Globe, Users, Target, Award, Handshake } from "lucide-react"
+import Link from "next/link"
 import { useLanguage } from "@/components/language-selector"
 
 const translations = {
   zh: {
+    breadcrumbs: { home: "首页", current: "关于我们" },
     title: "关于我们",
     subtitle: "连接全球市场的专业物流服务提供商",
     mission: {
@@ -39,6 +41,7 @@ const translations = {
     }
   },
   en: {
+    breadcrumbs: { home: "Home", current: "About Us" },
     title: "About Us",
     subtitle: "Professional Logistics Service Provider Connecting Global Markets",
     mission: { title: "Our Mission", content: "To provide efficient, reliable, and cost-effective international transportation services through innovative logistics solutions, promoting global trade development." },
@@ -62,15 +65,76 @@ const translations = {
         "Received multiple industry certifications and honors",
       ]
     }
+  },
+  ru: {
+    breadcrumbs: { home: "Главная", current: "О нас" },
+    title: "О нас",
+    subtitle: "Профессиональный поставщик логистических услуг, соединяющий мировые рынки",
+    mission: { title: "Наша миссия", content: "Предоставлять эффективные, надежные и экономичные услуги международных перевозок с помощью инновационных логистических решений, способствуя развитию мировой торговли." },
+    vision: { title: "Наше видение", content: "Стать ведущим поставщиком логистических услуг в Центральной Азии, построив логистический мост, соединяющий Восток и Запад." },
+    values: {
+      title: "Основные ценности",
+      items: [
+        { title: "Профессионализм и надежность", description: "Профессиональная команда и богатый опыт гарантируют качество обслуживания и надежность." },
+        { title: "Клиент прежде всего", description: "Всегда ориентируемся на потребности клиентов, предлагая индивидуальные решения." },
+        { title: "Инновации и развитие", description: "Постоянные инновации, оптимизация процессов обслуживания, повышение эффективности работы." },
+        { title: "Взаимовыгодное сотрудничество", description: "Установление долгосрочных стабильных отношений сотрудничества с партнерами для совместного развития." },
+      ]
+    },
+    team: { title: "Профессиональная команда", content: "У нас есть опытная профессиональная команда с глубокими знаниями и богатым практическим опытом в области логистики, торговли, таможенного оформления и других сферах." },
+    achievements: {
+      title: "Наши достижения",
+      items: [
+        "Годовой объем перевозок превышает 10 000 стандартных контейнеров",
+        "Сервисная сеть охватывает основные города Центральной Азии",
+        "Установлены долгосрочные отношения сотрудничества со многими всемирно известными предприятиями",
+        "Получены многочисленные отраслевые сертификаты и награды",
+      ]
+    }
+  },
+  uz: {
+    breadcrumbs: { home: "Asosiy", current: "Biz haqimizda" },
+    title: "Biz haqimizda",
+    subtitle: "Global bozorlarni bog'laydigan professional logistika xizmati yetkazib beruvchisi",
+    mission: { title: "Bizning vazifamiz", content: "Innovatsion logistika yechimlari orqali mijozlarga samarali, ishonchli va tejamkor xalqaro transport xizmatlarini ko'rsatish, global savdoni rivojlantirish." },
+    vision: { title: "Bizning maqsadimiz", content: "Markaziy Osiyoda yetakchi logistika xizmati yetkazib beruvchisiga aylanish, Sharq va G'arbni bog'laydigan logistika ko'prigini qurish." },
+    values: {
+      title: "Asosiy qadriyatlar",
+      items: [
+        { title: "Professional va ishonchli", description: "Professional jamoa va boy tajriba bilan xizmat sifati va ishonchliligini ta'minlash." },
+        { title: "Mijoz birinchi o'rinda", description: "Har doim mijozlar ehtiyojlariga e'tibor qaratish, shaxsiy yechimlarni taqdim etish." },
+        { title: "Innovatsiya va rivojlanish", description: "Doimiy innovatsiya, xizmat ko'rsatish jarayonlarini optimallashtirish, operatsion samaradorlikni oshirish." },
+        { title: "O'zaro manfaatli hamkorlik", description: "Hamkorlar bilan uzoq muddatli barqaror hamkorlik aloqalarini o'rnatish." },
+      ]
+    },
+    team: { title: "Professional jamoa", content: "Biz logistika, savdo, bojxona rasmiylashtiruvi va boshqa sohalarda chuqur bilim va boy amaliy tajribaga ega tajribali professional jamoaga egamiz." },
+    achievements: {
+      title: "Bizning yutuqlarimiz",
+      items: [
+        "Yillik tashish hajmi 10 000 dan ortiq standart konteynerdan oshadi",
+        "Xizmat ko'rsatish tarmog'i Markaziy Osiyoning asosiy shaharlarini qamrab oladi",
+        "Ko'plab xalqaro taniqli korxonalar bilan uzoq muddatli hamkorlik aloqalari o'rnatilgan",
+        "Ko'plab sanoat sertifikatlari va mukofotlariga sazovor bo'lgan",
+      ]
+    }
   }
 } as const
 
 export default function AboutClient() {
   const { currentLanguage } = useLanguage()
+  // Ensure we have a valid translation object, fill missing keys with English if mostly present but safer to fallback entirely if key missing
   const t = translations[currentLanguage.code as keyof typeof translations] || translations.en
 
   return (
     <>
+      <nav className="container mx-auto px-4 pt-6 text-sm text-gray-600">
+        <ol className="flex items-center space-x-2">
+          <li><Link href="/" className="hover:text-blue-600 transition-colors">{t.breadcrumbs.home}</Link></li>
+          <li>/</li>
+          <li>{t.breadcrumbs.current}</li>
+        </ol>
+      </nav>
+
       <section className="relative py-24 bg-gradient-to-br from-blue-50 to-white">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">

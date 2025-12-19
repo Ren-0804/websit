@@ -4,23 +4,24 @@ import { ArrowRight, ChevronRight, Globe, MapPin, Truck, Phone, Mail, Container,
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import Email from "smtpjs";
-import { toast } from "@/components/ui/use-toast";
+import { useLanguage } from "@/components/language-selector"
 import { ContactForm } from "@/components/contact-form"
 
 export default function Home() {
-  // Use original translations for now
+  const { currentLanguage } = useLanguage()
+
   const translations = {
     zh: {
       hero: {
-        title: "丰吉国际供应链管理有限公司",
+        titleNormal: "丰吉",
+        titleHighlight: "国际供应链管理有限公司",
         subtitle: "您值得信赖的国际运输合作伙伴",
         cta: "开始",
         contactUs: "联系我们"
       },
       services: {
-        title: "我们的服务",
+        sectionTitleNormal: "我们的",
+        sectionTitleHighlight: "服务",
         subtitle: "我们提供连接亚洲与欧洲、中亚及其他地区的端到端供应链管理服务，高效可靠。",
         items: [
           {
@@ -38,22 +39,276 @@ export default function Home() {
             description: "优化国际供应链运营和物流的专业咨询服务。",
             icon: "consulting"
           }
-        ]
+        ],
+        viewAll: "查看全部服务"
       },
       network: {
-        title: "全球战略布局",
-        subtitle: "我们在关键物流枢纽战略性布局办事处，提供跨大陆的无缝服务。"
+        titleNormal: "全球战略",
+        titleHighlight: "布局网络",
+        title: "全球战略布局", // keep for compatibility if needed elsewhere
+        subtitle: "我们在关键物流枢纽战略性布局办事处，提供跨大陆的无缝服务。",
+        mapLegend: {
+          hub: "主要枢纽",
+          station: "运营站点",
+          route: "运输路线"
+        },
+        stats: {
+          cities: "覆盖城市",
+          countries: "运营国家",
+          service: "全天候服务"
+        }
       },
       contact: {
         title: "联系我们",
-        subtitle: "与我们的团队联系，讨论您的国际物流需求，了解我们如何帮助优化您的供应链。"
+        titleNormal: "联系",
+        titleHighlight: "我们",
+        subtitle: "与我们的团队联系，讨论您的国际物流需求，了解我们如何帮助优化您的供应链。",
+        contactNow: "立即联系",
+        contactDesc: "我们的专业团队随时准备为您提供国际物流解决方案",
+        phoneWechat: "电话 / 微信",
+        address: "总部地址",
+        addressValue: "中国江苏省连云港市",
+        addressDetail: "阳光国际大厦C座2403室",
+        email: "邮箱地址",
+        businessHours: "营业时间",
+        businessHoursValue: "周一至周日 24小时",
+        sendMessage: "发送消息",
+        formDesc: "填写下方表单，我们将在24小时内回复您",
+        replyTime: "我们通常在2小时内回复",
+        multiLang: "支持多语言服务",
+        quick: {
+          phone: "电话咨询",
+          email: "邮件联系",
+          sendEmail: "发送邮件",
+          location: "江苏连云港"
+        }
+      }
+    },
+    en: {
+      hero: {
+        titleNormal: "LandSea",
+        titleHighlight: "International Supply Chain Management",
+        subtitle: "Your Trusted International Transport Partner",
+        cta: "Get Started",
+        contactUs: "Contact Us"
+      },
+      services: {
+        sectionTitleNormal: "Our",
+        sectionTitleHighlight: "Services",
+        subtitle: "We provide efficient and reliable end-to-end supply chain management services connecting Asia with Europe, Central Asia and beyond.",
+        items: [
+          {
+            title: "International Block Train",
+            description: "Dedicated train services connecting China with Europe, Central Asia and Russia, with regular departures.",
+            icon: "train"
+          },
+          {
+            title: "Container Shipping",
+            description: "Container shipping solutions connecting Southeast Asia, Japan, South Korea with Central Asia and Europe.",
+            icon: "container"
+          },
+          {
+            title: "Supply Chain Consulting",
+            description: "Professional consulting services to optimize international supply chain operations and logistics.",
+            icon: "consulting"
+          }
+        ],
+        viewAll: "View All Services"
+      },
+      network: {
+        titleNormal: "Global Strategic",
+        titleHighlight: "Network",
+        title: "Global Strategic Network",
+        subtitle: "Strategically located offices in key logistics hubs providing seamless cross-continental services.",
+        mapLegend: {
+          hub: "Major Hubs",
+          station: "Operational Sites",
+          route: "Transport Routes"
+        },
+        stats: {
+          cities: "Cities Covered",
+          countries: "Countries",
+          service: "24/7 Service"
+        }
+      },
+      contact: {
+        title: "Contact Us",
+        titleNormal: "Contact",
+        titleHighlight: "Us",
+        subtitle: "Connect with our team to discuss your international logistics needs and how we can optimize your supply chain.",
+        contactNow: "Contact Now",
+        contactDesc: "Our professional team is ready to provide international logistics solutions.",
+        phoneWechat: "Phone / WeChat",
+        address: "Headquarters",
+        addressValue: "Lianyungang, Jiangsu, China",
+        addressDetail: "Room 2403, Building C, Sunshine International",
+        email: "Email Address",
+        businessHours: "Business Hours",
+        businessHoursValue: "Mon-Sun 24 Hours",
+        sendMessage: "Send Message",
+        formDesc: "Fill out the form below, we will reply within 24 hours.",
+        replyTime: "We usually reply within 2 hours",
+        multiLang: "Multi-language Support",
+        quick: {
+          phone: "Phone Consultation",
+          email: "Email Contact",
+          sendEmail: "Send Email",
+          location: "Lianyungang, CN"
+        }
+      }
+    },
+    ru: {
+      hero: {
+        titleNormal: "LandSea",
+        titleHighlight: "International Supply Chain Management",
+        subtitle: "Ваш надежный партнер в международных перевозках",
+        cta: "Начать",
+        contactUs: "Связаться"
+      },
+      services: {
+        sectionTitleNormal: "Наши",
+        sectionTitleHighlight: "Услуги",
+        subtitle: "Мы предоставляем эффективные и надежные услуги по управлению цепочками поставок, соединяющие Азию с Европой и Центральной Азией.",
+        items: [
+          {
+            title: "Контейнерные поезда",
+            description: "Регулярные железнодорожные перевозки, соединяющие Китай с Европой, Центральной Азией и Россией.",
+            icon: "train"
+          },
+          {
+            title: "Контейнерные перевозки",
+            description: "Решения по контейнерным перевозкам, соединяющие Юго-Восточную Азию, Японию, Корею с Центральной Азией и Европой.",
+            icon: "container"
+          },
+          {
+            title: "Логистический консалтинг",
+            description: "Профессиональные консультационные услуги по оптимизации международных цепочек поставок и логистики.",
+            icon: "consulting"
+          }
+        ],
+        viewAll: "Все услуги"
+      },
+      network: {
+        titleNormal: "Глобальная",
+        titleHighlight: "Сеть",
+        title: "Глобальная сеть",
+        subtitle: "Стратегически расположенные офисы в ключевых логистических узлах для бесперебойных трансконтинентальных перевозок.",
+        mapLegend: {
+          hub: "Хабы",
+          station: "Станции",
+          route: "Маршруты"
+        },
+        stats: {
+          cities: "Городов",
+          countries: "Стран",
+          service: "24/7 Сервис"
+        }
+      },
+      contact: {
+        title: "Контакты",
+        titleNormal: "Свяжитесь с",
+        titleHighlight: "Нами",
+        subtitle: "Свяжитесь с нашей командой, чтобы обсудить ваши потребности в международной логистике.",
+        contactNow: "Связаться сейчас",
+        contactDesc: "Наша профессиональная команда готова предложить логистические решения.",
+        phoneWechat: "Телефон / WeChat",
+        address: "Адрес штаб-квартиры",
+        addressValue: "Ляньюньган, Цзянсу, Китай",
+        addressDetail: "Sunshine International, Корпус C, Офис 2403",
+        email: "Электронная почта",
+        businessHours: "Часы работы",
+        businessHoursValue: "Пн-Вс 24 часа",
+        sendMessage: "Отправить сообщение",
+        formDesc: "Заполните форму ниже, мы ответим в течение 24 часов.",
+        replyTime: "Обычно отвечаем за 2 часа",
+        multiLang: "Поддержка языков",
+        quick: {
+          phone: "Позвонить",
+          email: "Написать",
+          sendEmail: "Отправить письмо",
+          location: "Ляньюньган, Китай"
+        }
+      }
+    },
+    uz: {
+      hero: {
+        titleNormal: "LandSea",
+        titleHighlight: "International Supply Chain Management",
+        subtitle: "Sizning ishonchli xalqaro transport hamkoringiz",
+        cta: "Boshlash",
+        contactUs: "Biz bilan bog'laning"
+      },
+      services: {
+        sectionTitleNormal: "Bizning",
+        sectionTitleHighlight: "Xizmatlar",
+        subtitle: "Biz Osiyo bilan Yevropa va Markaziy Osiyo o'rtasida samarali va ishonchli ta'minot zanjiri xizmatlarini taqdim etamiz.",
+        items: [
+          {
+            title: "Xalqaro poyezdlar",
+            description: "Xitoyni Yevropa, Markaziy Osiyo va Rossiya bilan bog'laydigan muntazam temir yo'l xizmatlari.",
+            icon: "train"
+          },
+          {
+            title: "Konteyner tashish",
+            description: "Janubi-Sharqiy Osiyo, Yaponiya va Koreyani Markaziy Osiyo va Yevropa bilan bog'laydigan yechimlar.",
+            icon: "container"
+          },
+          {
+            title: "Logistika konsaltingi",
+            description: "Xalqaro ta'minot zanjiri va logistikani optimallashtirish bo'yicha professional maslahat xizmatlari.",
+            icon: "consulting"
+          }
+        ],
+        viewAll: "Barcha xizmatlar"
+      },
+      network: {
+        titleNormal: "Global",
+        titleHighlight: "Tarmoq",
+        title: "Global Strategik Tarmoq",
+        subtitle: "Qit'alararo uzluksiz xizmat ko'rsatish uchun asosiy logistika markazlarida strategik joylashgan ofislar.",
+        mapLegend: {
+          hub: "Asosiy markazlar",
+          station: "Operatsion bekatlar",
+          route: "Transport yo'nalishlari"
+        },
+        stats: {
+          cities: "Qamralgan shaharlar",
+          countries: "Mamlakatlar",
+          service: "24/7 Xizmat"
+        }
+      },
+      contact: {
+        title: "Bog'lanish",
+        titleNormal: "Biz bilan",
+        titleHighlight: "Bog'laning",
+        subtitle: "Xalqaro logistika ehtiyojlaringizni muhokama qilish uchun jamoamiz bilan bog'laning.",
+        contactNow: "Hozir bog'laning",
+        contactDesc: "Bizning professional jamoamiz logistika yechimlarini taqdim etishga tayyor.",
+        phoneWechat: "Telefon / WeChat",
+        address: "Bosh ofis manzili",
+        addressValue: "Lianyungang, Jiangsu, Xitoy",
+        addressDetail: "Sunshine International, C binosi, 2403-xona",
+        email: "Email manzil",
+        businessHours: "Ish vaqti",
+        businessHoursValue: "Dush-Yak 24 soat",
+        sendMessage: "Xabar yuborish",
+        formDesc: "Quyidagi shaklni to'ldiring, biz 24 soat ichida javob beramiz.",
+        replyTime: "Odatda 2 soat ichida javob beramiz",
+        multiLang: "Ko'p tilli yordam",
+        quick: {
+          phone: "Telefon orqali",
+          email: "Email orqali",
+          sendEmail: "Email yuborish",
+          location: "Lianyungang, Xitoy"
+        }
       }
     }
   }
 
-  const t = translations.zh
+  // Fallback to English if translation is missing, or Chinese if that's preferred as base
+  const t = translations[currentLanguage.code as keyof typeof translations] || translations.zh
 
-  // 结构化数据
+  // 结构化数据 - Static for now, could be dynamic but JSON-LD is usually fine in one lang or multiple blocks
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -94,11 +349,10 @@ export default function Home() {
           {/* Main background image */}
           <Image
             src="/logistics-background.jpg"
-            alt="国际物流与运输网络"
+            alt="International Logistics"
             fill
             className="object-cover"
             priority
-            quality={100}
           />
 
           {/* Enhanced gradient overlay */}
@@ -138,16 +392,16 @@ export default function Home() {
 
             <div className="flex justify-center mb-8 animate-fade-in-up delay-100">
               <div className="relative group h-20 w-20 rounded-3xl overflow-hidden shadow-2xl">
-                <Image src="/brand-mark.svg" alt="丰吉国际品牌标识" width={80} height={80} priority className="group-hover:scale-105 transition-transform duration-500" />
+                <Image src="/brand-mark.svg" alt="Logo" width={80} height={80} priority className="group-hover:scale-105 transition-transform duration-500" />
               </div>
             </div>
 
             {/* Main heading with enhanced typography */}
             <div className="animate-fade-in-up delay-200">
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-8 tracking-tight leading-tight">
-                <span className="block">{t.hero.title.split('国际')[0]}</span>
+                <span className="block">{t.hero.titleNormal}</span>
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-indigo-200">
-                  {t.hero.title.includes('国际') ? '国际' : ''}{t.hero.title.split('国际')[1] || ''}
+                  {t.hero.titleHighlight}
                 </span>
               </h1>
 
@@ -170,7 +424,7 @@ export default function Home() {
                   variant="outline"
                   className="group bg-transparent border-2 border-white/30 text-white hover:bg白/10 hover:border-white/50 px-8 py-4 text-lg font-semibold rounded-2xl backdrop-blur-sm transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
                 >
-                  <span className="mr-3">{t.contact.title}</span>
+                  <span className="mr-3">{t.hero.contactUs}</span>
                   <Mail className="h-5 w-5 group-hover:scale-110 transition-transform duration-300" />
                 </Button>
               </Link>
@@ -223,12 +477,12 @@ export default function Home() {
                 <div className="absolute -inset-1 bg-blue-500/20 rounded-full blur-sm"></div>
                 <Truck className="relative h-5 w-5" />
               </div>
-              {t.services.title}
+              {t.services.sectionTitleNormal}{t.services.sectionTitleHighlight}
             </div>
 
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-8 leading-tight">
-              <span className="block">{t.services.title.split('服务')[0]}</span>
-              <span className="block text-gradient">{t.services.title.includes('服务') ? '服务' : ''}</span>
+              <span className="block">{t.services.sectionTitleNormal}</span>
+              <span className="block text-gradient">{t.services.sectionTitleHighlight}</span>
             </h2>
 
             <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-light">
@@ -306,7 +560,7 @@ export default function Home() {
           <div className="text-center mt-16 animate-fade-in-up delay-300">
             <Link href="/services">
               <Button size="lg" className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-4 text-lg font-semibold rounded-2xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
-                查看全部服务
+                {t.services.viewAll}
                 <ArrowRight className="ml-3 h-5 w-5" />
               </Button>
             </Link>
@@ -334,8 +588,8 @@ export default function Home() {
             </div>
 
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-8 leading-tight">
-              <span className="block">全球战略</span>
-              <span className="block text-gradient">布局网络</span>
+              <span className="block">{t.network.titleNormal}</span>
+              <span className="block text-gradient">{t.network.titleHighlight}</span>
             </h2>
 
             <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-light">
@@ -355,7 +609,7 @@ export default function Home() {
                   {/* Map background image */}
                   <Image
                     src="/route-map.jpg"
-                    alt="全球网络地图"
+                    alt="Global Network Map"
                     fill
                     className="object-cover opacity-20"
                     quality={90}
@@ -461,11 +715,10 @@ export default function Home() {
                         )}
 
                         {/* Marker */}
-                        <div className={`relative h-5 w-5 rounded-full flex items-center justify-center transform group-hover:scale-125 transition-all duration-300 cursor-pointer ${
-                          location.status === 'hub'
-                            ? 'bg-gradient-to-br from-blue-600 to-indigo-600 shadow-lg shadow-blue-600/50'
-                            : 'bg-blue-500 shadow-md shadow-blue-500/30'
-                        }`}>
+                        <div className={`relative h-5 w-5 rounded-full flex items-center justify-center transform group-hover:scale-125 transition-all duration-300 cursor-pointer ${location.status === 'hub'
+                          ? 'bg-gradient-to-br from-blue-600 to-indigo-600 shadow-lg shadow-blue-600/50'
+                          : 'bg-blue-500 shadow-md shadow-blue-500/30'
+                          }`}>
                           <div className="h-2 w-2 bg-white rounded-full"></div>
 
                           {/* Hover effect */}
@@ -494,15 +747,15 @@ export default function Home() {
                 <div className="mt-8 flex items-center justify-center space-x-8">
                   <div className="flex items-center space-x-3">
                     <div className="h-3 w-3 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full shadow-lg"></div>
-                    <span className="text-sm text-gray-600 font-medium">主要枢纽</span>
+                    <span className="text-sm text-gray-600 font-medium">{t.network.mapLegend.hub}</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <div className="h-3 w-3 bg-blue-500 rounded-full shadow-md"></div>
-                    <span className="text-sm text-gray-600 font-medium">运营站点</span>
+                    <span className="text-sm text-gray-600 font-medium">{t.network.mapLegend.station}</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <div className="h-0.5 w-6 bg-gradient-to-r from-blue-600 to-purple-600"></div>
-                    <span className="text-sm text-gray-600 font-medium">运输路线</span>
+                    <span className="text-sm text-gray-600 font-medium">{t.network.mapLegend.route}</span>
                   </div>
                 </div>
               </div>
@@ -511,9 +764,9 @@ export default function Home() {
             {/* Statistics */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
               {[
-                { number: "50+", label: "覆盖城市", en: "Cities Covered" },
-                { number: "7", label: "运营国家", en: "Countries" },
-                { number: "24/7", label: "全天候服务", en: "Service" }
+                { number: "50+", label: t.network.stats.cities },
+                { number: "7", label: t.network.stats.countries },
+                { number: "24/7", label: t.network.stats.service }
               ].map((stat, index) => (
                 <div key={index} className="text-center animate-fade-in-up delay-100">
                   <div className="text-5xl font-black text-gradient mb-2">{stat.number}</div>
@@ -538,8 +791,8 @@ export default function Home() {
             {/* Section header */}
             <div className="text-center mb-16 animate-fade-in-up">
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-6 leading-tight">
-                <span className="block">联系</span>
-                <span className="block text-gradient">我们</span>
+                <span className="block">{t.contact.titleNormal}</span>
+                <span className="block text-gradient">{t.contact.titleHighlight}</span>
               </h2>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed font-light">
                 {t.contact.subtitle}
@@ -567,9 +820,9 @@ export default function Home() {
                         <div className="text-white font-black text-3xl">丰</div>
                       </div>
 
-                      <h3 className="text-3xl font-black mb-4">立即联系</h3>
+                      <h3 className="text-3xl font-black mb-4">{t.contact.contactNow}</h3>
                       <p className="text-blue-100 mb-12 leading-relaxed">
-                        我们的专业团队随时准备为您提供国际物流解决方案
+                        {t.contact.contactDesc}
                       </p>
 
                       {/* Contact items */}
@@ -580,7 +833,7 @@ export default function Home() {
                               <Phone className="h-6 w-6 text-white" />
                             </div>
                             <div>
-                              <p className="text-sm text-blue-100 mb-2 font-medium">电话 / 微信</p>
+                              <p className="text-sm text-blue-100 mb-2 font-medium">{t.contact.phoneWechat}</p>
                               <p className="font-bold text-lg group-hover/item:text-blue-100 transition-colors duration-300">
                                 +86 17374932331
                               </p>
@@ -594,12 +847,12 @@ export default function Home() {
                               <MapPin className="h-6 w-6 text-white" />
                             </div>
                             <div>
-                              <p className="text-sm text-blue-100 mb-2 font-medium">总部地址</p>
+                              <p className="text-sm text-blue-100 mb-2 font-medium">{t.contact.address}</p>
                               <p className="font-bold group-hover/item:text-blue-100 transition-colors duration-300">
-                                中国江苏省连云港市
+                                {t.contact.addressValue}
                               </p>
                               <p className="text-sm text-blue-200 mt-1">
-                                阳光国际大厦C座2403室
+                                {t.contact.addressDetail}
                               </p>
                             </div>
                           </div>
@@ -611,7 +864,7 @@ export default function Home() {
                               <Mail className="h-6 w-6 text-white" />
                             </div>
                             <div>
-                              <p className="text-sm text-blue-100 mb-2 font-medium">邮箱地址</p>
+                              <p className="text-sm text-blue-100 mb-2 font-medium">{t.contact.email}</p>
                               <p className="font-bold text-lg group-hover/item:text-blue-100 transition-colors duration-300">
                                 renyizheng@landsea.cc
                               </p>
@@ -622,8 +875,8 @@ export default function Home() {
 
                       {/* Business hours */}
                       <div className="mt-12 p-4 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20">
-                        <p className="text-sm text-blue-100 mb-1">营业时间</p>
-                        <p className="font-bold">周一至周日 24小时</p>
+                        <p className="text-sm text-blue-100 mb-1">{t.contact.businessHours}</p>
+                        <p className="font-bold">{t.contact.businessHoursValue}</p>
                       </div>
                     </div>
                   </div>
@@ -631,8 +884,8 @@ export default function Home() {
                   {/* Right side - Contact form */}
                   <div className="lg:col-span-3 p-12">
                     <div className="mb-8">
-                      <h4 className="text-2xl font-bold text-gray-900 mb-2">发送消息</h4>
-                      <p className="text-gray-600">填写下方表单，我们将在24小时内回复您</p>
+                      <h4 className="text-2xl font-bold text-gray-900 mb-2">{t.contact.sendMessage}</h4>
+                      <p className="text-gray-600">{t.contact.formDesc}</p>
                     </div>
 
                     <ContactForm />
@@ -641,10 +894,10 @@ export default function Home() {
                     <div className="mt-8 flex items-center justify-between text-sm text-gray-500">
                       <div className="flex items-center space-x-2">
                         <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                        <span>我们通常在2小时内回复</span>
+                        <span>{t.contact.replyTime}</span>
                       </div>
                       <div className="flex items-center space-x-4">
-                        <span>支持多语言服务</span>
+                        <span>{t.contact.multiLang}</span>
                         <div className="flex space-x-1">
                           <span className="text-xs">🇨🇳</span>
                           <span className="text-xs">🇺🇸</span>
@@ -663,22 +916,22 @@ export default function Home() {
               {[
                 {
                   icon: Phone,
-                  label: "电话咨询",
+                  label: t.contact.quick.phone,
                   value: "+86 17374932331",
                   href: "tel:+8617374932331",
                   gradient: "from-blue-600 to-blue-700"
                 },
                 {
                   icon: Mail,
-                  label: "邮件联系",
-                  value: "发送邮件",
+                  label: t.contact.quick.email,
+                  value: t.contact.quick.sendEmail,
                   href: "mailto:renyizheng@landsea.cc",
                   gradient: "from-indigo-600 to-purple-600"
                 },
                 {
                   icon: MapPin,
-                  label: "总部地址",
-                  value: "江苏连云港",
+                  label: t.contact.address,
+                  value: t.contact.quick.location,
                   href: "#",
                   gradient: "from-purple-600 to-pink-600"
                 }
@@ -705,4 +958,3 @@ export default function Home() {
     </main>
   )
 }
-

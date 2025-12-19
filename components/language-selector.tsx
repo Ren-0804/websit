@@ -24,7 +24,7 @@ type LanguageContextType = {
 
 const LanguageContext = createContext<LanguageContextType>({
   currentLanguage: languages[1], // 默认中文
-  setLanguage: () => {},
+  setLanguage: () => { },
 })
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
@@ -59,18 +59,18 @@ export function useLanguage() {
   return useContext(LanguageContext)
 }
 
-export function LanguageSelector() {
+export function LanguageSelector({ className }: { className?: string }) {
   const { currentLanguage, setLanguage } = useLanguage()
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="h-9 w-9">
+        <Button variant="ghost" size="icon" className={`h-9 w-9 ${className}`}>
           <Globe className="h-4 w-4" />
           <span className="sr-only">切换语言</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="end" className="z-[60]">
         {languages.map((language) => (
           <DropdownMenuItem
             key={language.code}
@@ -87,18 +87,18 @@ export function LanguageSelector() {
 }
 
 // Compact version for mobile
-export function LanguageSelectorCompact() {
+export function LanguageSelectorCompact({ className }: { className?: string }) {
   const { currentLanguage, setLanguage } = useLanguage()
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="h-8 w-8 px-0">
+        <Button variant="ghost" size="sm" className={`h-8 w-8 px-0 ${className}`}>
           <span className="text-lg">{currentLanguage.flag}</span>
           <span className="sr-only">切换语言</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-40">
+      <DropdownMenuContent align="end" className="w-40 z-[60]">
         {languages.map((language) => (
           <DropdownMenuItem
             key={language.code}

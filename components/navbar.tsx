@@ -39,11 +39,10 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
             ? "bg-white/90 backdrop-blur-xl shadow-lg border-b border-gray-100/50"
             : "bg-transparent"
-        }`}
+          }`}
       >
         <div className="container mx-auto px-6">
           <div className="flex items-center justify-between h-18 py-4">
@@ -53,12 +52,10 @@ export default function Navbar() {
                 <Image src="/brand-mark.svg" alt="丰吉国际品牌标识" width={48} height={48} priority />
               </div>
               <div>
-                <span className={`font-bold text-xl transition-colors duration-300 block ${
-                  scrolled ? "text-gray-900" : "text-white"
-                }`}>丰吉国际</span>
-                <span className={`text-xs transition-colors duration-300 ${
-                  scrolled ? "text-blue-600" : "text-blue-100"
-                }`}>LandSea</span>
+                <span className={`font-bold text-xl transition-colors duration-300 block ${scrolled ? "text-gray-900" : "text-white"
+                  }`}>丰吉国际</span>
+                <span className={`text-xs transition-colors duration-300 ${scrolled ? "text-blue-600" : "text-blue-100"
+                  }`}>LandSea</span>
               </div>
             </Link>
 
@@ -75,11 +72,10 @@ export default function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`group relative px-4 py-2 rounded-xl font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${
-                    scrolled
+                  className={`group relative px-4 py-2 rounded-xl font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${scrolled
                       ? "text-gray-700 hover:text-blue-600 hover:bg-blue-50/50 focus-visible:ring-offset-white"
                       : "text-white/90 hover:text-white hover:bg-white/10 focus-visible:ring-offset-blue-900"
-                  }`}
+                    }`}
                 >
                   <span className="relative z-10">{t[item.key as keyof typeof t]}</span>
                   <div className="absolute inset-0 rounded-xl bg-blue-600/10 scale-0 group-hover:scale-100 transition-transform duration-300"></div>
@@ -89,7 +85,11 @@ export default function Navbar() {
 
             {/* Right Actions */}
             <div className="hidden lg:flex items-center space-x-3">
-              <LanguageSelector />
+              <LanguageSelector className={
+                scrolled
+                  ? "text-gray-700 hover:text-blue-600 hover:bg-blue-50/50"
+                  : "text-white/90 hover:text-white hover:bg-white/10"
+              } />
               <Button
                 className={`bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-2.5 rounded-xl font-medium shadow-lg shadow-blue-600/25 hover:shadow-xl hover:shadow-blue-600/30 transition-all duration-300 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white`}
               >
@@ -99,19 +99,21 @@ export default function Navbar() {
 
             {/* Mobile Menu Button */}
             <div className="lg:hidden flex items-center space-x-2">
-              <LanguageSelectorCompact />
+              <LanguageSelectorCompact className={
+                scrolled
+                  ? "text-gray-700 hover:bg-gray-100"
+                  : "text-white hover:bg-white/10"
+              } />
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 aria-label="Toggle menu"
-                className={`relative p-2 rounded-xl transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${
-                  scrolled
+                className={`relative p-2 rounded-xl transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${scrolled
                     ? "text-gray-700 hover:bg-gray-100 focus-visible:ring-offset-white"
                     : "text-white hover:bg-white/10 focus-visible:ring-offset-blue-900"
-                }`}
+                  }`}
               >
-                <div className={`w-6 h-6 relative transition-transform duration-300 ${
-                  isMenuOpen ? "rotate-180" : ""
-                }`}>
+                <div className={`w-6 h-6 relative transition-transform duration-300 ${isMenuOpen ? "rotate-180" : ""
+                  }`}>
                   {isMenuOpen ? (
                     <X className="w-6 h-6" />
                   ) : (
@@ -125,27 +127,24 @@ export default function Navbar() {
       </header>
 
       {/* Mobile Menu */}
-      <div className={`lg:hidden fixed inset-0 z-40 transition-all duration-500 ${
-        isMenuOpen
+      <div className={`lg:hidden fixed inset-0 z-40 transition-all duration-500 ${isMenuOpen
           ? "opacity-100 pointer-events-auto"
           : "opacity-0 pointer-events-none"
-      }`}>
+        }`}>
         {/* Backdrop */}
         <div
-          className={`absolute inset-0 transition-colors duration-500 ${
-            isMenuOpen ? "bg-black/50 backdrop-blur-sm" : "bg-transparent"
-          }`}
+          className={`absolute inset-0 transition-colors duration-500 ${isMenuOpen ? "bg-black/50 backdrop-blur-sm" : "bg-transparent"
+            }`}
           onClick={() => setIsMenuOpen(false)}
         />
 
         {/* Menu Panel */}
-        <div className={`absolute right-0 top-0 h-full w-80 bg-white shadow-2xl transition-transform duration-500 ${
-          isMenuOpen ? "translate-x-0" : "translate-x-full"
-        }`}>
+        <div className={`absolute right-0 top-0 h-full w-80 bg-white shadow-2xl transition-transform duration-500 ${isMenuOpen ? "translate-x-0" : "translate-x-full"
+          }`}>
           <div className="h-full flex flex-col">
             {/* Menu Header */}
             <div className="flex items-center justify-between p-6 border-b border-gray-100">
-            <div className="flex items-center">
+              <div className="flex items-center">
                 <div className="h-10 w-10 rounded-xl overflow-hidden mr-3">
                   <Image src="/brand-mark.svg" alt="丰吉国际品牌标识" width={40} height={40} />
                 </div>
