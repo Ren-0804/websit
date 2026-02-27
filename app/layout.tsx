@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     template: "%s | LandSea"
   },
   description: "丰吉国际供应链管理(江苏)有限公司提供专业的国际物流服务，包括中亚集装箱回程班列、跨境多式联运、清关仓储一体化等服务。连接中国与中亚、欧洲的可靠物流合作伙伴。",
-  keywords: ["国际物流", "中亚班列", "多式联运", "清关服务", "仓储物流", "供应链管理", "跨境运输", "集装箱运输", "物流解决方案"],
+  keywords: "国际物流, 中亚班列, 多式联运, 清关服务, 仓储物流, 供应链管理, 跨境运输, 集装箱运输, 物流解决方案",
   authors: [{ name: "LandSea" }],
   creator: "LandSea",
   publisher: "LandSea",

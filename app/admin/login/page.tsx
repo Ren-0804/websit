@@ -32,8 +32,9 @@ export default function LoginPage() {
             const data = await response.json()
 
             if (response.ok) {
-                router.push("/admin/publish")
-                router.refresh() // important to refresh the middleware cache state
+                // Use a hard redirect to ensure cookies are sent to the middleware properly
+                // and avoid aggressive Next.js App Router caching of the previous 401 state.
+                window.location.href = "/admin/publish"
             } else {
                 setError(data.error || "Invalid authentication code")
                 setCode("")
