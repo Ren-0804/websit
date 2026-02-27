@@ -78,7 +78,7 @@ export function ContactForm() {
     <form className="space-y-6" onSubmit={handleSubmit}>
       <div className="grid md:grid-cols-2 gap-6">
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="name" className="block text-sm font-bold text-[#0f1c2d] mb-2 uppercase tracking-wider">
             姓名
           </label>
           <input
@@ -88,12 +88,12 @@ export function ContactForm() {
             value={formData.name}
             onChange={handleInputChange}
             required
-            className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+            className="w-full px-4 py-3 rounded-sm border-2 border-gray-200 focus:border-[#e3000f] focus:outline-none transition-colors bg-[#f4f4f4]"
             placeholder="您的姓名"
           />
         </div>
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="email" className="block text-sm font-bold text-[#0f1c2d] mb-2 uppercase tracking-wider">
             邮箱
           </label>
           <input
@@ -103,14 +103,14 @@ export function ContactForm() {
             value={formData.email}
             onChange={handleInputChange}
             required
-            className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+            className="w-full px-4 py-3 rounded-sm border-2 border-gray-200 focus:border-[#e3000f] focus:outline-none transition-colors bg-[#f4f4f4]"
             placeholder="您的邮箱地址"
           />
         </div>
       </div>
 
       <div>
-        <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="company" className="block text-sm font-bold text-[#0f1c2d] mb-2 uppercase tracking-wider">
           公司
         </label>
         <input
@@ -119,13 +119,13 @@ export function ContactForm() {
           name="company"
           value={formData.company}
           onChange={handleInputChange}
-          className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+          className="w-full px-4 py-3 rounded-sm border-2 border-gray-200 focus:border-[#e3000f] focus:outline-none transition-colors bg-[#f4f4f4]"
           placeholder="您的公司名称"
         />
       </div>
 
       <div>
-        <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="subject" className="block text-sm font-bold text-[#0f1c2d] mb-2 uppercase tracking-wider">
           主题
         </label>
         <input
@@ -135,13 +135,13 @@ export function ContactForm() {
           value={formData.subject}
           onChange={handleInputChange}
           required
-          className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+          className="w-full px-4 py-3 rounded-sm border-2 border-gray-200 focus:border-[#e3000f] focus:outline-none transition-colors bg-[#f4f4f4]"
           placeholder="我们可以如何帮助您？"
         />
       </div>
 
       <div>
-        <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="message" className="block text-sm font-bold text-[#0f1c2d] mb-2 uppercase tracking-wider">
           消息
         </label>
         <textarea
@@ -151,20 +151,20 @@ export function ContactForm() {
           onChange={handleInputChange}
           required
           rows={4}
-          className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+          className="w-full px-4 py-3 rounded-sm border-2 border-gray-200 focus:border-[#e3000f] focus:outline-none transition-colors bg-[#f4f4f4] resize-y"
           placeholder="请输入您的消息..."
         ></textarea>
       </div>
 
       <Button
         size="lg"
-        className="w-full bg-blue-600 hover:bg-blue-700 transition-colors"
+        className="w-full bg-[#0f1c2d] hover:bg-[#e3000f] text-white rounded-sm py-6 text-lg font-bold transition-colors border-none"
         type="submit"
         disabled={isLoading}
       >
         {isLoading ? (
           <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            <Loader2 className="mr-2 h-5 w-5 animate-spin" />
             发送中...
           </>
         ) : (
@@ -172,7 +172,7 @@ export function ContactForm() {
         )}
       </Button>
 
-      <p className="text-sm text-gray-500 text-center">我们会在24小时内回复您</p>
+      <p className="text-sm font-bold text-gray-500 text-center uppercase tracking-wider">我们会在24小时内回复您</p>
     </form>
   )
 } 

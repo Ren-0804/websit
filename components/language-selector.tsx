@@ -29,8 +29,10 @@ const LanguageContext = createContext<LanguageContextType>({
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [currentLanguage, setCurrentLanguage] = useState(languages[1]) // 默认中文
+  const [isHydrated, setIsHydrated] = useState(false)
 
   useEffect(() => {
+    setIsHydrated(true)
     const savedLanguage = localStorage.getItem("language")
     if (savedLanguage) {
       const language = languages.find((lang) => lang.code === savedLanguage)
@@ -48,8 +50,13 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
+  const providerValue = {
+    currentLanguage: isHydrated ? currentLanguage : languages[1],
+    setLanguage
+  }
+
   return (
-    <LanguageContext.Provider value={{ currentLanguage, setLanguage }}>
+    <LanguageContext.Provider value={providerValue}>
       {children}
     </LanguageContext.Provider>
   )

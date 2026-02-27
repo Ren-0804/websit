@@ -140,19 +140,19 @@ export default function Footer() {
 
   const navLinks = [
     { name: t.links.home, href: "/" },
-    { name: t.links.services, href: "/services" },
-    { name: t.links.about, href: "/about" },
-    { name: t.links.network, href: "/network" },
-    { name: t.links.contact, href: "/contact" },
+    { name: t.links.services, href: "/news" }, // repurposed for CMS
+    { name: t.links.about, href: "/#" },
+    { name: t.links.network, href: "/#" },
+    { name: t.links.contact, href: "/#contact" },
   ]
 
   return (
-    <footer className="bg-gray-900">
+    <footer className="bg-[#0f1c2d]">
       <div className="container mx-auto px-4">
         <div className="pt-16 pb-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div>
             <div className="flex items-center mb-6">
-              <div className="h-10 w-10 bg-blue-600 rounded-xl flex items-center justify-center mr-3">
+              <div className="h-10 w-10 bg-[#e3000f] flex items-center justify-center mr-3">
                 <div className="text-white font-bold text-xl">丰</div>
               </div>
               <span className="text-white font-bold text-xl">{t.company}</span>
@@ -232,7 +232,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 py-8">
+        <div className="border-t border-gray-700 py-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-500 text-sm mb-4 md:mb-0">
               © {new Date().getFullYear()} {t.copyright}
