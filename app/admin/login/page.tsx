@@ -98,12 +98,6 @@ export default function LoginPage() {
                         )}
                     </button>
                 </form>
-
-                <div className="mt-8 pt-6 border-t border-gray-100 text-center">
-                    <a href="/admin/setup" className="text-xs text-gray-400 hover:text-[#e3000f] font-bold uppercase tracking-wider transition-colors">
-                        First time setup? Need a QR code?
-                    </a>
-                </div>
             </div>
         </div>
     )

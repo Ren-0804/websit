@@ -60,6 +60,7 @@ body {
   font-feature-settings: 'cv11', 'ss01';
   font-variation-settings: 'opsz' 32;
   line-height: 1.7;
+  background: #f8fafc;
 }
 
 @layer utilities {
@@ -176,56 +177,50 @@ body {
     border-radius: 0.75rem 0 0 0.75rem;
   }
 
-  /* Smooth RTL transitions */
-  * {
-    transition-property: margin, padding, transform, border-radius;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 200ms;
-  }
 }
 
 @layer base {
   h1 {
-    @apply text-4xl md:text-5xl font-bold tracking-tight;
+    @apply text-4xl md:text-5xl font-semibold tracking-normal;
   }
   h2 {
-    @apply text-3xl font-bold tracking-tight;
+    @apply text-3xl font-semibold tracking-normal;
   }
   h3 {
     @apply text-2xl font-semibold;
   }
   p {
-    @apply leading-7 text-gray-700;
+    @apply leading-7 text-slate-600;
   }
   .section {
     @apply py-24;
   }
   :root {
     --background: 0 0% 100%;
-    --foreground: 221 39% 11%; /* Very dark blue for text */
+    --foreground: 222 47% 11%;
     --card: 0 0% 100%;
     --card-foreground: 221 39% 11%;
     --popover: 0 0% 100%;
     --popover-foreground: 221 39% 11%;
-    --primary: 216 48% 12%; /* #0f1c2d DSV Dark Blue */
+    --primary: 222 47% 11%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 96.1%; /* F4F4F4 */
-    --secondary-foreground: 216 48% 12%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222 47% 11%;
     --muted: 0 0% 96.1%;
     --muted-foreground: 215 16% 47%; /* Gray */
-    --accent: 356 100% 45%; /* #e3000f DSV Red */
+    --accent: 357 63% 46%;
     --accent-foreground: 0 0% 100%;
-    --destructive: 356 100% 45%; /* #e3000f */
+    --destructive: 357 63% 46%;
     --destructive-foreground: 0 0% 100%;
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 216 48% 12%;
-    --chart-1: 356 100% 45%;
-    --chart-2: 216 48% 12%;
+    --ring: 222 47% 11%;
+    --chart-1: 357 63% 46%;
+    --chart-2: 222 47% 11%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0rem; /* Straight, blocky corporate corners */
+    --radius: 0.5rem;
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 221 39% 11%;
     --sidebar-primary: 216 48% 12%;

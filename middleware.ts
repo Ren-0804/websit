@@ -3,11 +3,15 @@ import type { NextRequest } from "next/server"
 import { verifyToken } from "./lib/auth"
 
 export async function middleware(request: NextRequest) {
-    // Only protect /admin routes, but allow /admin/login and /admin/setup
+    // Only the login screen is public. Setup exposes the authenticator seed.
     if (request.nextUrl.pathname.startsWith("/admin")) {
+        if (request.nextUrl.pathname.startsWith("/admin/login")) {
+            return NextResponse.next()
+        }
+
         if (
-            request.nextUrl.pathname.startsWith("/admin/login") ||
-            request.nextUrl.pathname.startsWith("/admin/setup")
+            request.nextUrl.pathname.startsWith("/admin/setup") &&
+            process.env.ADMIN_SETUP_OPEN === "true"
         ) {
             return NextResponse.next()
         }

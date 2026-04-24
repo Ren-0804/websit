@@ -1,0 +1,52 @@
+name: Sync logistics news drafts
+
+on:
+  schedule:
+    - cron: "0 1 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync-news:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.8.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Sync draft posts
+        run: pnpm sync:news
+        env:
+          NEWS_SYNC_LIMIT: "2"
+          NEWS_SYNC_MAX_AGE_DAYS: "30"
+
+      - name: Commit generated drafts
+        run: |
+          if git diff --quiet -- content/posts; then
+            echo "No new draft posts."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add content/posts
+          git commit -m "chore: sync logistics news drafts"
+          git push

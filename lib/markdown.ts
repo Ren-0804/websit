@@ -15,14 +15,28 @@ export interface PostData {
     date: string
     summary: string
     content: string
+    category?: string
+    coverImage?: string
+    seoTitle?: string
+    seoDescription?: string
+    status?: "draft" | "published"
+    sourceUrl?: string
+    sourceName?: string
 }
 
-export function getPostSlugs() {
+export function getPostSlugs(includeDrafts = false) {
     if (!fs.existsSync(postsDirectory)) return []
-    return fs.readdirSync(postsDirectory).filter(file => file.endsWith('.md'))
+    const slugs = fs.readdirSync(postsDirectory).filter(file => file.endsWith('.md'))
+
+    if (includeDrafts) return slugs
+
+    return slugs.filter((slug) => {
+        const post = getPostBySlug(slug, true)
+        return post?.status !== "draft"
+    })
 }
 
-export function getPostBySlug(slug: string): PostData | null {
+export function getPostBySlug(slug: string, includeDrafts = false): PostData | null {
     try {
         const realSlug = slug.replace(/\.md$/, "")
         const fullPath = path.join(postsDirectory, `${realSlug}.md`)
@@ -31,6 +45,9 @@ export function getPostBySlug(slug: string): PostData | null {
 
         const fileContents = fs.readFileSync(fullPath, "utf8")
         const { data, content } = matter(fileContents)
+        const status = data.status === "draft" ? "draft" : "published"
+
+        if (status === "draft" && !includeDrafts) return null
 
         return {
             slug: realSlug,
@@ -38,6 +55,13 @@ export function getPostBySlug(slug: string): PostData | null {
             date: data.date || new Date().toISOString(),
             summary: data.summary || "",
             content,
+            category: data.category || "",
+            coverImage: data.coverImage || "",
+            seoTitle: data.seoTitle || "",
+            seoDescription: data.seoDescription || "",
+            status,
+            sourceUrl: data.sourceUrl || "",
+            sourceName: data.sourceName || "",
         }
     } catch (error) {
         console.error(`Error reading post ${slug}:`, error)
@@ -55,13 +79,24 @@ export function getAllPosts(): PostData[] {
     return posts
 }
 
-export function savePost(data: Omit<PostData, "slug"> & { slug?: string }): string {
-    // Generate slug from title if not provided
-    const slug = data.slug || data.title
+export function getAllPostsForAdmin(): PostData[] {
+    const slugs = getPostSlugs(true)
+    return slugs
+        .map((slug) => getPostBySlug(slug, true))
+        .filter((post): post is PostData => post !== null)
+        .sort((post1, post2) => (post1.date > post2.date ? -1 : 1))
+}
+
+function createSlug(value: string) {
+    return value
         .toLowerCase()
+        .trim()
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/(^-|-$)+/g, "")
-        || `post-${Date.now()}`
+}
+
+export function savePost(data: Omit<PostData, "slug"> & { slug?: string }): string {
+    const slug = createSlug(data.slug || data.title) || `post-${Date.now()}`
 
     const fullPath = path.join(postsDirectory, `${slug}.md`)
 
@@ -69,6 +104,13 @@ export function savePost(data: Omit<PostData, "slug"> & { slug?: string }): stri
         title: data.title,
         date: data.date,
         summary: data.summary,
+        category: data.category || "",
+        coverImage: data.coverImage || "",
+        seoTitle: data.seoTitle || "",
+        seoDescription: data.seoDescription || "",
+        status: data.status || "published",
+        sourceUrl: data.sourceUrl || "",
+        sourceName: data.sourceName || "",
     })
 
     fs.writeFileSync(fullPath, fileContent, "utf8")

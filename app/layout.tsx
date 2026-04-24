@@ -1,63 +1,54 @@
 import type React from "react"
+import type { Metadata, Viewport } from "next"
+import { Inter } from "next/font/google"
+import Script from "next/script"
 import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
-import { Inter } from "next/font/google"
-import "./globals.css"
-import { SpeedInsights } from '@vercel/speed-insights/next';
 import { LanguageProvider } from "@/components/language-selector"
-import { Metadata } from "next"
 import { Toaster } from "@/components/ui/toaster"
-import Script from "next/script"
+import "./globals.css"
 
 const inter = Inter({ subsets: ["latin"], display: "swap" })
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://landsea.cc"),
   title: {
-    default: "丰吉国际供应链管理(江苏)有限公司 - 国际物流与供应链解决方案",
-    template: "%s | LandSea"
+    default: "丰吉国际供应链管理 | 中亚铁路班列与跨境物流",
+    template: "%s | LandSea",
   },
-  description: "丰吉国际供应链管理(江苏)有限公司提供专业的国际物流服务，包括中亚集装箱回程班列、跨境多式联运、清关仓储一体化等服务。连接中国与中亚、欧洲的可靠物流合作伙伴。",
-  keywords: "国际物流, 中亚班列, 多式联运, 清关服务, 仓储物流, 供应链管理, 跨境运输, 集装箱运输, 物流解决方案",
+  description:
+    "丰吉国际供应链管理（江苏）有限公司提供中亚铁路班列、跨境多式联运、清关仓储和供应链项目执行服务。",
+  applicationName: "LandSea",
   authors: [{ name: "LandSea" }],
   creator: "LandSea",
   publisher: "LandSea",
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  metadataBase: new URL('https://landsea.cc'),
+  category: "Logistics",
   alternates: {
-    canonical: '/',
-    languages: {
-      'zh': '/',
-      'en': '/en',
-      'ru': '/ru',
-      'uz': '/uz',
-    },
+    canonical: "/",
   },
   openGraph: {
-    title: "丰吉国际供应链管理(江苏)有限公司 - 国际物流与供应链解决方案",
-    description: "丰吉国际供应链管理(江苏)有限公司提供专业的国际物流服务，包括中亚集装箱回程班列、跨境多式联运、清关仓储一体化等服务。连接中国与中亚、欧洲的可靠物流合作伙伴。",
-    url: 'https://landsea.cc',
-    siteName: '丰吉国际供应链管理(江苏)有限公司',
+    title: "丰吉国际供应链管理",
+    description: "连接中国、中亚、俄罗斯和欧洲的跨境物流与供应链执行伙伴。",
+    url: "https://landsea.cc",
+    siteName: "LandSea",
     images: [
       {
-        url: '/logistics-background.jpg',
+        url: "/logistics-background.jpg",
         width: 1200,
         height: 630,
-        alt: 'LandSea国际物流服务',
+        alt: "LandSea cross-border logistics services",
       },
     ],
-    locale: 'zh_CN',
-    type: 'website',
+    locale: "zh_CN",
+    type: "website",
   },
   twitter: {
-    card: 'summary_large_image',
-    title: "丰吉国际供应链管理(江苏)有限公司 - 国际物流与供应链解决方案",
-    description: "丰吉国际供应链管理(江苏)有限公司提供专业的国际物流服务，包括中亚集装箱回程班列、跨境多式联运、清关仓储一体化等服务。",
-    images: ['/logistics-background.jpg'],
+    card: "summary_large_image",
+    title: "丰吉国际供应链管理",
+    description: "中亚铁路班列、跨境多式联运、清关仓储和供应链项目执行服务。",
+    images: ["/logistics-background.jpg"],
   },
   robots: {
     index: true,
@@ -65,14 +56,22 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
-  verification: {
-    google: 'your-google-site-verification',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
   },
+}
+
+export const viewport: Viewport = {
+  themeColor: "#0f172a",
+  width: "device-width",
+  initialScale: 1,
 }
 
 export default function RootLayout({
@@ -82,16 +81,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="zh" suppressHydrationWarning>
-      <head>
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link rel="manifest" href="/site.webmanifest" />
-        <meta name="theme-color" content="#ffffff" />
-      </head>
       <body className={`${inter.className} antialiased`}>
         <LanguageProvider>
           <Navbar />
           {children}
+          <Footer />
           <SpeedInsights />
           <Analytics />
           {process.env.NEXT_PUBLIC_GA_ID && (
@@ -102,7 +96,6 @@ export default function RootLayout({
               </Script>
             </>
           )}
-          <Footer />
           <Toaster />
         </LanguageProvider>
       </body>

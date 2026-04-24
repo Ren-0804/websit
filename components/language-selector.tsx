@@ -1,62 +1,64 @@
 "use client"
 
-import { useState, createContext, useContext, useEffect } from "react"
-import { Globe } from "lucide-react"
+import { createContext, useContext, useEffect, useState } from "react"
+import { Globe2 } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Button } from "@/components/ui/button"
 
 const languages = [
-  { code: "ru", name: "Русский", flag: "🇷🇺" },
-  { code: "zh", name: "中文", flag: "🇨🇳" },
-  { code: "en", name: "English", flag: "🇺🇸" },
-  { code: "uz", name: "O'zbek", flag: "🇺🇿" },
+  { code: "zh", name: "中文", shortName: "ZH" },
+  { code: "en", name: "English", shortName: "EN" },
+  { code: "ru", name: "Русский", shortName: "RU" },
+  { code: "uz", name: "O'zbek", shortName: "UZ" },
 ]
 
+type Language = (typeof languages)[number]
+
 type LanguageContextType = {
-  currentLanguage: typeof languages[0]
+  currentLanguage: Language
   setLanguage: (code: string) => void
 }
 
+const defaultLanguage = languages[0]
+
 const LanguageContext = createContext<LanguageContextType>({
-  currentLanguage: languages[1], // 默认中文
-  setLanguage: () => { },
+  currentLanguage: defaultLanguage,
+  setLanguage: () => {},
 })
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [currentLanguage, setCurrentLanguage] = useState(languages[1]) // 默认中文
+  const [currentLanguage, setCurrentLanguage] = useState(defaultLanguage)
   const [isHydrated, setIsHydrated] = useState(false)
 
   useEffect(() => {
     setIsHydrated(true)
     const savedLanguage = localStorage.getItem("language")
-    if (savedLanguage) {
-      const language = languages.find((lang) => lang.code === savedLanguage)
-      if (language) {
-        setCurrentLanguage(language)
-      }
+    const language = languages.find((item) => item.code === savedLanguage)
+    if (language) {
+      setCurrentLanguage(language)
     }
   }, [])
 
   const setLanguage = (code: string) => {
-    const language = languages.find((lang) => lang.code === code)
-    if (language) {
-      setCurrentLanguage(language)
-      localStorage.setItem("language", code)
-    }
-  }
+    const language = languages.find((item) => item.code === code)
+    if (!language) return
 
-  const providerValue = {
-    currentLanguage: isHydrated ? currentLanguage : languages[1],
-    setLanguage
+    setCurrentLanguage(language)
+    localStorage.setItem("language", code)
   }
 
   return (
-    <LanguageContext.Provider value={providerValue}>
+    <LanguageContext.Provider
+      value={{
+        currentLanguage: isHydrated ? currentLanguage : defaultLanguage,
+        setLanguage,
+      }}
+    >
       {children}
     </LanguageContext.Provider>
   )
@@ -72,19 +74,25 @@ export function LanguageSelector({ className }: { className?: string }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className={`h-9 w-9 ${className}`}>
-          <Globe className="h-4 w-4" />
-          <span className="sr-only">切换语言</span>
+        <Button
+          variant="ghost"
+          className={`h-10 gap-2 rounded-full px-3 text-xs font-semibold tracking-wide ${className || ""}`}
+        >
+          <Globe2 className="h-4 w-4" />
+          {currentLanguage.shortName}
+          <span className="sr-only">Switch language</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="z-[60]">
+      <DropdownMenuContent align="end" className="z-[60] min-w-40">
         {languages.map((language) => (
           <DropdownMenuItem
             key={language.code}
             onClick={() => setLanguage(language.code)}
-            className={currentLanguage.code === language.code ? "bg-accent" : ""}
+            className={currentLanguage.code === language.code ? "bg-accent text-accent-foreground" : ""}
           >
-            <span className="mr-2">{language.flag}</span>
+            <span className="mr-3 w-6 text-xs font-semibold text-muted-foreground">
+              {language.shortName}
+            </span>
             {language.name}
           </DropdownMenuItem>
         ))}
@@ -93,27 +101,31 @@ export function LanguageSelector({ className }: { className?: string }) {
   )
 }
 
-// Compact version for mobile
 export function LanguageSelectorCompact({ className }: { className?: string }) {
   const { currentLanguage, setLanguage } = useLanguage()
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className={`h-8 w-8 px-0 ${className}`}>
-          <span className="text-lg">{currentLanguage.flag}</span>
-          <span className="sr-only">切换语言</span>
+        <Button
+          variant="ghost"
+          className={`h-9 w-11 rounded-full px-0 text-xs font-semibold ${className || ""}`}
+        >
+          {currentLanguage.shortName}
+          <span className="sr-only">Switch language</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-40 z-[60]">
+      <DropdownMenuContent align="end" className="z-[60] min-w-40">
         {languages.map((language) => (
           <DropdownMenuItem
             key={language.code}
             onClick={() => setLanguage(language.code)}
-            className={currentLanguage.code === language.code ? "bg-accent" : ""}
+            className={currentLanguage.code === language.code ? "bg-accent text-accent-foreground" : ""}
           >
-            <span className="mr-2">{language.flag}</span>
-            <span className="text-sm">{language.name}</span>
+            <span className="mr-3 w-6 text-xs font-semibold text-muted-foreground">
+              {language.shortName}
+            </span>
+            {language.name}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

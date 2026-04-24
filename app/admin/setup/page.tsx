@@ -1,5 +1,7 @@
 import QRCode from "react-qr-code"
 
+export const dynamic = "force-dynamic"
+
 export default function SetupPage() {
     const secret = process.env.TOTP_SECRET
 
