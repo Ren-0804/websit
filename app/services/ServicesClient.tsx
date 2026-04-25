@@ -4,7 +4,7 @@ import { ArrowRight, CheckCircle2, Container, FileCheck2, Globe2, Train, Warehou
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { useLanguage } from "@/components/language-selector"
+import { type LanguageCode, useLanguage } from "@/components/language-selector"
 
 const copy = {
   zh: {
@@ -32,8 +32,10 @@ const copy = {
         icon: Warehouse,
       },
     ],
+    workflowEyebrow: "Workflow",
     processTitle: "项目执行流程",
     process: ["货物信息确认", "线路和报价设计", "订舱与装箱", "在途跟踪", "清关交付", "复盘优化"],
+    strengths: ["集装箱可视化", "单证纪律", "目的地处理"],
   },
   en: {
     eyebrow: "Service Capabilities",
@@ -60,14 +62,77 @@ const copy = {
         icon: Warehouse,
       },
     ],
+    workflowEyebrow: "Workflow",
     processTitle: "Project Flow",
     process: ["Cargo review", "Route and quote", "Booking and loading", "In-transit tracking", "Customs and delivery", "Review and improve"],
+    strengths: ["Container visibility", "Document discipline", "Destination handling"],
   },
-} as const
+  ru: {
+    eyebrow: "Service Capabilities",
+    title: "Услуги, выстроенные вокруг результата перевозки",
+    intro: "LandSea делает акцент на стабильном исполнении. Маршрут, таможня, склад и доставка собираются в понятный проектный процесс.",
+    cta: "Обсудить груз",
+    cards: [
+      {
+        title: "Поезда в Центральную Азию",
+        text: "Для контейнерных грузов, которым нужен баланс сроков и стоимости по Ташкенту, Алматы, Самарканду и близким узлам.",
+        points: ["Фиксированные ж/д узлы", "Координация отправления", "Отслеживание контейнера"],
+        icon: Train,
+      },
+      {
+        title: "Мультимодальные перевозки",
+        text: "Железная дорога, автодоставка, море и пограничные ресурсы подбираются по месту отправления, назначению, грузу и срокам.",
+        points: ["Планирование до двери", "Проектные грузы", "Реакция на отклонения"],
+        icon: Globe2,
+      },
+      {
+        title: "Таможня и склад",
+        text: "Таможенное оформление в стране назначения, локальное хранение, распределение и доставка получателю.",
+        points: ["Проверка документов", "Связь с местной командой", "Хранение и распределение"],
+        icon: Warehouse,
+      },
+    ],
+    workflowEyebrow: "Workflow",
+    processTitle: "Процесс проекта",
+    process: ["Проверка груза", "Маршрут и ставка", "Бронирование и погрузка", "Отслеживание в пути", "Таможня и доставка", "Разбор и улучшение"],
+    strengths: ["Видимость контейнеров", "Порядок в документах", "Работа в пункте назначения"],
+  },
+  uz: {
+    eyebrow: "Service Capabilities",
+    title: "Tashuv natijasiga yo'naltirilgan xizmatlar",
+    intro: "LandSea ijro barqarorligiga e'tibor beradi. Yo'nalish, bojxona, ombor va yetkazib berish kuzatiladigan loyiha oqimiga birlashtiriladi.",
+    cta: "Yukimni muhokama qilish",
+    cards: [
+      {
+        title: "Markaziy Osiyo poyezdlari",
+        text: "Toshkent, Olmaota, Samarqand va yaqin tugunlar bo'ylab muddat va xarajat muvozanatini talab qiladigan konteyner yuklari uchun.",
+        points: ["Doimiy temir yo'l tugunlari", "Jo'nashni muvofiqlashtirish", "Konteyner holatini kuzatish"],
+        icon: Train,
+      },
+      {
+        title: "Multimodal tashuv",
+        text: "Temir yo'l, avtomobil, dengiz va chegara resurslari kelib chiqish joyi, manzil, yuk profili va muddatga qarab birlashtiriladi.",
+        points: ["Eshikdan eshikkacha reja", "Loyiha yuklari ijrosi", "Istisno holatlarga javob"],
+        icon: Globe2,
+      },
+      {
+        title: "Bojxona va ombor",
+        text: "Manzil davlatida bojxona, mahalliy ombor, taqsimlash va yetkazib berishni muvofiqlashtirish.",
+        points: ["Hujjatlarni tekshirish", "Mahalliy jamoa bilan aloqa", "Saqlash va taqsimlash"],
+        icon: Warehouse,
+      },
+    ],
+    workflowEyebrow: "Workflow",
+    processTitle: "Loyiha oqimi",
+    process: ["Yukni ko'rib chiqish", "Yo'nalish va narx", "Bron va yuklash", "Yo'lda kuzatish", "Bojxona va yetkazish", "Tahlil va yaxshilash"],
+    strengths: ["Konteyner ko'rinishi", "Hujjat intizomi", "Manzilda ishlov berish"],
+  },
+} as const satisfies Record<LanguageCode, object>
 
 export default function ServicesClient() {
   const { currentLanguage } = useLanguage()
-  const t = currentLanguage.code === "zh" ? copy.zh : copy.en
+  const t = copy[currentLanguage.code]
+  const strengthIcons = [Container, FileCheck2, Warehouse]
 
   return (
     <>
@@ -117,7 +182,7 @@ export default function ServicesClient() {
         <div className="container">
           <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
             <div>
-              <div className="text-sm font-semibold uppercase tracking-[0.22em] text-[#c91f28]">Workflow</div>
+              <div className="text-sm font-semibold uppercase tracking-[0.22em] text-[#c91f28]">{t.workflowEyebrow}</div>
               <h2 className="mt-4 text-4xl font-semibold text-slate-950">{t.processTitle}</h2>
             </div>
             <div className="grid gap-4 md:grid-cols-2">
@@ -139,16 +204,16 @@ export default function ServicesClient() {
       <section className="bg-white py-20">
         <div className="container">
           <div className="grid gap-5 md:grid-cols-3">
-            {[
-              { icon: Container, label: "Container visibility" },
-              { icon: FileCheck2, label: "Document discipline" },
-              { icon: Warehouse, label: "Destination handling" },
-            ].map((item) => (
-              <div key={item.label} className="rounded-2xl border border-slate-200 p-6">
-                <item.icon className="h-6 w-6 text-[#c91f28]" />
-                <div className="mt-4 text-lg font-semibold text-slate-950">{item.label}</div>
-              </div>
-            ))}
+            {t.strengths.map((label, index) => {
+              const Icon = strengthIcons[index]
+
+              return (
+                <div key={label} className="rounded-2xl border border-slate-200 p-6">
+                  <Icon className="h-6 w-6 text-[#c91f28]" />
+                  <div className="mt-4 text-lg font-semibold text-slate-950">{label}</div>
+                </div>
+              )
+            })}
           </div>
         </div>
       </section>

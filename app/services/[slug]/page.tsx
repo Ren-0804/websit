@@ -75,18 +75,20 @@ const services = {
 } as const
 
 type ServiceKey = keyof typeof services
+type ServicePageProps = { params: Promise<{ slug: ServiceKey }> }
 
 export async function generateStaticParams() {
   return Object.keys(services).map((slug) => ({ slug }))
 }
 
-export function generateMetadata({ params }: { params: { slug: ServiceKey } }): Metadata {
-  const data = services[params.slug]
-  const url = `https://landsea.cc/services/${params.slug}`
+export async function generateMetadata({ params }: ServicePageProps): Promise<Metadata> {
+  const { slug } = await params
+  const data = services[slug]
+  const url = `https://landsea.cc/services/${slug}`
   return {
     title: `${data.title} | 丰吉国际供应链`,
     description: data.description,
-    alternates: { canonical: `/services/${params.slug}` },
+    alternates: { canonical: `/services/${slug}` },
     openGraph: {
       title: `${data.title} | 丰吉国际供应链`,
       description: data.description,
@@ -103,8 +105,9 @@ export function generateMetadata({ params }: { params: { slug: ServiceKey } }): 
   }
 }
 
-export default function ServiceDetailPage({ params }: { params: { slug: ServiceKey } }) {
-  const data = services[params.slug]
+export default async function ServiceDetailPage({ params }: ServicePageProps) {
+  const { slug } = await params
+  const data = services[slug]
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",

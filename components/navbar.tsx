@@ -6,12 +6,17 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
-import { LanguageSelector, LanguageSelectorCompact, useLanguage } from "@/components/language-selector"
+import {
+  LanguageSelector,
+  LanguageSelectorCompact,
+  type LanguageCode,
+  useLanguage,
+} from "@/components/language-selector"
 
 const copy = {
   zh: {
     brand: "丰吉国际",
-    descriptor: "International Supply Chain",
+    descriptor: "国际供应链管理",
     quote: "获取方案",
     call: "联系顾问",
     nav: [
@@ -37,14 +42,42 @@ const copy = {
       { href: "/#contact", label: "Contact" },
     ],
   },
-} as const
+  ru: {
+    brand: "LandSea",
+    descriptor: "Международная цепочка поставок",
+    quote: "Запросить маршрут",
+    call: "Связаться с консультантом",
+    nav: [
+      { href: "/", label: "Главная" },
+      { href: "/services", label: "Услуги" },
+      { href: "/regions", label: "Сеть" },
+      { href: "/about", label: "О нас" },
+      { href: "/news", label: "Новости" },
+      { href: "/#contact", label: "Контакты" },
+    ],
+  },
+  uz: {
+    brand: "LandSea",
+    descriptor: "Xalqaro ta'minot zanjiri",
+    quote: "Yo'nalish so'rash",
+    call: "Maslahatchi bilan bog'lanish",
+    nav: [
+      { href: "/", label: "Bosh sahifa" },
+      { href: "/services", label: "Xizmatlar" },
+      { href: "/regions", label: "Tarmoq" },
+      { href: "/about", label: "Biz haqimizda" },
+      { href: "/news", label: "Yangiliklar" },
+      { href: "/#contact", label: "Aloqa" },
+    ],
+  },
+} as const satisfies Record<LanguageCode, unknown>
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
   const { currentLanguage } = useLanguage()
-  const t = currentLanguage.code === "zh" ? copy.zh : copy.en
+  const t = copy[currentLanguage.code]
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 12)

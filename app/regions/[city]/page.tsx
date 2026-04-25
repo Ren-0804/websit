@@ -66,27 +66,30 @@ const cities = {
 } as const
 
 type CityKey = keyof typeof cities
+type RegionPageProps = { params: Promise<{ city: CityKey }> }
 
 export async function generateStaticParams() {
   return Object.keys(cities).map((city) => ({ city }))
 }
 
-export function generateMetadata({ params }: { params: { city: CityKey } }): Metadata {
-  const data = cities[params.city]
+export async function generateMetadata({ params }: RegionPageProps): Promise<Metadata> {
+  const { city } = await params
+  const data = cities[city]
   const title = `${data.zhName}物流服务 | ${data.country}区域覆盖 | 丰吉国际供应链`
   const description = data.summary
-  const url = `https://landsea.cc/regions/${params.city}`
+  const url = `https://landsea.cc/regions/${city}`
   return {
     title,
     description,
-    alternates: { canonical: `/regions/${params.city}` },
+    alternates: { canonical: `/regions/${city}` },
     openGraph: { title, description, url, images: [{ url: "/route-map.jpg", width: 1200, height: 630, alt: data.heroAlt }], type: "article" },
     twitter: { card: "summary_large_image", title, description, images: ["/route-map.jpg"] },
   }
 }
 
-export default function RegionPage({ params }: { params: { city: CityKey } }) {
-  const data = cities[params.city]
+export default async function RegionPage({ params }: RegionPageProps) {
+  const { city } = await params
+  const data = cities[city]
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -98,7 +101,7 @@ export default function RegionPage({ params }: { params: { city: CityKey } }) {
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "首页", item: "https://landsea.cc" },
       { "@type": "ListItem", position: 2, name: "区域", item: "https://landsea.cc/regions" },
-      { "@type": "ListItem", position: 3, name: `${data.zhName}（${data.country}）`, item: `https://landsea.cc/regions/${params.city}` },
+      { "@type": "ListItem", position: 3, name: `${data.zhName}（${data.country}）`, item: `https://landsea.cc/regions/${city}` },
     ],
   }
 

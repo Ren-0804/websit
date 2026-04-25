@@ -3,7 +3,7 @@
 import { Mail, MapPin, Phone } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { useLanguage } from "@/components/language-selector"
+import { type LanguageCode, useLanguage } from "@/components/language-selector"
 
 const copy = {
   zh: {
@@ -44,11 +44,49 @@ const copy = {
     address: "Room 2403, Building C, Sunshine International, Lianyungang, Jiangsu",
     rights: "All rights reserved",
   },
-} as const
+  ru: {
+    company: "LandSea International Supply Chain Management",
+    line: "Партнер по трансграничной логистике между Китаем, Центральной Азией и Европой.",
+    columns: {
+      company: "Компания",
+      services: "Услуги",
+      contact: "Контакты",
+    },
+    links: [
+      { href: "/", label: "Главная" },
+      { href: "/services", label: "Услуги" },
+      { href: "/regions", label: "Сеть" },
+      { href: "/about", label: "О нас" },
+      { href: "/news", label: "Новости" },
+    ],
+    services: ["Поезда в Центральную Азию", "Мультимодальные перевозки", "Таможня и склад", "Консалтинг цепочки поставок"],
+    address: "Китай, Цзянсу, Ляньюньган, Sunshine International, корпус C, офис 2403",
+    rights: "Все права защищены",
+  },
+  uz: {
+    company: "LandSea International Supply Chain Management",
+    line: "Xitoy, Markaziy Osiyo va Yevropa o'rtasidagi transchegaraviy logistika hamkori.",
+    columns: {
+      company: "Kompaniya",
+      services: "Xizmatlar",
+      contact: "Aloqa",
+    },
+    links: [
+      { href: "/", label: "Bosh sahifa" },
+      { href: "/services", label: "Xizmatlar" },
+      { href: "/regions", label: "Tarmoq" },
+      { href: "/about", label: "Biz haqimizda" },
+      { href: "/news", label: "Yangiliklar" },
+    ],
+    services: ["Markaziy Osiyo poyezdlari", "Multimodal tashuv", "Bojxona va ombor", "Ta'minot zanjiri maslahati"],
+    address: "Room 2403, Building C, Sunshine International, Lianyungang, Jiangsu",
+    rights: "Barcha huquqlar himoyalangan",
+  },
+} as const satisfies Record<LanguageCode, object>
 
 export default function Footer() {
   const { currentLanguage } = useLanguage()
-  const t = currentLanguage.code === "zh" ? copy.zh : copy.en
+  const t = copy[currentLanguage.code]
 
   return (
     <footer className="border-t border-slate-800 bg-slate-950 text-white">

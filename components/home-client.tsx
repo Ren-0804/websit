@@ -19,12 +19,12 @@ import Link from "next/link"
 import type { PostData } from "@/lib/markdown"
 import { Button } from "@/components/ui/button"
 import { ContactForm } from "@/components/contact-form"
-import { useLanguage } from "@/components/language-selector"
+import { type LanguageCode, useLanguage } from "@/components/language-selector"
 
 const copy = {
   zh: {
     heroEyebrow: "China to Central Asia and Europe",
-    heroTitle: "把跨境物流做得更稳、更清楚、更可控",
+    heroTitle: "把跨境物流做得更稳、更清晰、更可控",
     heroText: "丰吉国际为铁路班列、多式联运、清关仓储和供应链项目提供端到端执行。重点覆盖中国、中亚、俄罗斯和欧洲方向。",
     quote: "获取运输方案",
     explore: "查看服务能力",
@@ -60,9 +60,12 @@ const copy = {
     newsTitle: "近期动态",
     readMore: "阅读全文",
     allNews: "全部新闻",
+    emptyNews: "暂无文章。",
+    contactEyebrow: "Contact",
     contactTitle: "让我们看一下你的运输计划",
     contactText: "告诉我们货物类型、起运地、目的地和时效要求，我们会给出可执行的路线建议。",
     phone: "电话 / 微信",
+    office: "办公室",
     address: "江苏连云港阳光国际大厦 C 座 2403",
   },
   en: {
@@ -103,16 +106,111 @@ const copy = {
     newsTitle: "Recent Updates",
     readMore: "Read Article",
     allNews: "All News",
+    emptyNews: "No posts yet.",
+    contactEyebrow: "Contact",
     contactTitle: "Let us review your transport plan",
     contactText: "Share cargo type, origin, destination, and timing. We will return with a workable route recommendation.",
     phone: "Phone / WeChat",
+    office: "Office",
     address: "Room 2403, Building C, Sunshine International, Lianyungang, Jiangsu",
   },
-} as const
+  ru: {
+    heroEyebrow: "China to Central Asia and Europe",
+    heroTitle: "Контролируемая логистика между Китаем, Центральной Азией и Европой",
+    heroText: "LandSea ведет железнодорожные, мультимодальные, таможенные, складские и цепочечные проекты по направлениям Китай, Центральная Азия, Россия и Европа.",
+    quote: "Получить маршрут",
+    explore: "Смотреть услуги",
+    metrics: [
+      { value: "10-12", label: "дней до ключевых узлов Центральной Азии" },
+      { value: "50+", label: "городов и погранпереходов" },
+      { value: "24h", label: "реакция проектной команды" },
+    ],
+    servicesEyebrow: "Service Portfolio",
+    servicesTitle: "Услуги для стабильного исполнения международных перевозок",
+    servicesText: "От разовой отправки до долгих программ поставок. Мы держим под контролем сроки, стоимость, таможню и работу с отклонениями.",
+    services: [
+      {
+        title: "Поезда в Центральную Азию",
+        text: "Стабильные маршруты через Ляньюньган, Сиань, Кашгар, Ташкент, Алматы и другие узлы.",
+        icon: Train,
+      },
+      {
+        title: "Мультимодальные перевозки",
+        text: "Комбинации железной дороги, автодоставки и моря для оборудования, автомобилей, контейнеров и проектных грузов.",
+        icon: Container,
+      },
+      {
+        title: "Таможня и склад",
+        text: "Таможенное оформление в стране назначения, временное хранение, распределение и локальная доставка.",
+        icon: Warehouse,
+      },
+    ],
+    networkTitle: "От портов и ж/д узлов до местных команд",
+    networkText: "Отслеживаемые коридоры и локальное исполнение помогают переводить риски перевозки в понятные этапы.",
+    networkItems: ["Основные порты Китая и ж/д центры консолидации", "Пограничные переходы Центральной Азии и таможенные ресурсы", "Мультимодальные коридоры России и Европы"],
+    newsEyebrow: "Company Insights",
+    newsTitle: "Последние материалы",
+    readMore: "Читать",
+    allNews: "Все новости",
+    emptyNews: "Публикаций пока нет.",
+    contactEyebrow: "Contact",
+    contactTitle: "Давайте проверим ваш план перевозки",
+    contactText: "Укажите груз, пункт отправления, назначение и сроки. Мы подготовим рабочий вариант маршрута.",
+    phone: "Телефон / WeChat",
+    office: "Офис",
+    address: "Китай, Цзянсу, Ляньюньган, Sunshine International, корпус C, офис 2403",
+  },
+  uz: {
+    heroEyebrow: "China to Central Asia and Europe",
+    heroTitle: "Xitoy, Markaziy Osiyo va Yevropa bo'ylab aniq boshqariladigan logistika",
+    heroText: "LandSea temir yo'l, multimodal tashuv, bojxona, ombor va ta'minot zanjiri loyihalarini Xitoy, Markaziy Osiyo, Rossiya va Yevropa yo'nalishlarida olib boradi.",
+    quote: "Yo'nalish rejasi",
+    explore: "Xizmatlarni ko'rish",
+    metrics: [
+      { value: "10-12", label: "kunda Markaziy Osiyo tugunlariga" },
+      { value: "50+", label: "shahar va chegara nuqtalari" },
+      { value: "24h", label: "loyiha javob vaqti" },
+    ],
+    servicesEyebrow: "Service Portfolio",
+    servicesTitle: "Transchegaraviy loyihalar uchun ijroga yo'naltirilgan xizmatlar",
+    servicesText: "Yakka jo'natmadan uzoq muddatli ta'minot zanjirigacha. Biz muddat, xarajat, bojxona va istisno holatlarini nazorat qilamiz.",
+    services: [
+      {
+        title: "Markaziy Osiyo poyezdlari",
+        text: "Lianyungang, Xi'an, Kashgar, Toshkent, Olmaota va boshqa asosiy tugunlar orqali barqaror temir yo'l tashuvi.",
+        icon: Train,
+      },
+      {
+        title: "Multimodal tashuv",
+        text: "Uskuna, avtomobil, konteyner va loyiha yuklari uchun temir yo'l, avtomobil va dengiz tashuvi kombinatsiyasi.",
+        icon: Container,
+      },
+      {
+        title: "Bojxona va ombor",
+        text: "Manzil davlatida bojxona, vaqtincha saqlash, taqsimlash va mahalliy yetkazib berish.",
+        icon: Warehouse,
+      },
+    ],
+    networkTitle: "Portlar va temir yo'l tugunlaridan mahalliy jamoalargacha",
+    networkText: "Kuzatiladigan yo'nalishlar va mahalliy ijro transchegaraviy xatarlarni aniq bosqichlarga ajratadi.",
+    networkItems: ["Xitoyning asosiy portlari va temir yo'l yig'ish markazlari", "Markaziy Osiyo chegara o'tishlari va bojxona resurslari", "Rossiya va Yevropa multimodal koridorlari"],
+    newsEyebrow: "Company Insights",
+    newsTitle: "So'nggi yangiliklar",
+    readMore: "To'liq o'qish",
+    allNews: "Barcha yangiliklar",
+    emptyNews: "Hozircha maqola yo'q.",
+    contactEyebrow: "Contact",
+    contactTitle: "Tashuv rejangizni ko'rib chiqamiz",
+    contactText: "Yuk turi, jo'nash joyi, manzil va muddatni yuboring. Biz amaliy yo'nalish tavsiyasini tayyorlaymiz.",
+    phone: "Telefon / WeChat",
+    office: "Ofis",
+    address: "Room 2403, Building C, Sunshine International, Lianyungang, Jiangsu",
+  },
+} as const satisfies Record<LanguageCode, object>
 
 export default function HomeClient({ recentPosts }: { recentPosts: PostData[] }) {
   const { currentLanguage } = useLanguage()
-  const t = currentLanguage.code === "zh" ? copy.zh : copy.en
+  const t = copy[currentLanguage.code]
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -232,7 +330,7 @@ export default function HomeClient({ recentPosts }: { recentPosts: PostData[] })
               <div className="absolute bottom-5 left-5 right-5 rounded-xl border border-white/15 bg-white/90 p-4 backdrop-blur">
                 <div className="flex items-center gap-3 text-sm font-semibold text-slate-950">
                   <Globe2 className="h-5 w-5 text-[#c91f28]" />
-                  Lianyungang · Xi'an · Kashgar · Tashkent · Almaty
+                  Lianyungang / Xi'an / Kashgar / Tashkent / Almaty
                 </div>
               </div>
             </div>
@@ -294,7 +392,7 @@ export default function HomeClient({ recentPosts }: { recentPosts: PostData[] })
               ))
             ) : (
               <div className="rounded-2xl border border-slate-200 bg-slate-50 p-8 text-sm text-slate-500 md:col-span-3">
-                No posts yet.
+                {t.emptyNews}
               </div>
             )}
           </div>
@@ -306,7 +404,7 @@ export default function HomeClient({ recentPosts }: { recentPosts: PostData[] })
           <div className="grid gap-12 lg:grid-cols-[0.86fr_1fr]">
             <div>
               <div className="text-sm font-semibold uppercase tracking-[0.22em] text-[#e44b52]">
-                Contact
+                {t.contactEyebrow}
               </div>
               <h2 className="mt-5 text-4xl font-semibold leading-tight md:text-5xl">{t.contactTitle}</h2>
               <p className="mt-5 max-w-xl text-base leading-8 text-slate-300">{t.contactText}</p>
@@ -324,7 +422,7 @@ export default function HomeClient({ recentPosts }: { recentPosts: PostData[] })
                 <div className="flex gap-4 rounded-2xl border border-white/10 bg-white/5 p-5">
                   <MapPin className="mt-1 h-5 w-5 text-[#e44b52]" />
                   <div>
-                    <div className="text-sm text-slate-400">Office</div>
+                    <div className="text-sm text-slate-400">{t.office}</div>
                     <div className="mt-1 text-lg font-semibold text-white">{t.address}</div>
                   </div>
                 </div>

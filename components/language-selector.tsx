@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useEffect, useState } from "react"
+import { createContext, useContext, useEffect, useMemo, useState } from "react"
 import { Globe2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -10,18 +10,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-const languages = [
-  { code: "zh", name: "中文", shortName: "ZH" },
-  { code: "en", name: "English", shortName: "EN" },
-  { code: "ru", name: "Русский", shortName: "RU" },
-  { code: "uz", name: "O'zbek", shortName: "UZ" },
-]
+export const languages = [
+  { code: "zh", name: "Chinese", nativeName: "中文", shortName: "ZH" },
+  { code: "en", name: "English", nativeName: "English", shortName: "EN" },
+  { code: "ru", name: "Russian", nativeName: "Русский", shortName: "RU" },
+  { code: "uz", name: "Uzbek", nativeName: "O'zbek", shortName: "UZ" },
+] as const
 
+export type LanguageCode = (typeof languages)[number]["code"]
 type Language = (typeof languages)[number]
 
 type LanguageContextType = {
   currentLanguage: Language
-  setLanguage: (code: string) => void
+  setLanguage: (code: LanguageCode) => void
 }
 
 const defaultLanguage = languages[0]
@@ -31,37 +32,38 @@ const LanguageContext = createContext<LanguageContextType>({
   setLanguage: () => {},
 })
 
+function getLanguage(code: string | null) {
+  return languages.find((item) => item.code === code) || defaultLanguage
+}
+
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [currentLanguage, setCurrentLanguage] = useState(defaultLanguage)
+  const [currentLanguage, setCurrentLanguage] = useState<Language>(defaultLanguage)
   const [isHydrated, setIsHydrated] = useState(false)
 
   useEffect(() => {
+    const savedLanguage = getLanguage(localStorage.getItem("language"))
+    setCurrentLanguage(savedLanguage)
     setIsHydrated(true)
-    const savedLanguage = localStorage.getItem("language")
-    const language = languages.find((item) => item.code === savedLanguage)
-    if (language) {
-      setCurrentLanguage(language)
-    }
   }, [])
 
-  const setLanguage = (code: string) => {
-    const language = languages.find((item) => item.code === code)
-    if (!language) return
+  useEffect(() => {
+    document.documentElement.lang = currentLanguage.code
+  }, [currentLanguage.code])
 
-    setCurrentLanguage(language)
-    localStorage.setItem("language", code)
-  }
-
-  return (
-    <LanguageContext.Provider
-      value={{
-        currentLanguage: isHydrated ? currentLanguage : defaultLanguage,
-        setLanguage,
-      }}
-    >
-      {children}
-    </LanguageContext.Provider>
+  const value = useMemo<LanguageContextType>(
+    () => ({
+      currentLanguage: isHydrated ? currentLanguage : defaultLanguage,
+      setLanguage: (code) => {
+        const language = getLanguage(code)
+        setCurrentLanguage(language)
+        localStorage.setItem("language", language.code)
+        document.documentElement.lang = language.code
+      },
+    }),
+    [currentLanguage, isHydrated],
   )
+
+  return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>
 }
 
 export function useLanguage() {
@@ -93,7 +95,7 @@ export function LanguageSelector({ className }: { className?: string }) {
             <span className="mr-3 w-6 text-xs font-semibold text-muted-foreground">
               {language.shortName}
             </span>
-            {language.name}
+            {language.nativeName}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
@@ -125,7 +127,7 @@ export function LanguageSelectorCompact({ className }: { className?: string }) {
             <span className="mr-3 w-6 text-xs font-semibold text-muted-foreground">
               {language.shortName}
             </span>
-            {language.name}
+            <span className="text-sm">{language.nativeName}</span>
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
