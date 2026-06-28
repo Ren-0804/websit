@@ -1,6 +1,6 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
-import { Inter } from "next/font/google"
+import { IBM_Plex_Sans, Noto_Sans_SC } from "next/font/google"
 import Script from "next/script"
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
@@ -10,16 +10,28 @@ import { LanguageProvider } from "@/components/language-selector"
 import { Toaster } from "@/components/ui/toaster"
 import "./globals.css"
 
-const inter = Inter({ subsets: ["latin"], display: "swap" })
+const plex = IBM_Plex_Sans({
+  subsets: ["latin", "cyrillic"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-plex",
+})
+
+const notoSansSc = Noto_Sans_SC({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-noto-sc",
+})
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://landsea.cc"),
   title: {
-    default: "丰吉国际供应链管理 | 中亚铁路班列与跨境物流",
+    default: "LandSea | Central Asia Logistics Execution",
     template: "%s | LandSea",
   },
   description:
-    "丰吉国际供应链管理（江苏）有限公司提供中亚铁路班列、跨境多式联运、清关仓储和供应链项目执行服务。",
+    "LandSea provides Central Asia block train, multimodal freight, customs, warehousing and destination logistics execution between China, Central Asia, Russia and Europe.",
   applicationName: "LandSea",
   authors: [{ name: "LandSea" }],
   creator: "LandSea",
@@ -29,8 +41,8 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "丰吉国际供应链管理",
-    description: "连接中国、中亚、俄罗斯和欧洲的跨境物流与供应链执行伙伴。",
+    title: "LandSea Central Asia Logistics",
+    description: "Cross-border logistics execution for China, Central Asia, Russia and Europe.",
     url: "https://landsea.cc",
     siteName: "LandSea",
     images: [
@@ -41,13 +53,13 @@ export const metadata: Metadata = {
         alt: "LandSea cross-border logistics services",
       },
     ],
-    locale: "zh_CN",
+    locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "丰吉国际供应链管理",
-    description: "中亚铁路班列、跨境多式联运、清关仓储和供应链项目执行服务。",
+    title: "LandSea Central Asia Logistics",
+    description: "Block train, multimodal freight, customs and warehousing for Central Asia corridors.",
     images: ["/logistics-background.jpg"],
   },
   robots: {
@@ -69,7 +81,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: "#0f172a",
+  themeColor: "#101820",
   width: "device-width",
   initialScale: 1,
 }
@@ -80,8 +92,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="zh" suppressHydrationWarning>
-      <body className={`${inter.className} antialiased`}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${plex.variable} ${notoSansSc.variable} antialiased`}>
         <LanguageProvider>
           <Navbar />
           {children}

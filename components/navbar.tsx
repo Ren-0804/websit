@@ -5,162 +5,70 @@ import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
+import { LanguageSelector, LanguageSelectorCompact, useLanguage } from "@/components/language-selector"
 import { Button } from "@/components/ui/button"
-import {
-  LanguageSelector,
-  LanguageSelectorCompact,
-  type LanguageCode,
-  useLanguage,
-} from "@/components/language-selector"
-
-const copy = {
-  zh: {
-    brand: "丰吉国际",
-    descriptor: "国际供应链管理",
-    quote: "获取方案",
-    call: "联系顾问",
-    nav: [
-      { href: "/", label: "首页" },
-      { href: "/services", label: "服务" },
-      { href: "/regions", label: "网络" },
-      { href: "/about", label: "关于" },
-      { href: "/news", label: "洞察" },
-      { href: "/#contact", label: "联系" },
-    ],
-  },
-  en: {
-    brand: "LandSea",
-    descriptor: "International Supply Chain",
-    quote: "Get a Quote",
-    call: "Talk to an Advisor",
-    nav: [
-      { href: "/", label: "Home" },
-      { href: "/services", label: "Services" },
-      { href: "/regions", label: "Network" },
-      { href: "/about", label: "About" },
-      { href: "/news", label: "Insights" },
-      { href: "/#contact", label: "Contact" },
-    ],
-  },
-  ru: {
-    brand: "LandSea",
-    descriptor: "Международная цепочка поставок",
-    quote: "Запросить маршрут",
-    call: "Связаться с консультантом",
-    nav: [
-      { href: "/", label: "Главная" },
-      { href: "/services", label: "Услуги" },
-      { href: "/regions", label: "Сеть" },
-      { href: "/about", label: "О нас" },
-      { href: "/news", label: "Новости" },
-      { href: "/#contact", label: "Контакты" },
-    ],
-  },
-  uz: {
-    brand: "LandSea",
-    descriptor: "Xalqaro ta'minot zanjiri",
-    quote: "Yo'nalish so'rash",
-    call: "Maslahatchi bilan bog'lanish",
-    nav: [
-      { href: "/", label: "Bosh sahifa" },
-      { href: "/services", label: "Xizmatlar" },
-      { href: "/regions", label: "Tarmoq" },
-      { href: "/about", label: "Biz haqimizda" },
-      { href: "/news", label: "Yangiliklar" },
-      { href: "/#contact", label: "Aloqa" },
-    ],
-  },
-} as const satisfies Record<LanguageCode, unknown>
+import { contact, getCopy } from "@/lib/i18n"
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
   const { currentLanguage } = useLanguage()
-  const t = copy[currentLanguage.code]
+  const t = getCopy(currentLanguage.code)
+  const nav = [
+    { href: "/", label: t.nav.home },
+    { href: "/services", label: t.nav.services },
+    { href: "/regions", label: t.nav.regions },
+    { href: "/about", label: t.nav.about },
+    { href: "/news", label: t.nav.news },
+    { href: "/contact", label: t.nav.contact },
+  ]
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 12)
+    const handleScroll = () => setScrolled(window.scrollY > 8)
     handleScroll()
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  useEffect(() => {
-    setIsMenuOpen(false)
-  }, [pathname])
+  useEffect(() => setIsMenuOpen(false), [pathname])
 
-  const isActive = (href: string) => {
-    if (href === "/") return pathname === "/"
-    if (href.startsWith("/#")) return false
-    return pathname === href || pathname.startsWith(`${href}/`)
-  }
-
-  const shellClass = scrolled || isMenuOpen
-    ? "border-b border-slate-200/80 bg-white/95 text-slate-950 shadow-sm backdrop-blur"
-    : "border-b border-white/10 bg-slate-950/25 text-white backdrop-blur-sm"
+  const isActive = (href: string) => href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`)
+  const darkMode = !scrolled && !isMenuOpen && pathname === "/"
 
   return (
     <>
-      <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${shellClass}`}>
+      <header className={`fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300 ${darkMode ? "border-white/10 bg-[#101820]/55 text-white backdrop-blur-md" : "border-[#d8d1c5] bg-[#f7f2e8]/95 text-[#101820] shadow-sm backdrop-blur-md"}`}>
         <div className="container">
-          <div className="flex h-20 items-center justify-between">
-            <Link href="/" className="flex items-center gap-3">
-              <span className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-md bg-white shadow-sm ring-1 ring-slate-200">
-                <Image src="/brand-mark.svg" alt="LandSea brand mark" width={34} height={34} priority />
+          <div className="flex h-[4.5rem] items-center justify-between gap-4 py-4 md:h-20">
+            <Link href="/" className="flex min-w-0 items-center gap-3">
+              <span className="flex h-10 w-10 flex-none items-center justify-center border border-[#d8d1c5] bg-white">
+                <Image src="/brand-mark.svg" alt="LandSea brand mark" width={30} height={30} priority />
               </span>
-              <span className="leading-tight">
-                <span className="block text-base font-semibold tracking-wide">{t.brand}</span>
-                <span className={scrolled || isMenuOpen ? "block text-xs text-slate-500" : "block text-xs text-white/70"}>
-                  {t.descriptor}
-                </span>
+              <span className="min-w-0 leading-tight">
+                <span className="block truncate text-sm font-semibold md:text-base">{t.brand}</span>
+                <span className={`block truncate text-[11px] uppercase tracking-[0.18em] ${darkMode ? "text-white/60" : "text-[#6d7478]"}`}>{t.descriptor}</span>
               </span>
             </Link>
 
             <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary navigation">
-              {t.nav.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`rounded-full px-4 py-2 text-sm font-medium transition ${
-                    isActive(item.href)
-                      ? scrolled
-                        ? "bg-slate-950 text-white"
-                        : "bg-white text-slate-950"
-                      : scrolled
-                        ? "text-slate-600 hover:bg-slate-100 hover:text-slate-950"
-                        : "text-white/80 hover:bg-white/10 hover:text-white"
-                  }`}
-                >
+              {nav.map((item) => (
+                <Link key={item.href} href={item.href} className={`px-3 py-2 text-sm font-medium transition ${isActive(item.href) ? darkMode ? "text-white underline decoration-[#c5313b] decoration-2 underline-offset-8" : "text-[#101820] underline decoration-[#b3262f] decoration-2 underline-offset-8" : darkMode ? "text-white/70 hover:text-white" : "text-[#5b6266] hover:text-[#101820]"}`}>
                   {item.label}
                 </Link>
               ))}
             </nav>
 
             <div className="hidden items-center gap-3 lg:flex">
-              <LanguageSelector
-                className={scrolled ? "text-slate-700 hover:bg-slate-100" : "text-white hover:bg-white/10"}
-              />
-              <Button asChild className="rounded-full bg-[#c91f28] px-5 font-semibold text-white hover:bg-[#a71921]">
-                <Link href="/#contact">
-                  <Phone className="mr-2 h-4 w-4" />
-                  {t.quote}
-                </Link>
+              <LanguageSelector className={darkMode ? "text-white hover:bg-white/10" : "text-[#101820] hover:bg-[#ebe3d5]"} />
+              <Button asChild className="h-10 rounded-none bg-[#b3262f] px-4 text-sm font-semibold text-white hover:bg-[#941f27]">
+                <Link href="/contact"><Phone className="mr-2 h-4 w-4" />{t.cta.route}</Link>
               </Button>
             </div>
 
             <div className="flex items-center gap-2 lg:hidden">
-              <LanguageSelectorCompact
-                className={scrolled || isMenuOpen ? "text-slate-700 hover:bg-slate-100" : "text-white hover:bg-white/10"}
-              />
-              <button
-                type="button"
-                aria-label="Toggle navigation"
-                onClick={() => setIsMenuOpen((value) => !value)}
-                className={`flex h-10 w-10 items-center justify-center rounded-full transition ${
-                  scrolled || isMenuOpen ? "text-slate-900 hover:bg-slate-100" : "text-white hover:bg-white/10"
-                }`}
-              >
+              <LanguageSelectorCompact className={darkMode ? "text-white hover:bg-white/10" : "text-[#101820] hover:bg-[#ebe3d5]"} />
+              <button type="button" aria-label="Toggle navigation" onClick={() => setIsMenuOpen((value) => !value)} className={`flex h-10 w-10 items-center justify-center border transition ${darkMode ? "border-white/15 text-white hover:bg-white/10" : "border-[#d8d1c5] text-[#101820] hover:bg-[#ebe3d5]"}`}>
                 {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </button>
             </div>
@@ -168,56 +76,26 @@ export default function Navbar() {
         </div>
       </header>
 
-      <div
-        className={`fixed inset-0 z-40 bg-slate-950/45 backdrop-blur-sm transition lg:hidden ${
-          isMenuOpen ? "opacity-100" : "pointer-events-none opacity-0"
-        }`}
-        onClick={() => setIsMenuOpen(false)}
-      />
+      <div className={`fixed inset-0 z-40 bg-[#101820]/45 backdrop-blur-sm transition lg:hidden ${isMenuOpen ? "opacity-100" : "pointer-events-none opacity-0"}`} onClick={() => setIsMenuOpen(false)} />
 
-      <aside
-        className={`fixed right-0 top-0 z-50 h-full w-[min(88vw,360px)] bg-white shadow-2xl transition-transform duration-300 lg:hidden ${
-          isMenuOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
+      <aside className={`fixed right-0 top-0 z-50 h-full w-[min(88vw,360px)] border-l border-[#d8d1c5] bg-[#f7f2e8] shadow-2xl transition-transform duration-300 lg:hidden ${isMenuOpen ? "translate-x-0" : "translate-x-full"}`}>
         <div className="flex h-full flex-col p-6">
-          <div className="flex items-center justify-between border-b border-slate-200 pb-5">
+          <div className="flex items-center justify-between border-b border-[#d8d1c5] pb-5">
             <div className="flex items-center gap-3">
-              <Image src="/brand-mark.svg" alt="LandSea brand mark" width={36} height={36} />
-              <div>
-                <div className="font-semibold text-slate-950">{t.brand}</div>
-                <div className="text-xs text-slate-500">{t.descriptor}</div>
-              </div>
+              <Image src="/brand-mark.svg" alt="LandSea brand mark" width={34} height={34} />
+              <div><div className="font-semibold text-[#101820]">{t.brand}</div><div className="text-xs uppercase tracking-[0.16em] text-[#6d7478]">{t.descriptor}</div></div>
             </div>
-            <button
-              type="button"
-              aria-label="Close navigation"
-              onClick={() => setIsMenuOpen(false)}
-              className="flex h-10 w-10 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-950"
-            >
-              <X className="h-5 w-5" />
-            </button>
+            <button type="button" aria-label="Close navigation" onClick={() => setIsMenuOpen(false)} className="flex h-10 w-10 items-center justify-center border border-[#d8d1c5] text-[#5b6266] hover:bg-[#ebe3d5] hover:text-[#101820]"><X className="h-5 w-5" /></button>
           </div>
 
-          <nav className="mt-7 flex flex-col gap-2" aria-label="Mobile navigation">
-            {t.nav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`rounded-xl px-4 py-3 text-base font-medium ${
-                  isActive(item.href)
-                    ? "bg-slate-950 text-white"
-                    : "text-slate-700 hover:bg-slate-100 hover:text-slate-950"
-                }`}
-              >
-                {item.label}
-              </Link>
-            ))}
+          <nav className="mt-8 flex flex-col" aria-label="Mobile navigation">
+            {nav.map((item) => <Link key={item.href} href={item.href} className={`border-b border-[#d8d1c5] py-4 text-lg font-semibold ${isActive(item.href) ? "text-[#b3262f]" : "text-[#101820]"}`}>{item.label}</Link>)}
           </nav>
 
-          <Button asChild className="mt-auto rounded-full bg-[#c91f28] py-6 font-semibold text-white hover:bg-[#a71921]">
-            <Link href="/#contact">{t.call}</Link>
-          </Button>
+          <div className="mt-auto border-t border-[#d8d1c5] pt-5 text-sm text-[#5b6266]">
+            <a href={`tel:${contact.phoneHref}`} className="font-semibold text-[#101820]">{contact.phone}</a>
+            <Button asChild className="mt-4 h-11 w-full rounded-none bg-[#b3262f] font-semibold text-white hover:bg-[#941f27]"><Link href="/contact">{t.cta.contact}</Link></Button>
+          </div>
         </div>
       </aside>
     </>

@@ -2,65 +2,116 @@
 @tailwind components;
 @tailwind utilities;
 
-@keyframes moveRight {
-  from {
-    background-position: 0 0;
+@layer base {
+  :root {
+    --background: 42 35% 96%;
+    --foreground: 206 33% 8%;
+    --card: 42 32% 98%;
+    --card-foreground: 206 33% 8%;
+    --popover: 42 32% 98%;
+    --popover-foreground: 206 33% 8%;
+    --primary: 206 33% 8%;
+    --primary-foreground: 42 35% 96%;
+    --secondary: 42 18% 88%;
+    --secondary-foreground: 206 33% 8%;
+    --muted: 43 18% 90%;
+    --muted-foreground: 206 10% 38%;
+    --accent: 357 65% 42%;
+    --accent-foreground: 42 35% 96%;
+    --destructive: 357 65% 42%;
+    --destructive-foreground: 42 35% 96%;
+    --border: 40 14% 80%;
+    --input: 40 14% 80%;
+    --ring: 357 65% 42%;
+    --chart-1: 357 65% 42%;
+    --chart-2: 206 33% 8%;
+    --chart-3: 174 18% 33%;
+    --chart-4: 37 36% 56%;
+    --chart-5: 212 16% 42%;
+    --radius: 0.5rem;
+    --sidebar-background: 42 35% 96%;
+    --sidebar-foreground: 206 33% 8%;
+    --sidebar-primary: 206 33% 8%;
+    --sidebar-primary-foreground: 42 35% 96%;
+    --sidebar-accent: 42 18% 88%;
+    --sidebar-accent-foreground: 206 33% 8%;
+    --sidebar-border: 40 14% 80%;
+    --sidebar-ring: 357 65% 42%;
   }
-  to {
-    background-position: 100% 0;
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-plex), var(--font-noto-sc), sans-serif;
+    font-feature-settings: "ss01", "cv05";
+    line-height: 1.6;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply tracking-normal text-balance;
+  }
+
+  h1 {
+    @apply text-4xl font-semibold leading-[1.04] md:text-6xl;
+  }
+
+  h2 {
+    @apply text-3xl font-semibold leading-tight md:text-5xl;
+  }
+
+  h3 {
+    @apply text-xl font-semibold leading-snug md:text-2xl;
+  }
+
+  p {
+    @apply text-base leading-7 text-[color:rgb(70_76_80)];
+  }
+
+  a,
+  button,
+  input,
+  textarea {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
   }
 }
 
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
+@layer components {
+  .site-section {
+    @apply py-20 md:py-24;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
-@keyframes slide-in-left {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
+  .site-eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.22em] text-[#b3262f];
   }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
 
-@keyframes slide-in-right {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
+  .site-panel {
+    @apply border border-[#d8d1c5] bg-[#fbfaf7] shadow-[0_24px_80px_rgba(16,24,32,0.08)];
   }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
 
-@keyframes scale-in {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
+  .route-grid {
+    background-image:
+      linear-gradient(rgba(16, 24, 32, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(16, 24, 32, 0.06) 1px, transparent 1px);
+    background-size: 42px 42px;
   }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
 
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-feature-settings: 'cv11', 'ss01';
-  font-variation-settings: 'opsz' 32;
-  line-height: 1.7;
-  background: #f8fafc;
+  .industrial-rule {
+    @apply relative pl-5;
+  }
+
+  .industrial-rule::before {
+    content: "";
+    @apply absolute left-0 top-1 h-[calc(100%-0.25rem)] w-px bg-[#b3262f];
+  }
 }
 
 @layer utilities {
@@ -68,210 +119,11 @@ body {
     text-wrap: balance;
   }
 
-  .animate-fade-in-up {
-    animation: fade-in-up 0.5s ease-out forwards;
-    opacity: 0;
+  .text-pretty {
+    text-wrap: pretty;
   }
 
-  .animate-float {
-    /* float is removed for corporate look */
-  }
-
-  .animate-slide-in-left {
-    animation: slide-in-left 0.4s ease-out forwards;
-    opacity: 0;
-  }
-
-  .animate-slide-in-right {
-    animation: slide-in-right 0.4s ease-out forwards;
-    opacity: 0;
-  }
-
-  .animate-scale-in {
-    animation: scale-in 0.4s ease-out forwards;
-    opacity: 0;
-  }
-
-  .delay-100 { animation-delay: 100ms; }
-  .delay-200 { animation-delay: 200ms; }
-  .delay-300 { animation-delay: 300ms; }
-  .delay-500 { animation-delay: 500ms; }
-  .delay-700 { animation-delay: 700ms; }
-  .delay-1000 { animation-delay: 1000ms; }
-
-  .glass-effect {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-  }
-
-  .glass-effect-dark {
-    background: #0f1c2d;
-    border: 1px solid #1e293b;
-  }
-
-  .hover-lift {
-    transition: all 0.2s ease;
-  }
-
-  .hover-lift:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  }
-
-  .gradient-border {
-    border: 1px solid #e5e7eb;
-    border-radius: 0;
-  }
-
-  .gradient-border > * {
-    background: white;
-  }
-
-  .text-gradient {
-    color: #e3000f; /* Use red for highlights */
-  }
-
-  /* RTL Support */
-  [dir="rtl"] {
-    direction: rtl;
-    text-align: right;
-  }
-
-  [dir="ltr"] {
-    direction: ltr;
-    text-align: left;
-  }
-
-  /* RTL-specific adjustments */
-  [dir="rtl"] .text-left {
-    text-align: right;
-  }
-
-  [dir="rtl"] .text-right {
-    text-align: left;
-  }
-
-  [dir="rtl"] .float-left {
-    float: right;
-  }
-
-  [dir="rtl"] .float-right {
-    float: left;
-  }
-
-  [dir="rtl"] .ml-auto {
-    margin-left: auto;
-    margin-right: 0;
-  }
-
-  [dir="rtl"] .mr-auto {
-    margin-right: auto;
-    margin-left: 0;
-  }
-
-  [dir="rtl"] .rounded-l-xl {
-    border-radius: 0 0.75rem 0.75rem 0;
-  }
-
-  [dir="rtl"] .rounded-r-xl {
-    border-radius: 0.75rem 0 0 0.75rem;
-  }
-
-}
-
-@layer base {
-  h1 {
-    @apply text-4xl md:text-5xl font-semibold tracking-normal;
-  }
-  h2 {
-    @apply text-3xl font-semibold tracking-normal;
-  }
-  h3 {
-    @apply text-2xl font-semibold;
-  }
-  p {
-    @apply leading-7 text-slate-600;
-  }
-  .section {
-    @apply py-24;
-  }
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
-    --card: 0 0% 100%;
-    --card-foreground: 221 39% 11%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 221 39% 11%;
-    --primary: 222 47% 11%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222 47% 11%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 215 16% 47%; /* Gray */
-    --accent: 357 63% 46%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 357 63% 46%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 222 47% 11%;
-    --chart-1: 357 63% 46%;
-    --chart-2: 222 47% 11%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 221 39% 11%;
-    --sidebar-primary: 216 48% 12%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 214 32% 91%;
-    --sidebar-accent-foreground: 216 48% 12%;
-    --sidebar-border: 214 32% 91%;
-    --sidebar-ring: 216 48% 12%;
-  }
-  .dark {
-    --background: 216 48% 12%;
-    --foreground: 0 0% 98%;
-    --card: 216 48% 12%;
-    --card-foreground: 0 0% 98%;
-    --popover: 216 48% 12%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 216 48% 12%;
-    --secondary: 217 32% 17%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 217 32% 17%;
-    --muted-foreground: 215 20% 65%;
-    --accent: 356 100% 45%; /* Keep red accent in dark mode */
-    --accent-foreground: 0 0% 100%;
-    --destructive: 356 100% 45%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 217 32% 17%;
-    --input: 217 32% 17%;
-    --ring: 214 32% 91%;
-    --chart-1: 356 100% 45%;
-    --chart-2: 210 50% 60%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-    --sidebar-background: 216 48% 12%;
-    --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 210 50% 60%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 217 32% 17%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 217 32% 17%;
-    --sidebar-ring: 214 32% 91%;
+  .font-cjk {
+    font-family: var(--font-noto-sc), var(--font-plex), sans-serif;
   }
 }
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-

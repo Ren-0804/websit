@@ -9,31 +9,44 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {
+  defaultLanguageCode,
+  getLanguage,
+  languageFromRegion,
+  languages,
+  normalizeLanguageCode,
+  type Language,
+  type LanguageCode,
+} from "@/lib/i18n"
 
-export const languages = [
-  { code: "zh", name: "Chinese", nativeName: "中文", shortName: "ZH" },
-  { code: "en", name: "English", nativeName: "English", shortName: "EN" },
-  { code: "ru", name: "Russian", nativeName: "Русский", shortName: "RU" },
-  { code: "uz", name: "Uzbek", nativeName: "O'zbek", shortName: "UZ" },
-] as const
-
-export type LanguageCode = (typeof languages)[number]["code"]
-type Language = (typeof languages)[number]
+export { languages, type LanguageCode }
 
 type LanguageContextType = {
   currentLanguage: Language
   setLanguage: (code: LanguageCode) => void
 }
 
-const defaultLanguage = languages[0]
+const defaultLanguage = getLanguage(defaultLanguageCode)
 
 const LanguageContext = createContext<LanguageContextType>({
   currentLanguage: defaultLanguage,
   setLanguage: () => {},
 })
 
-function getLanguage(code: string | null) {
-  return languages.find((item) => item.code === code) || defaultLanguage
+function detectInitialLanguage(): Language {
+  const saved = localStorage.getItem("language")
+  if (saved) return getLanguage(saved)
+
+  for (const browserLanguage of navigator.languages || [navigator.language]) {
+    const normalized = normalizeLanguageCode(browserLanguage)
+    if (normalized) return getLanguage(normalized)
+  }
+
+  const region =
+    Intl.DateTimeFormat().resolvedOptions().locale.split("-")[1] ||
+    navigator.language.split("-")[1]
+  const regionalLanguage = languageFromRegion(region)
+  return getLanguage(regionalLanguage || defaultLanguageCode)
 }
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
@@ -41,13 +54,13 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [isHydrated, setIsHydrated] = useState(false)
 
   useEffect(() => {
-    const savedLanguage = getLanguage(localStorage.getItem("language"))
-    setCurrentLanguage(savedLanguage)
+    setCurrentLanguage(detectInitialLanguage())
     setIsHydrated(true)
   }, [])
 
   useEffect(() => {
     document.documentElement.lang = currentLanguage.code
+    document.documentElement.dir = "ltr"
   }, [currentLanguage.code])
 
   const value = useMemo<LanguageContextType>(
@@ -58,6 +71,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         setCurrentLanguage(language)
         localStorage.setItem("language", language.code)
         document.documentElement.lang = language.code
+        document.documentElement.dir = "ltr"
       },
     }),
     [currentLanguage, isHydrated],

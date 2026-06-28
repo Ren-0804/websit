@@ -1,11 +1,13 @@
 "use client"
 
 import { useState } from "react"
+import { Loader2 } from "lucide-react"
+import { useLanguage } from "@/components/language-selector"
 import { Button } from "@/components/ui/button"
 import { toast } from "@/components/ui/use-toast"
-import { Loader2, CheckCircle2, AlertCircle } from "lucide-react"
+import { getCopy } from "@/lib/i18n"
 
-interface ContactFormData {
+type ContactFormData = {
   name: string
   email: string
   company: string
@@ -14,14 +16,10 @@ interface ContactFormData {
 }
 
 export function ContactForm() {
+  const { currentLanguage } = useLanguage()
+  const t = getCopy(currentLanguage.code).form
   const [isLoading, setIsLoading] = useState(false)
-  const [formData, setFormData] = useState<ContactFormData>({
-    name: "",
-    email: "",
-    company: "",
-    subject: "",
-    message: "",
-  })
+  const [formData, setFormData] = useState<ContactFormData>({ name: "", email: "", company: "", subject: "", message: "" })
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -31,148 +29,36 @@ export function ContactForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-
     try {
       const response = await fetch("/api/send-email", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       })
-
-      if (!response.ok) {
-        throw new Error("发送失败")
-      }
-
-      // 清空表单
-      setFormData({
-        name: "",
-        email: "",
-        company: "",
-        subject: "",
-        message: "",
-      })
-
-      // 显示成功提示
-      toast({
-        title: "发送成功",
-        description: "感谢您的留言，我们会尽快回复您",
-        className: "bg-white border border-green-200 shadow-lg",
-        duration: 3000,
-      })
+      if (!response.ok) throw new Error(t.errorText)
+      setFormData({ name: "", email: "", company: "", subject: "", message: "" })
+      toast({ title: t.successTitle, description: t.successText, className: "border border-[#d8d1c5] bg-[#fbfaf7] text-[#101820] shadow-lg", duration: 3000 })
     } catch (error) {
-      toast({
-        title: "发送失败",
-        description: error instanceof Error ? error.message : "请稍后重试",
-        className: "bg-white border border-red-200 shadow-lg",
-        variant: "destructive",
-        duration: 3000,
-      })
+      toast({ title: t.errorTitle, description: error instanceof Error ? error.message : t.errorText, className: "border border-[#d84650]/30 bg-[#fbfaf7] text-[#101820] shadow-lg", variant: "destructive", duration: 3000 })
     } finally {
       setIsLoading(false)
     }
   }
 
+  const inputClass = "w-full border border-[#d8d1c5] bg-[#f7f2e8] px-4 py-3 text-sm text-[#101820] transition placeholder:text-[#7a7f82] focus:border-[#b3262f]"
+  const labelClass = "mb-2 block text-xs font-semibold uppercase tracking-[0.18em] text-[#5b6266]"
+
   return (
-    <form className="space-y-6" onSubmit={handleSubmit}>
-      <div className="grid md:grid-cols-2 gap-6">
-        <div>
-          <label htmlFor="name" className="block text-sm font-bold text-[#0f1c2d] mb-2 uppercase tracking-wider">
-            姓名
-          </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-            required
-            className="w-full px-4 py-3 rounded-sm border-2 border-gray-200 focus:border-[#e3000f] focus:outline-none transition-colors bg-[#f4f4f4]"
-            placeholder="您的姓名"
-          />
-        </div>
-        <div>
-          <label htmlFor="email" className="block text-sm font-bold text-[#0f1c2d] mb-2 uppercase tracking-wider">
-            邮箱
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            required
-            className="w-full px-4 py-3 rounded-sm border-2 border-gray-200 focus:border-[#e3000f] focus:outline-none transition-colors bg-[#f4f4f4]"
-            placeholder="您的邮箱地址"
-          />
-        </div>
+    <form className="space-y-5" onSubmit={handleSubmit}>
+      <div className="grid gap-5 md:grid-cols-2">
+        <div><label htmlFor="name" className={labelClass}>{t.name}</label><input id="name" name="name" value={formData.name} onChange={handleInputChange} required className={inputClass} placeholder={t.namePlaceholder} /></div>
+        <div><label htmlFor="email" className={labelClass}>{t.email}</label><input id="email" name="email" type="email" value={formData.email} onChange={handleInputChange} required className={inputClass} placeholder={t.emailPlaceholder} /></div>
       </div>
-
-      <div>
-        <label htmlFor="company" className="block text-sm font-bold text-[#0f1c2d] mb-2 uppercase tracking-wider">
-          公司
-        </label>
-        <input
-          type="text"
-          id="company"
-          name="company"
-          value={formData.company}
-          onChange={handleInputChange}
-          className="w-full px-4 py-3 rounded-sm border-2 border-gray-200 focus:border-[#e3000f] focus:outline-none transition-colors bg-[#f4f4f4]"
-          placeholder="您的公司名称"
-        />
-      </div>
-
-      <div>
-        <label htmlFor="subject" className="block text-sm font-bold text-[#0f1c2d] mb-2 uppercase tracking-wider">
-          主题
-        </label>
-        <input
-          type="text"
-          id="subject"
-          name="subject"
-          value={formData.subject}
-          onChange={handleInputChange}
-          required
-          className="w-full px-4 py-3 rounded-sm border-2 border-gray-200 focus:border-[#e3000f] focus:outline-none transition-colors bg-[#f4f4f4]"
-          placeholder="我们可以如何帮助您？"
-        />
-      </div>
-
-      <div>
-        <label htmlFor="message" className="block text-sm font-bold text-[#0f1c2d] mb-2 uppercase tracking-wider">
-          消息
-        </label>
-        <textarea
-          id="message"
-          name="message"
-          value={formData.message}
-          onChange={handleInputChange}
-          required
-          rows={4}
-          className="w-full px-4 py-3 rounded-sm border-2 border-gray-200 focus:border-[#e3000f] focus:outline-none transition-colors bg-[#f4f4f4] resize-y"
-          placeholder="请输入您的消息..."
-        ></textarea>
-      </div>
-
-      <Button
-        size="lg"
-        className="w-full bg-[#0f1c2d] hover:bg-[#e3000f] text-white rounded-sm py-6 text-lg font-bold transition-colors border-none"
-        type="submit"
-        disabled={isLoading}
-      >
-        {isLoading ? (
-          <>
-            <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-            发送中...
-          </>
-        ) : (
-          "发送消息"
-        )}
-      </Button>
-
-      <p className="text-sm font-bold text-gray-500 text-center uppercase tracking-wider">我们会在24小时内回复您</p>
+      <div><label htmlFor="company" className={labelClass}>{t.company}</label><input id="company" name="company" value={formData.company} onChange={handleInputChange} className={inputClass} placeholder={t.companyPlaceholder} /></div>
+      <div><label htmlFor="subject" className={labelClass}>{t.subject}</label><input id="subject" name="subject" value={formData.subject} onChange={handleInputChange} required className={inputClass} placeholder={t.subjectPlaceholder} /></div>
+      <div><label htmlFor="message" className={labelClass}>{t.message}</label><textarea id="message" name="message" value={formData.message} onChange={handleInputChange} required rows={5} className={`${inputClass} resize-y`} placeholder={t.messagePlaceholder} /></div>
+      <Button className="h-12 w-full rounded-none bg-[#101820] text-sm font-semibold text-white hover:bg-[#b3262f]" type="submit" disabled={isLoading}>{isLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />{t.sending}</> : t.submit}</Button>
+      <p className="text-center text-xs font-semibold uppercase tracking-[0.16em] text-[#6d7478]">{t.promise}</p>
     </form>
   )
-} 
+}

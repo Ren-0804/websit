@@ -3,10 +3,10 @@ import HomeClient from "@/components/home-client"
 import { getAllPosts } from "@/lib/markdown"
 
 export const metadata: Metadata = {
-  title: "丰吉国际供应链管理 | 中亚铁路班列与跨境物流",
+  title: "LandSea | Central Asia Block Train and Cross-border Logistics",
   description:
-    "丰吉国际供应链管理（江苏）有限公司提供中亚铁路班列、跨境多式联运、清关仓储和供应链项目执行服务，连接中国、中亚、俄罗斯和欧洲。",
-  keywords: ["中亚铁路班列", "跨境物流", "多式联运", "清关仓储", "供应链管理", "LandSea logistics"],
+    "LandSea provides Central Asia block train, cross-border multimodal freight, customs, warehousing and supply chain execution between China, Central Asia, Russia and Europe.",
+  keywords: ["Central Asia logistics", "block train", "cross-border logistics", "multimodal freight", "中亚铁路班列", "跨境物流", "清关仓储"],
   alternates: {
     canonical: "/",
   },
