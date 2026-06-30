@@ -2,8 +2,8 @@ import type { Metadata } from "next"
 import AboutClient from "./AboutClient"
 
 export const metadata: Metadata = {
-  title: "关于我们 | 专业物流服务提供商 | 丰吉国际供应链",
-  description: "通过创新物流方案，提供高效、可靠、经济的国际运输服务，致力于成为中亚领先的物流服务提供商。",
+  title: "关于我们",
+  description: "丰吉国际位于江苏连云港，业务围绕中国至中亚、俄罗斯、欧洲部分线路的跨境物流执行服务。",
   alternates: { canonical: "/about" },
 }
 

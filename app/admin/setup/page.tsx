@@ -16,7 +16,7 @@ export default function SetupPage() {
         )
     }
 
-    const issuer = encodeURIComponent("LandSea CMS")
+    const issuer = encodeURIComponent("丰吉国际 CMS")
     const account = encodeURIComponent("admin")
     const otpauth = `otpauth://totp/${issuer}:${account}?secret=${secret}&issuer=${issuer}`
 

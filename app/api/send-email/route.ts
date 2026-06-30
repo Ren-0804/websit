@@ -3,7 +3,15 @@ import nodemailer from "nodemailer"
 
 export async function POST(request: Request) {
   try {
-    const { name, email, company, subject, message } = await request.json()
+    const {
+      name,
+      contactMethod,
+      company,
+      origin,
+      destination,
+      cargoInfo,
+      shippingTime,
+    } = await request.json()
 
     // 验证环境变量
     if (!process.env.SMTP_HOST || !process.env.SMTP_PORT || !process.env.SMTP_USER || !process.env.SMTP_PASSWORD) {
@@ -45,22 +53,27 @@ export async function POST(request: Request) {
     const mailOptions = {
       from: `"丰吉国际" <${process.env.SMTP_USER}>`,
       to: process.env.CONTACT_EMAIL,
-      subject: `新联系表单提交: ${subject}`,
+      subject: `新物流询价: ${origin || "未填写起运地"} → ${destination || "未填写目的地"}`,
       text: `
 姓名: ${name}
-邮箱: ${email}
+联系方式: ${contactMethod}
 公司: ${company}
-主题: ${subject}
-消息: ${message}
+起运地: ${origin}
+目的地: ${destination}
+预计发运时间: ${shippingTime}
+货物信息:
+${cargoInfo}
       `,
       html: `
-<h2>新联系表单提交</h2>
+<h2>新物流询价</h2>
 <p><strong>姓名:</strong> ${name}</p>
-<p><strong>邮箱:</strong> ${email}</p>
+<p><strong>联系方式:</strong> ${contactMethod}</p>
 <p><strong>公司:</strong> ${company}</p>
-<p><strong>主题:</strong> ${subject}</p>
-<p><strong>消息:</strong></p>
-<p>${message.replace(/\n/g, "<br>")}</p>
+<p><strong>起运地:</strong> ${origin}</p>
+<p><strong>目的地:</strong> ${destination}</p>
+<p><strong>预计发运时间:</strong> ${shippingTime || "未填写"}</p>
+<p><strong>货物信息:</strong></p>
+<p>${String(cargoInfo || "").replace(/\n/g, "<br>")}</p>
       `,
     }
 
@@ -75,11 +88,11 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("邮件发送失败:", error)
     return NextResponse.json(
-      { 
+      {
         error: "邮件发送失败",
         details: error instanceof Error ? error.message : "未知错误"
       },
       { status: 500 }
     )
   }
-} 
+}

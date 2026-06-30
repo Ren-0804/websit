@@ -37,7 +37,7 @@ export default function RegionDetailClient({ citySlug }: { citySlug: CitySlug })
             <div className="site-panel p-7">
               <MapPin className="h-7 w-7 text-[#b3262f]" />
               <h2 className="mt-6 text-3xl">{t.detail.timing}</h2>
-              <div className="mt-4 text-4xl font-semibold text-[#101820]">{city.time}</div>
+              <div className="mt-4 text-xl font-semibold leading-8 text-[#101820]">{t.detail.timingNote}</div>
               <p className="mt-4">{city.summary}</p>
             </div>
             <div className="grid gap-px overflow-hidden border border-[#d8d1c5] bg-[#d8d1c5] md:grid-cols-3">
@@ -61,7 +61,7 @@ export default function RegionDetailClient({ citySlug }: { citySlug: CitySlug })
                 <Clock3 className="h-5 w-5 text-[#b3262f]" />
                 <div className="mt-5 text-sm font-semibold uppercase tracking-[0.16em] text-[#6d7478]">{label}</div>
                 <div className="mt-2 text-lg font-semibold text-[#101820]">
-                  {index === 2 ? city.time : index === 1 ? city.country : "China / Central Asia"}
+                  {index === 2 ? t.detail.timingNote : index === 1 ? city.country : "China / Central Asia"}
                 </div>
               </div>
             ))}

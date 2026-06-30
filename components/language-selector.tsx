@@ -12,9 +12,7 @@ import {
 import {
   defaultLanguageCode,
   getLanguage,
-  languageFromRegion,
   languages,
-  normalizeLanguageCode,
   type Language,
   type LanguageCode,
 } from "@/lib/i18n"
@@ -35,18 +33,11 @@ const LanguageContext = createContext<LanguageContextType>({
 
 function detectInitialLanguage(): Language {
   const saved = localStorage.getItem("language")
-  if (saved) return getLanguage(saved)
+  return getLanguage(saved || defaultLanguageCode)
+}
 
-  for (const browserLanguage of navigator.languages || [navigator.language]) {
-    const normalized = normalizeLanguageCode(browserLanguage)
-    if (normalized) return getLanguage(normalized)
-  }
-
-  const region =
-    Intl.DateTimeFormat().resolvedOptions().locale.split("-")[1] ||
-    navigator.language.split("-")[1]
-  const regionalLanguage = languageFromRegion(region)
-  return getLanguage(regionalLanguage || defaultLanguageCode)
+function htmlLang(code: LanguageCode) {
+  return code === "zh" ? "zh-CN" : "en"
 }
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
@@ -59,7 +50,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   useEffect(() => {
-    document.documentElement.lang = currentLanguage.code
+    document.documentElement.lang = htmlLang(currentLanguage.code)
     document.documentElement.dir = "ltr"
   }, [currentLanguage.code])
 
@@ -70,7 +61,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         const language = getLanguage(code)
         setCurrentLanguage(language)
         localStorage.setItem("language", language.code)
-        document.documentElement.lang = language.code
+        document.documentElement.lang = htmlLang(language.code)
         document.documentElement.dir = "ltr"
       },
     }),

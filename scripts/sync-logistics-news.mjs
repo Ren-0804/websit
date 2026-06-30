@@ -190,7 +190,7 @@ function createDraftContent(item) {
 async function fetchFeed(feed) {
   const response = await fetch(feed.url, {
     headers: {
-      "user-agent": "LandSea market watch bot; contact renyizheng@landsea.cc",
+      "user-agent": "Fengji market watch bot; contact renyizheng@landsea.cc",
       accept: "application/rss+xml, application/atom+xml, application/xml, text/xml, */*",
     },
   })

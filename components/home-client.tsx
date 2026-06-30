@@ -7,7 +7,7 @@ import Link from "next/link"
 import { ContactForm } from "@/components/contact-form"
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/components/language-selector"
-import { contact, getCopy } from "@/lib/i18n"
+import { companyName, contact, englishName, getCopy, siteUrl } from "@/lib/i18n"
 import type { PostData } from "@/lib/markdown"
 
 const iconMap = { train: Train, route: Route, warehouse: Warehouse }
@@ -19,10 +19,10 @@ export default function HomeClient({ recentPosts }: { recentPosts: PostData[] })
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "LandSea International Supply Chain Management",
-    alternateName: "丰吉国际供应链管理（江苏）有限公司",
-    url: "https://landsea.cc",
-    logo: "https://landsea.cc/brand-mark.svg",
+    name: companyName,
+    alternateName: englishName,
+    url: siteUrl,
+    logo: `${siteUrl}/brand-mark.svg`,
     email: contact.email,
     telephone: contact.phone,
     address: { "@type": "PostalAddress", streetAddress: contact.addressEn, addressLocality: "Lianyungang", addressRegion: "Jiangsu", addressCountry: "CN" },
@@ -85,7 +85,7 @@ export default function HomeClient({ recentPosts }: { recentPosts: PostData[] })
             <div>
               <div className="site-eyebrow">{t.nav.regions}</div><h2 className="mt-4">{t.home.networkTitle}</h2><p className="mt-5">{t.home.networkIntro}</p>
               <div className="mt-8 grid gap-3">
-                {t.cities.slice(0, 4).map((city) => <Link key={city.slug} href={`/regions/${city.slug}`} className="grid grid-cols-[1fr_auto] gap-4 border border-[#d8d1c5] bg-[#fbfaf7] p-4 hover:bg-white"><div><div className="font-semibold text-[#101820]">{city.name}, {city.country}</div><div className="mt-1 text-sm text-[#6d7478]">{city.summary}</div></div><div className="text-sm font-semibold text-[#b3262f]">{city.time}</div></Link>)}
+                {t.cities.slice(0, 4).map((city) => <Link key={city.slug} href={`/regions/${city.slug}`} className="grid gap-4 border border-[#d8d1c5] bg-[#fbfaf7] p-4 hover:bg-white sm:grid-cols-[1fr_auto]"><div><div className="font-semibold text-[#101820]">{city.name}, {city.country}</div><div className="mt-1 text-sm text-[#6d7478]">{city.summary}</div></div><div className="text-sm font-semibold text-[#b3262f]">{t.detail.timing}</div></Link>)}
               </div>
             </div>
           </div>

@@ -1,13 +1,13 @@
-# LandSea International - Corporate Website & CMS
+# 丰吉国际 - Corporate Website & CMS
 
-A high-performance, modern logistics corporate website built with Next.js 15, React 19, and Tailwind CSS. Featuring a built-in, secure Markdown Content Management System (CMS) inspired by industry leaders like DSV.
+A logistics corporate website for 丰吉国际供应链管理（江苏）有限公司, built with Next.js 15, React 19, and Tailwind CSS. It includes a small Markdown Content Management System (CMS) for publishing business notes and route observations.
 
 ## 🌟 Key Features
 
 ### 1. Corporate Frontend
 *   **Performance Optimization**: Utilizes modern React Server Components (`app/page.tsx`) to statically generate and fetch news data directly on the server to maximize SEO.
-*   **Design Language**: Professional, bold, and strictly-aligned corporate aesthetic using deep slate blues (`#0f1c2d`) and striking reds (`#e3000f`) similar to global top-tier shipping and logistics firms.
-*   **Internationalization (i18n)**: Full multi-language support injected across UI elements for global reach (English, Chinese, Russian, Uzbek).
+*   **Design Language**: Restrained logistics-company visual system using ink, warm paper, railway red, and industrial gray.
+*   **Internationalization (i18n)**: Chinese default with English public UI copy.
 
 ### 2. Markdown Parsing CMS Engine
 *   **Automated Storage**: Articles are written in an internal Admin dashboard and instantly serialized into physical `.md` files in the `/content/posts/` directory.

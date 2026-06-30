@@ -1,12 +1,13 @@
 import type { Metadata } from "next"
 import HomeClient from "@/components/home-client"
+import { primaryBrand } from "@/lib/i18n"
 import { getAllPosts } from "@/lib/markdown"
 
 export const metadata: Metadata = {
-  title: "LandSea | Central Asia Block Train and Cross-border Logistics",
+  title: `${primaryBrand} | 中国至中亚跨境物流执行服务`,
   description:
-    "LandSea provides Central Asia block train, cross-border multimodal freight, customs, warehousing and supply chain execution between China, Central Asia, Russia and Europe.",
-  keywords: ["Central Asia logistics", "block train", "cross-border logistics", "multimodal freight", "中亚铁路班列", "跨境物流", "清关仓储"],
+    "丰吉国际围绕中亚铁路班列、跨境公路、多式联运、清关协同、仓储分拨和目的国派送，为货主、贸易商和项目客户提供可落地的物流执行方案。",
+  keywords: ["丰吉国际", "中亚物流", "中亚铁路班列", "跨境公路运输", "多式联运", "清关协同", "仓储分拨"],
   alternates: {
     canonical: "/",
   },

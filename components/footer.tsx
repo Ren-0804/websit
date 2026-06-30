@@ -24,11 +24,11 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-3">
               <span className="flex h-11 w-11 items-center justify-center bg-white">
-                <Image src="/brand-mark.svg" alt="LandSea brand mark" width={34} height={34} />
+                <Image src="/brand-mark.svg" alt="丰吉国际标识" width={34} height={34} />
               </span>
               <div>
                 <div className="max-w-xs text-sm font-semibold md:text-base">{t.company}</div>
-                <div className="text-xs uppercase tracking-[0.2em] text-white/45">LandSea</div>
+                <div className="text-xs uppercase tracking-[0.2em] text-white/45">{t.englishName}</div>
               </div>
             </div>
             <p className="mt-6 max-w-sm text-sm leading-7 text-white/60">{t.footerLine}</p>

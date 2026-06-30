@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import PostClient from "@/app/news/[slug]/PostClient"
+import { companyName, primaryBrand, siteUrl } from "@/lib/i18n"
 import { getPostBySlug, getPostSlugs } from "@/lib/markdown"
 
 interface PostProps {
@@ -57,7 +58,7 @@ export default async function PostPage({ params }: PostProps) {
   const imageUrl = post.coverImage
     ? post.coverImage.startsWith("http")
       ? post.coverImage
-      : `https://landsea.cc${post.coverImage.startsWith("/") ? post.coverImage : `/${post.coverImage}`}`
+      : `${siteUrl}${post.coverImage.startsWith("/") ? post.coverImage : `/${post.coverImage}`}`
     : undefined
   const articleJsonLd = {
     "@context": "https://schema.org",
@@ -69,26 +70,26 @@ export default async function PostPage({ params }: PostProps) {
     dateModified: post.date,
     author: {
       "@type": "Organization",
-      name: "LandSea",
+      name: companyName,
     },
     publisher: {
       "@type": "Organization",
-      name: "LandSea",
+      name: companyName,
       logo: {
         "@type": "ImageObject",
-        url: "https://landsea.cc/brand-mark.svg",
+        url: `${siteUrl}/brand-mark.svg`,
       },
     },
-    mainEntityOfPage: `https://landsea.cc/news/${post.slug}`,
+    mainEntityOfPage: `${siteUrl}/news/${post.slug}`,
   }
 
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://landsea.cc" },
-      { "@type": "ListItem", position: 2, name: "News", item: "https://landsea.cc/news" },
-      { "@type": "ListItem", position: 3, name: post.title, item: `https://landsea.cc/news/${post.slug}` },
+      { "@type": "ListItem", position: 1, name: primaryBrand, item: siteUrl },
+      { "@type": "ListItem", position: 2, name: "业务笔记", item: `${siteUrl}/news` },
+      { "@type": "ListItem", position: 3, name: post.title, item: `${siteUrl}/news/${post.slug}` },
     ],
   }
 

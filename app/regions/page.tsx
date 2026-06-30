@@ -1,9 +1,10 @@
 import type { Metadata } from "next"
+import { siteUrl } from "@/lib/i18n"
 import RegionsClient from "./RegionsClient"
 
 export const metadata: Metadata = {
-  title: "Regions | Central Asia Logistics Coverage",
-  description: "Logistics coverage for Tashkent, Samarkand, Almaty, Astana, Bishkek, Dushanbe and core Central Asia cities.",
+  title: "线路区域 | 中亚、俄罗斯方向物流节点",
+  description: "丰吉国际常见咨询方向包括塔什干、阿拉木图、比什凯克、俄罗斯方向等，具体线路需按口岸、货型和清关情况确认。",
   alternates: { canonical: "/regions" },
 }
 
@@ -12,8 +13,8 @@ export default function RegionsIndexPage() {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://landsea.cc" },
-      { "@type": "ListItem", position: 2, name: "Regions", item: "https://landsea.cc/regions" },
+      { "@type": "ListItem", position: 1, name: "首页", item: siteUrl },
+      { "@type": "ListItem", position: 2, name: "线路区域", item: `${siteUrl}/regions` },
     ],
   }
 

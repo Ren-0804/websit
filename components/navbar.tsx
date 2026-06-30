@@ -43,7 +43,7 @@ export default function Navbar() {
           <div className="flex h-[4.5rem] items-center justify-between gap-4 py-4 md:h-20">
             <Link href="/" className="flex min-w-0 items-center gap-3">
               <span className="flex h-10 w-10 flex-none items-center justify-center border border-[#d8d1c5] bg-white">
-                <Image src="/brand-mark.svg" alt="LandSea brand mark" width={30} height={30} priority />
+                <Image src="/brand-mark.svg" alt="丰吉国际标识" width={30} height={30} priority />
               </span>
               <span className="min-w-0 leading-tight">
                 <span className="block truncate text-sm font-semibold md:text-base">{t.brand}</span>
@@ -82,7 +82,7 @@ export default function Navbar() {
         <div className="flex h-full flex-col p-6">
           <div className="flex items-center justify-between border-b border-[#d8d1c5] pb-5">
             <div className="flex items-center gap-3">
-              <Image src="/brand-mark.svg" alt="LandSea brand mark" width={34} height={34} />
+              <Image src="/brand-mark.svg" alt="丰吉国际标识" width={34} height={34} />
               <div><div className="font-semibold text-[#101820]">{t.brand}</div><div className="text-xs uppercase tracking-[0.16em] text-[#6d7478]">{t.descriptor}</div></div>
             </div>
             <button type="button" aria-label="Close navigation" onClick={() => setIsMenuOpen(false)} className="flex h-10 w-10 items-center justify-center border border-[#d8d1c5] text-[#5b6266] hover:bg-[#ebe3d5] hover:text-[#101820]"><X className="h-5 w-5" /></button>
