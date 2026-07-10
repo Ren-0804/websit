@@ -1,21 +1,37 @@
-import { SignJWT, jwtVerify } from "jose"
+import { SignJWT, jwtVerify, type JWTPayload } from "jose"
 
-const JWT_SECRET = process.env.JWT_SECRET || "default_fallback_secret_override_me"
-const key = new TextEncoder().encode(JWT_SECRET)
+const JWT_ISSUER = "fengji-cms"
+const JWT_AUDIENCE = "fengji-admin"
 
-export async function signToken(payload: any) {
-    return await new SignJWT(payload)
-        .setProtectedHeader({ alg: "HS256" })
-        .setIssuedAt()
-        .setExpirationTime("24h")
-        .sign(key)
+function getJwtKey() {
+  const secret = process.env.JWT_SECRET
+  if (!secret || secret.length < 32) {
+    throw new Error("JWT_SECRET must be configured with at least 32 characters")
+  }
+  return new TextEncoder().encode(secret)
 }
 
-export async function verifyToken(token: string) {
-    try {
-        const { payload } = await jwtVerify(token, key)
-        return payload
-    } catch (error) {
-        return null
-    }
+export type AdminTokenPayload = JWTPayload & { admin: true }
+
+export async function signToken() {
+  return new SignJWT({ admin: true })
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt()
+    .setIssuer(JWT_ISSUER)
+    .setAudience(JWT_AUDIENCE)
+    .setExpirationTime("8h")
+    .sign(getJwtKey())
+}
+
+export async function verifyToken(token: string): Promise<AdminTokenPayload | null> {
+  try {
+    const { payload } = await jwtVerify(token, getJwtKey(), {
+      algorithms: ["HS256"],
+      issuer: JWT_ISSUER,
+      audience: JWT_AUDIENCE,
+    })
+    return payload.admin === true ? (payload as AdminTokenPayload) : null
+  } catch {
+    return null
+  }
 }
