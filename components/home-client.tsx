@@ -8,11 +8,11 @@ import { ContactForm } from "@/components/contact-form"
 import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/components/language-selector"
 import { companyName, contact, englishName, getCopy, siteUrl } from "@/lib/i18n"
-import type { PostData } from "@/lib/markdown"
+import type { PostSummary } from "@/lib/markdown"
 
 const iconMap = { train: Train, route: Route, warehouse: Warehouse }
 
-export default function HomeClient({ recentPosts }: { recentPosts: PostData[] }) {
+export default function HomeClient({ recentPosts }: { recentPosts: PostSummary[] }) {
   const { currentLanguage } = useLanguage()
   const t = getCopy(currentLanguage.code)
 
@@ -96,7 +96,7 @@ export default function HomeClient({ recentPosts }: { recentPosts: PostData[] })
         <div className="container">
           <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between"><div><div className="site-eyebrow">{t.nav.news}</div><h2 className="mt-4">{t.home.newsTitle}</h2></div><Button asChild variant="outline" className="w-fit rounded-none border-[#101820] bg-transparent px-5 font-semibold text-[#101820] hover:bg-[#101820] hover:text-white"><Link href="/news">{t.cta.allNews}<ArrowRight className="h-4 w-4" /></Link></Button></div>
           <div className="grid gap-px overflow-hidden border border-[#d8d1c5] bg-[#d8d1c5] md:grid-cols-3">
-            {recentPosts.length > 0 ? recentPosts.map((post) => <article key={post.slug} className="bg-[#fbfaf7] p-6"><div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#6d7478]"><Calendar className="h-4 w-4" />{format(new Date(post.date), "MMM d, yyyy")}</div><h3 className="mt-5 line-clamp-2 text-xl font-semibold leading-tight text-[#101820]"><Link href={`/news/${post.slug}`}>{post.title}</Link></h3><p className="mt-4 line-clamp-3 text-sm leading-7 text-[#5b6266]">{post.summary || post.content.slice(0, 150)}</p><Link href={`/news/${post.slug}`} className="mt-6 inline-flex items-center text-sm font-semibold text-[#b3262f]">{t.cta.read}<ArrowRight className="ml-2 h-4 w-4" /></Link></article>) : <div className="bg-[#fbfaf7] p-8 text-sm text-[#6d7478] md:col-span-3">{t.detail.emptyNews}</div>}
+            {recentPosts.length > 0 ? recentPosts.map((post) => <article key={post.slug} className="bg-[#fbfaf7] p-6"><div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#6d7478]"><Calendar className="h-4 w-4" />{format(new Date(post.date), "MMM d, yyyy")}</div><h3 className="mt-5 line-clamp-2 text-xl font-semibold leading-tight text-[#101820]"><Link href={`/news/${post.slug}`}>{post.title}</Link></h3><p className="mt-4 line-clamp-3 text-sm leading-7 text-[#5b6266]">{post.summary}</p><Link href={`/news/${post.slug}`} className="mt-6 inline-flex items-center text-sm font-semibold text-[#b3262f]">{t.cta.read}<ArrowRight className="ml-2 h-4 w-4" /></Link></article>) : <div className="bg-[#fbfaf7] p-8 text-sm text-[#6d7478] md:col-span-3">{t.detail.emptyNews}</div>}
           </div>
         </div>
       </section>
