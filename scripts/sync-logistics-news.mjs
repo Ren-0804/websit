@@ -3,54 +3,23 @@ import path from "node:path"
 import matter from "gray-matter"
 
 const postsDir = path.join(process.cwd(), "content", "posts")
+const maxFeedBytes = 5 * 1024 * 1024
 
 const defaultFeeds = [
-  {
-    name: "American Journal of Transportation",
-    url: "https://www.ajot.com/news/news/rss",
-  },
-  {
-    name: "RailFreight.com",
-    url: "https://www.railfreight.com/feed/",
-  },
-  {
-    name: "Supply Chain Dive",
-    url: "https://www.supplychaindive.com/feeds/news/",
-  },
+  { name: "American Journal of Transportation", url: "https://www.ajot.com/news/news/rss" },
+  { name: "RailFreight.com", url: "https://www.railfreight.com/feed/" },
+  { name: "Supply Chain Dive", url: "https://www.supplychaindive.com/feeds/news/" },
 ]
 
 const regionKeywords = [
-  "central asia",
-  "kazakhstan",
-  "uzbekistan",
-  "kyrgyzstan",
-  "tajikistan",
-  "turkmenistan",
-  "tashkent",
-  "almaty",
-  "astana",
-  "caspian",
-  "trans-caspian",
-  "middle corridor",
-  "eurasia",
-  "china-europe",
-  "silk road",
+  "central asia", "kazakhstan", "uzbekistan", "kyrgyzstan", "tajikistan", "turkmenistan",
+  "tashkent", "almaty", "astana", "caspian", "trans-caspian", "middle corridor", "eurasia",
+  "china-europe", "silk road",
 ]
 
 const logisticsKeywords = [
-  "logistics",
-  "freight",
-  "rail",
-  "railway",
-  "intermodal",
-  "container",
-  "customs",
-  "warehouse",
-  "shipping",
-  "port",
-  "supply chain",
-  "transport",
-  "corridor",
+  "logistics", "freight", "rail", "railway", "intermodal", "container", "customs", "warehouse",
+  "shipping", "port", "supply chain", "transport", "corridor",
 ]
 
 const maxItems = Number(process.env.NEWS_SYNC_LIMIT || 5)
@@ -66,6 +35,14 @@ function configuredFeeds() {
     .map((entry) => {
       const [name, url] = entry.includes("|") ? entry.split("|") : ["Custom Feed", entry]
       return { name: name.trim(), url: url.trim() }
+    })
+    .filter((feed) => {
+      try {
+        const url = new URL(feed.url)
+        return url.protocol === "https:"
+      } catch {
+        return false
+      }
     })
 }
 
@@ -108,37 +85,35 @@ function parseFeed(xml, sourceName) {
   const entryBlocks = [...xml.matchAll(/<entry\b[\s\S]*?<\/entry>/gi)].map((match) => match[0])
   const blocks = itemBlocks.length ? itemBlocks : entryBlocks
 
-  return blocks.map((block) => {
-    const title = stripHtml(getTag(block, ["title"]))
-    const link = getLink(block)
-    const description = stripHtml(getTag(block, ["description", "summary", "content:encoded", "content"]))
-    const dateText = getTag(block, ["pubDate", "published", "updated", "dc:date"])
-    const publishedAt = dateText ? new Date(dateText) : new Date()
+  return blocks
+    .map((block) => {
+      const title = stripHtml(getTag(block, ["title"]))
+      const link = getLink(block)
+      const description = stripHtml(getTag(block, ["description", "summary", "content:encoded", "content"]))
+      const dateText = getTag(block, ["pubDate", "published", "updated", "dc:date"])
+      const publishedAt = dateText ? new Date(dateText) : null
 
-    return {
-      title,
-      link,
-      description,
-      publishedAt: Number.isNaN(publishedAt.getTime()) ? new Date() : publishedAt,
-      sourceName,
-    }
-  }).filter((item) => item.title && item.link)
+      return {
+        title,
+        link,
+        description,
+        publishedAt: publishedAt && !Number.isNaN(publishedAt.getTime()) ? publishedAt : null,
+        sourceName,
+      }
+    })
+    .filter((item) => item.title && item.link && item.publishedAt)
 }
 
 function scoreItem(item) {
   const text = `${item.title} ${item.description}`.toLowerCase()
   const regionScore = regionKeywords.filter((keyword) => text.includes(keyword)).length
   const logisticsScore = logisticsKeywords.filter((keyword) => text.includes(keyword)).length
-  return {
-    regionScore,
-    logisticsScore,
-    total: regionScore * 3 + logisticsScore,
-  }
+  return { regionScore, logisticsScore, total: regionScore * 3 + logisticsScore }
 }
 
 function isFresh(item) {
   const ageMs = Date.now() - item.publishedAt.getTime()
-  return ageMs <= maxAgeDays * 24 * 60 * 60 * 1000
+  return ageMs >= 0 && ageMs <= maxAgeDays * 24 * 60 * 60 * 1000
 }
 
 function slugify(value) {
@@ -158,10 +133,9 @@ function readExistingSources() {
       .filter((file) => file.endsWith(".md"))
       .map((file) => {
         const fullPath = path.join(postsDir, file)
-        const parsed = matter(fs.readFileSync(fullPath, "utf8"))
-        return parsed.data.sourceUrl
+        return matter(fs.readFileSync(fullPath, "utf8")).data.sourceUrl
       })
-      .filter(Boolean)
+      .filter(Boolean),
   )
 }
 
@@ -170,18 +144,18 @@ function createDraftContent(item) {
   const shortSummary = summary.length > 360 ? `${summary.slice(0, 357).trim()}...` : summary
 
   return [
-    `This market watch draft was generated from a public source and should be reviewed before publishing.`,
+    "This market watch draft was generated from a public source and should be reviewed before publishing.",
     "",
-    `## Source update`,
+    "## Source update",
     "",
     shortSummary,
     "",
-    `## Why it may matter`,
+    "## Why it may matter",
     "",
-    `- Watch for possible impact on Central Asia rail, multimodal, customs, or corridor planning.`,
-    `- Confirm operational details with carriers, terminals, customs brokers, or local teams before using this in customer advice.`,
+    "- Watch for possible impact on Central Asia rail, multimodal, customs, or corridor planning.",
+    "- Confirm operational details with carriers, terminals, customs brokers, or local teams before using this in customer advice.",
     "",
-    `## Source`,
+    "## Source",
     "",
     `[${item.sourceName}](${item.link})`,
   ].join("\n")
@@ -189,17 +163,21 @@ function createDraftContent(item) {
 
 async function fetchFeed(feed) {
   const response = await fetch(feed.url, {
+    signal: AbortSignal.timeout(10_000),
     headers: {
       "user-agent": "Fengji market watch bot; contact renyizheng@landsea.cc",
       accept: "application/rss+xml, application/atom+xml, application/xml, text/xml, */*",
     },
   })
 
-  if (!response.ok) {
-    throw new Error(`${response.status} ${response.statusText}`)
-  }
+  if (!response.ok) throw new Error(`${response.status} ${response.statusText}`)
 
-  return response.text()
+  const contentLength = Number(response.headers.get("content-length") || 0)
+  if (contentLength > maxFeedBytes) throw new Error("Feed response is too large")
+
+  const text = await response.text()
+  if (Buffer.byteLength(text, "utf8") > maxFeedBytes) throw new Error("Feed response is too large")
+  return text
 }
 
 async function main() {
@@ -215,7 +193,7 @@ async function main() {
       const xml = await fetchFeed(feed)
       items.push(...parseFeed(xml, feed.name))
     } catch (error) {
-      failures.push(`${feed.name}: ${error.message}`)
+      failures.push(`${feed.name}: ${error instanceof Error ? error.message : String(error)}`)
     }
   }
 
@@ -232,7 +210,6 @@ async function main() {
   for (const item of candidates) {
     const slug = slugify(`market-watch-${item.title}`) || `market-watch-${Date.now()}`
     const fullPath = path.join(postsDir, `${slug}.md`)
-
     if (fs.existsSync(fullPath)) continue
 
     const description = item.description.slice(0, 220)
@@ -253,13 +230,7 @@ async function main() {
     created.push({ title: item.title, source: item.sourceName, slug })
   }
 
-  console.log(JSON.stringify({
-    feeds: feeds.length,
-    scanned: items.length,
-    created: created.length,
-    drafts: created,
-    failures,
-  }, null, 2))
+  console.log(JSON.stringify({ feeds: feeds.length, scanned: items.length, created: created.length, drafts: created, failures }, null, 2))
 }
 
 main().catch((error) => {
