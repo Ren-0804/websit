@@ -1,0 +1,46 @@
+name: Quality checks
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - codex/full-security-architecture-review-fixes
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.8.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Build
+        run: pnpm build
+        env:
+          JWT_SECRET: ci-only-secret-value-at-least-32-characters-long
+          TOTP_SECRET: JBSWY3DPEHPK3PXP
+          SMTP_HOST: localhost
+          SMTP_PORT: "587"
+          SMTP_USER: ci@example.com
+          SMTP_PASSWORD: ci-only-placeholder
+          CONTACT_EMAIL: ci@example.com
