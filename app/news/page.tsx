@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import NewsClient from "@/app/news/NewsClient"
 import { siteUrl } from "@/lib/i18n"
-import { getAllPosts } from "@/lib/markdown"
+import { getAllPostSummaries } from "@/lib/markdown"
 
 export const metadata: Metadata = {
   title: "业务笔记",
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 }
 
 export default function NewsPage() {
-  const posts = getAllPosts()
+  const posts = getAllPostSummaries()
   const itemListJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -26,5 +26,11 @@ export default function NewsPage() {
       name: post.title,
     })),
   }
-  return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} /><NewsClient posts={posts} /></>
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
+      <NewsClient posts={posts} />
+    </>
+  )
 }
