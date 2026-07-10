@@ -21,7 +21,10 @@ yarn-error.log*
 _tmp_*
 verification-*.png
 
-# env files
+# environment files
+.env
+.env.*
+!.env.example
 
 # vercel
 .vercel
