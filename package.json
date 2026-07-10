@@ -1,12 +1,13 @@
 {
-  "name": "my-v0-project",
+  "name": "fengji-logistics-website",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "check": "pnpm typecheck && pnpm build",
     "sync:news": "node scripts/sync-logistics-news.mjs"
   },
   "dependencies": {
