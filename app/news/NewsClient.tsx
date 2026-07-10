@@ -5,9 +5,9 @@ import { format } from "date-fns"
 import Link from "next/link"
 import { useLanguage } from "@/components/language-selector"
 import { getCopy } from "@/lib/i18n"
-import type { PostData } from "@/lib/markdown"
+import type { PostSummary } from "@/lib/markdown"
 
-export default function NewsClient({ posts }: { posts: PostData[] }) {
+export default function NewsClient({ posts }: { posts: PostSummary[] }) {
   const { currentLanguage } = useLanguage()
   const t = getCopy(currentLanguage.code)
   const featuredPost = posts[0]
@@ -48,9 +48,7 @@ export default function NewsClient({ posts }: { posts: PostData[] }) {
                     <h2 className="max-w-3xl text-3xl font-semibold leading-tight text-[#101820] md:text-4xl">
                       <Link href={`/news/${featuredPost.slug}`}>{featuredPost.title}</Link>
                     </h2>
-                    <p className="mt-5 max-w-2xl text-base leading-8 text-[#5b6266]">
-                      {featuredPost.summary || featuredPost.content.slice(0, 180)}
-                    </p>
+                    <p className="mt-5 max-w-2xl text-base leading-8 text-[#5b6266]">{featuredPost.summary}</p>
                     <Link href={`/news/${featuredPost.slug}`} className="mt-8 inline-flex items-center bg-[#101820] px-5 py-3 text-sm font-semibold text-white hover:bg-[#b3262f]">
                       {t.cta.read}
                       <ArrowRight className="ml-2 h-4 w-4" />
@@ -70,9 +68,7 @@ export default function NewsClient({ posts }: { posts: PostData[] }) {
                       <h2 className="mt-5 line-clamp-2 text-2xl font-semibold leading-tight text-[#101820]">
                         <Link href={`/news/${post.slug}`}>{post.title}</Link>
                       </h2>
-                      <p className="mt-4 line-clamp-3 text-sm leading-7 text-[#5b6266]">
-                        {post.summary || post.content.slice(0, 160)}
-                      </p>
+                      <p className="mt-4 line-clamp-3 text-sm leading-7 text-[#5b6266]">{post.summary}</p>
                       <Link href={`/news/${post.slug}`} className="mt-6 inline-flex items-center text-sm font-semibold text-[#b3262f]">
                         {t.cta.read}
                         <ArrowRight className="ml-2 h-4 w-4" />
