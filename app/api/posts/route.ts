@@ -56,8 +56,17 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid post data" }, { status: 400 })
     }
 
+    const data = parsed.data
     const savedSlug = await publishPost({
-      ...parsed.data,
+      title: data.title,
+      summary: data.summary,
+      content: data.content,
+      slug: data.slug,
+      category: data.category,
+      coverImage: data.coverImage,
+      seoTitle: data.seoTitle,
+      seoDescription: data.seoDescription,
+      status: data.status,
       date: new Date().toISOString(),
     })
 
