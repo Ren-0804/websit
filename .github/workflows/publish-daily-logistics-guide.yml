@@ -51,6 +51,18 @@ jobs:
           GITHUB_MODELS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DAILY_POST_DRY_RUN: ${{ inputs.dry_run && '1' || '0' }}
 
+      - name: Validate production build
+        if: ${{ !inputs.dry_run }}
+        run: pnpm check
+        env:
+          JWT_SECRET: daily-publish-secret-value-at-least-32-characters
+          TOTP_SECRET: JBSWY3DPEHPK3PXP
+          SMTP_HOST: localhost
+          SMTP_PORT: "587"
+          SMTP_USER: ci@example.com
+          SMTP_PASSWORD: daily-publish-placeholder
+          CONTACT_EMAIL: ci@example.com
+
       - name: Commit published guide
         if: ${{ !inputs.dry_run }}
         run: |
