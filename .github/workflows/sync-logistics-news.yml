@@ -1,8 +1,6 @@
-name: Sync logistics news drafts
+name: Sync logistics news drafts (manual)
 
 on:
-  schedule:
-    - cron: "0 1 * * *"
   workflow_dispatch:
 
 permissions:
