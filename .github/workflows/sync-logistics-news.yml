@@ -38,7 +38,7 @@ jobs:
 
       - name: Commit generated drafts
         run: |
-          if git diff --quiet -- content/posts; then
+          if [ -z "$(git status --porcelain -- content/posts)" ]; then
             echo "No new draft posts."
             exit 0
           fi
