@@ -1,12 +1,14 @@
 import type { Metadata } from "next"
 import { siteUrl } from "@/lib/i18n"
+import { createPageMetadata } from "@/lib/seo"
 import RegionsClient from "./RegionsClient"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "线路区域 | 中亚、俄罗斯方向物流节点",
   description: "丰吉国际常见咨询方向包括塔什干、阿拉木图、比什凯克、俄罗斯方向等，具体线路需按口岸、货型和清关情况确认。",
-  alternates: { canonical: "/regions" },
-}
+  path: "/regions",
+  image: "/route-map.jpg",
+})
 
 export default function RegionsIndexPage() {
   const breadcrumbJsonLd = {

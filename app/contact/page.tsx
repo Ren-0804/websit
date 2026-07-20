@@ -1,23 +1,13 @@
 import type { Metadata } from "next"
 import { siteUrl } from "@/lib/i18n"
+import { createPageMetadata } from "@/lib/seo"
 import ContactClient from "./ContactClient"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "联系咨询",
   description: "联系丰吉国际，咨询中国至中亚、俄罗斯、欧洲部分线路的铁路、公路、多式联运、清关和派送方案。",
-  alternates: { canonical: "/contact" },
-  openGraph: {
-    title: "联系咨询 | 丰吉国际",
-    description: "提交货物信息，咨询跨境物流线路方案。",
-    url: `${siteUrl}/contact`,
-    type: "website",
-  },
-  twitter: {
-    card: "summary",
-    title: "联系咨询 | 丰吉国际",
-    description: "提交货物信息，咨询跨境物流线路方案。",
-  },
-}
+  path: "/contact",
+})
 
 export default function ContactPage() {
   return (

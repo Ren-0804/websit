@@ -34,6 +34,11 @@ export const metadata: Metadata = {
   description:
     "丰吉国际供应链管理（江苏）有限公司提供中国至中亚、俄罗斯、欧洲部分线路的铁路班列、跨境公路、多式联运、清关协同、仓储分拨和目的国派送服务。",
   applicationName: primaryBrand,
+  manifest: "/site.webmanifest",
+  icons: {
+    icon: [{ url: "/brand-mark.svg", type: "image/svg+xml" }],
+    shortcut: "/brand-mark.svg",
+  },
   authors: [{ name: companyName }],
   creator: companyName,
   publisher: companyName,
@@ -102,6 +107,7 @@ export default function RootLayout({
               __html: JSON.stringify({
                 "@context": "https://schema.org",
                 "@type": "Organization",
+                "@id": `${siteUrl}/#organization`,
                 name: companyName,
                 alternateName: englishName,
                 url: siteUrl,
@@ -123,6 +129,21 @@ export default function RootLayout({
                   areaServed: ["CN", "KZ", "UZ", "KG", "RU"],
                   availableLanguage: ["zh-CN", "en"],
                 },
+              }),
+            }}
+          />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                "@id": `${siteUrl}/#website`,
+                url: siteUrl,
+                name: primaryBrand,
+                alternateName: englishName,
+                inLanguage: ["zh-CN", "en"],
+                publisher: { "@id": `${siteUrl}/#organization` },
               }),
             }}
           />

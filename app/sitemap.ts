@@ -6,29 +6,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const posts = getAllPosts()
 
     const routes = [
-        '',
-        '/about',
-        '/services',
-        '/regions',
-        '/contact',
-        '/news',
+        { path: '', changeFrequency: 'weekly' as const, priority: 1 },
+        { path: '/about', changeFrequency: 'monthly' as const, priority: 0.7 },
+        { path: '/services', changeFrequency: 'monthly' as const, priority: 0.9 },
+        { path: '/regions', changeFrequency: 'monthly' as const, priority: 0.8 },
+        { path: '/contact', changeFrequency: 'yearly' as const, priority: 0.7 },
+        { path: '/news', changeFrequency: 'daily' as const, priority: 0.8 },
     ].map((route) => ({
-        url: `${siteUrl}${route}`,
-        lastModified: new Date().toISOString(),
-        changeFrequency: 'daily' as const,
-        priority: route === '' ? 1 : 0.8,
+        url: `${siteUrl}${route.path}`,
+        changeFrequency: route.changeFrequency,
+        priority: route.priority,
     }))
 
     const serviceRoutes = serviceSlugs.map((slug) => ({
         url: `${siteUrl}/services/${slug}`,
-        lastModified: new Date().toISOString(),
         changeFrequency: 'monthly' as const,
         priority: 0.7,
     }))
 
     const cityRoutes = citySlugs.map((slug) => ({
         url: `${siteUrl}/regions/${slug}`,
-        lastModified: new Date().toISOString(),
         changeFrequency: 'monthly' as const,
         priority: 0.7,
     }))

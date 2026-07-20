@@ -1,20 +1,15 @@
 import type { Metadata } from "next"
 import { companyName, siteUrl } from "@/lib/i18n"
+import { createPageMetadata } from "@/lib/seo"
 import ServicesClient from "./ServicesClient"
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "服务范围 | 中亚铁路班列、跨境公路与多式联运",
   description:
     "丰吉国际提供中国至中亚、俄罗斯、欧洲部分线路的铁路班列、跨境公路、多式联运、清关协同、仓储分拨和目的国派送服务。",
-  alternates: {
-    canonical: "/services",
-  },
-  openGraph: {
-    title: "服务范围 | 丰吉国际",
-    description: "中亚铁路班列、跨境公路、多式联运、清关协同和目的国派送。",
-    url: "/services",
-  },
-}
+  path: "/services",
+  image: "/service-1.jpg",
+})
 
 export default function ServicesPage() {
   const serviceJsonLd = {
