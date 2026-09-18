@@ -1,4 +1,4 @@
-name: Publish daily Central Asia logistics guide
+name: Publish scheduled Central Asia logistics guide
 
 on:
   schedule:
@@ -11,6 +11,11 @@ on:
         required: false
         type: boolean
         default: false
+      force_publish:
+        description: Publish now even when the random interval has not elapsed
+        required: false
+        type: boolean
+        default: false
 
 concurrency:
   group: daily-central-asia-logistics-guide
@@ -18,7 +23,6 @@ concurrency:
 
 permissions:
   contents: write
-  models: read
 
 jobs:
   publish-guide:
@@ -45,14 +49,18 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Generate daily guide
+      - name: Test publisher rules
+        run: pnpm test:publisher
+
+      - name: Generate scheduled guide
+        id: generate
         run: pnpm publish:daily
         env:
-          GITHUB_MODELS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DAILY_POST_DRY_RUN: ${{ inputs.dry_run && '1' || '0' }}
+          DAILY_POST_FORCE: ${{ inputs.force_publish && '1' || '0' }}
 
       - name: Validate production build
-        if: ${{ !inputs.dry_run }}
+        if: ${{ steps.generate.outputs.created == 'true' }}
         run: pnpm check
         env:
           JWT_SECRET: daily-publish-secret-value-at-least-32-characters
@@ -64,16 +72,16 @@ jobs:
           CONTACT_EMAIL: ci@example.com
 
       - name: Commit published guide
-        if: ${{ !inputs.dry_run }}
+        if: ${{ steps.generate.outputs.created == 'true' }}
         run: |
-          if [ -z "$(git status --porcelain -- content/posts)" ]; then
-            echo "A guide for today already exists; nothing to publish."
+          if [ -z "$(git status --porcelain -- content/posts content/.daily-logistics-state.json)" ]; then
+            echo "No guide was created; nothing to publish."
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add content/posts
-          git commit -m "content: publish daily Central Asia logistics guide"
+          git add content/posts content/.daily-logistics-state.json
+          git commit -m "content: publish scheduled Central Asia logistics guide"
           git pull --rebase origin main
           git push origin main
