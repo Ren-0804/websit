@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "lastPublishedOn": "2026-09-21",
-  "nextPublishOn": "2026-09-22",
-  "intervalDays": 1,
-  "lastTopicKey": "editorial-v2:transit-guarantee-close"
+  "lastPublishedOn": "2026-09-23",
+  "nextPublishOn": "2026-09-25",
+  "intervalDays": 2,
+  "lastTopicKey": "editorial-v2:shipment-retrospective"
 }
