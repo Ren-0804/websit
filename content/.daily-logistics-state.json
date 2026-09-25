@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "lastPublishedOn": "2026-09-23",
-  "nextPublishOn": "2026-09-25",
-  "intervalDays": 2,
-  "lastTopicKey": "editorial-v2:shipment-retrospective"
+  "lastPublishedOn": "2026-09-25",
+  "nextPublishOn": "2026-09-28",
+  "intervalDays": 3,
+  "lastTopicKey": "editorial-v2:single-cargo-record"
 }
