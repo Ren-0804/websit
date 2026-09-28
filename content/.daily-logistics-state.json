@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "lastPublishedOn": "2026-09-25",
-  "nextPublishOn": "2026-09-28",
+  "lastPublishedOn": "2026-09-28",
+  "nextPublishOn": "2026-10-01",
   "intervalDays": 3,
-  "lastTopicKey": "editorial-v2:single-cargo-record"
+  "lastTopicKey": "editorial-v2:border-event-log"
 }
