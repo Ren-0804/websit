@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "lastPublishedOn": "2026-09-28",
-  "nextPublishOn": "2026-10-01",
-  "intervalDays": 3,
-  "lastTopicKey": "editorial-v2:border-event-log"
+  "lastPublishedOn": "2026-10-01",
+  "nextPublishOn": "2026-10-03",
+  "intervalDays": 2,
+  "lastTopicKey": "editorial-v2:road-responsibility"
 }
