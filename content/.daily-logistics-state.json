@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "lastPublishedOn": "2026-10-03",
-  "nextPublishOn": "2026-10-04",
+  "lastPublishedOn": "2026-10-04",
+  "nextPublishOn": "2026-10-05",
   "intervalDays": 1,
-  "lastTopicKey": "editorial-v2:destination-readiness"
+  "lastTopicKey": "editorial-v2:en-route-change"
 }
