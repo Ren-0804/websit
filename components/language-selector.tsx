@@ -1,82 +1,94 @@
-"use client"
+"use client";
 
-import { createContext, useContext, useEffect, useMemo, useState } from "react"
-import { Globe2 } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { Globe2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 import {
   defaultLanguageCode,
   getLanguage,
   languages,
   type Language,
   type LanguageCode,
-} from "@/lib/i18n"
+} from "@/lib/i18n";
 
-export { languages, type LanguageCode }
+export { languages, type LanguageCode };
 
 type LanguageContextType = {
-  currentLanguage: Language
-  setLanguage: (code: LanguageCode) => void
-}
+  currentLanguage: Language;
+  setLanguage: (code: LanguageCode) => void;
+};
 
-const defaultLanguage = getLanguage(defaultLanguageCode)
+const defaultLanguage = getLanguage(defaultLanguageCode);
 
 const LanguageContext = createContext<LanguageContextType>({
   currentLanguage: defaultLanguage,
   setLanguage: () => {},
-})
+});
 
 function detectInitialLanguage(): Language {
-  const saved = localStorage.getItem("language")
-  return getLanguage(saved || defaultLanguageCode)
+  try {
+    return getLanguage(localStorage.getItem("language") || defaultLanguageCode);
+  } catch {
+    return defaultLanguage;
+  }
 }
 
 function htmlLang(code: LanguageCode) {
-  return code === "zh" ? "zh-CN" : "en"
+  return code === "zh" ? "zh-CN" : "en";
 }
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [currentLanguage, setCurrentLanguage] = useState<Language>(defaultLanguage)
-  const [isHydrated, setIsHydrated] = useState(false)
+  const [currentLanguage, setCurrentLanguage] =
+    useState<Language>(defaultLanguage);
+  const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
-    setCurrentLanguage(detectInitialLanguage())
-    setIsHydrated(true)
-  }, [])
+    setCurrentLanguage(detectInitialLanguage());
+    setIsHydrated(true);
+  }, []);
 
   useEffect(() => {
-    document.documentElement.lang = htmlLang(currentLanguage.code)
-    document.documentElement.dir = "ltr"
-  }, [currentLanguage.code])
+    document.documentElement.lang = htmlLang(currentLanguage.code);
+    document.documentElement.dir = "ltr";
+  }, [currentLanguage.code]);
 
   const value = useMemo<LanguageContextType>(
     () => ({
       currentLanguage: isHydrated ? currentLanguage : defaultLanguage,
       setLanguage: (code) => {
-        const language = getLanguage(code)
-        setCurrentLanguage(language)
-        localStorage.setItem("language", language.code)
-        document.documentElement.lang = htmlLang(language.code)
-        document.documentElement.dir = "ltr"
+        const language = getLanguage(code);
+        setCurrentLanguage(language);
+        try {
+          localStorage.setItem("language", language.code);
+        } catch {
+          /* Continue in this tab when storage is unavailable. */
+        }
+        document.documentElement.lang = htmlLang(language.code);
+        document.documentElement.dir = "ltr";
       },
     }),
     [currentLanguage, isHydrated],
-  )
+  );
 
-  return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>
+  return (
+    <LanguageContext.Provider value={value}>
+      {children}
+    </LanguageContext.Provider>
+  );
 }
 
 export function useLanguage() {
-  return useContext(LanguageContext)
+  return useContext(LanguageContext);
 }
 
 export function LanguageSelector({ className }: { className?: string }) {
-  const { currentLanguage, setLanguage } = useLanguage()
+  const { currentLanguage, setLanguage } = useLanguage();
 
   return (
     <DropdownMenu>
@@ -95,7 +107,11 @@ export function LanguageSelector({ className }: { className?: string }) {
           <DropdownMenuItem
             key={language.code}
             onClick={() => setLanguage(language.code)}
-            className={currentLanguage.code === language.code ? "bg-accent text-accent-foreground" : ""}
+            className={
+              currentLanguage.code === language.code
+                ? "bg-accent text-accent-foreground"
+                : ""
+            }
           >
             <span className="mr-3 w-6 text-xs font-semibold text-muted-foreground">
               {language.shortName}
@@ -105,11 +121,11 @@ export function LanguageSelector({ className }: { className?: string }) {
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }
 
 export function LanguageSelectorCompact({ className }: { className?: string }) {
-  const { currentLanguage, setLanguage } = useLanguage()
+  const { currentLanguage, setLanguage } = useLanguage();
 
   return (
     <DropdownMenu>
@@ -127,7 +143,11 @@ export function LanguageSelectorCompact({ className }: { className?: string }) {
           <DropdownMenuItem
             key={language.code}
             onClick={() => setLanguage(language.code)}
-            className={currentLanguage.code === language.code ? "bg-accent text-accent-foreground" : ""}
+            className={
+              currentLanguage.code === language.code
+                ? "bg-accent text-accent-foreground"
+                : ""
+            }
           >
             <span className="mr-3 w-6 text-xs font-semibold text-muted-foreground">
               {language.shortName}
@@ -137,5 +157,5 @@ export function LanguageSelectorCompact({ className }: { className?: string }) {
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }

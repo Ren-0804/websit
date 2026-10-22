@@ -1,104 +1,116 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { Loader2, ShieldCheck, ArrowRight } from "lucide-react"
+import { useState } from "react";
+import { ArrowRight, Loader2, ShieldCheck } from "lucide-react";
+import { useLanguage } from "@/components/language-selector";
 
 export default function LoginPage() {
-    const [code, setCode] = useState("")
-    const [error, setError] = useState("")
-    const [isLoading, setIsLoading] = useState(false)
-    const router = useRouter()
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
-        if (code.length !== 6) {
-            setError("Please enter a 6-digit code")
-            return
-        }
-
-        setIsLoading(true)
-        setError("")
-
-        try {
-            const response = await fetch("/api/auth/verify", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ code }),
-            })
-
-            const data = await response.json()
-
-            if (response.ok) {
-                // Use a hard redirect to ensure cookies are sent to the middleware properly
-                // and avoid aggressive Next.js App Router caching of the previous 401 state.
-                window.location.href = "/admin/publish"
-            } else {
-                setError(data.error || "Invalid authentication code")
-                setCode("")
-            }
-        } catch (err) {
-            setError("An error occurred. Please try again.")
-        } finally {
-            setIsLoading(false)
-        }
+  const { currentLanguage } = useLanguage();
+  const zh = currentLanguage.code === "zh";
+  const [code, setCode] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  async function submit(event: React.FormEvent) {
+    event.preventDefault();
+    if (!/^\d{6}$/.test(code) || loading) return;
+    setLoading(true);
+    setError("");
+    try {
+      const response = await fetch("/api/auth/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code }),
+      });
+      const data = await response.json();
+      if (response.ok) window.location.href = "/admin/publish";
+      else {
+        setError(
+          data.error ||
+            (zh
+              ? "验证码无效，请使用最新验证码重试。"
+              : "Invalid code. Try the latest code."),
+        );
+        setCode("");
+      }
+    } catch {
+      setError(
+        zh
+          ? "暂时无法连接，请稍后重试。"
+          : "Unable to connect. Please try again.",
+      );
+    } finally {
+      setLoading(false);
     }
-
-    return (
-        <div className="min-h-screen bg-[#0f1c2d] flex items-center justify-center p-6 relative overflow-hidden">
-            {/* Background Graphic */}
-            <div className="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none">
-                <svg viewBox="0 0 100 100" className="w-full h-full" preserveAspectRatio="none">
-                    <path d="M0,100 L100,0 L100,100 Z" fill="#e3000f" />
-                </svg>
-            </div>
-
-            <div className="bg-white p-10 md:p-14 rounded-md shadow-2xl max-w-md w-full relative z-10 border-t-[6px] border-[#e3000f]">
-                <div className="text-center mb-10">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-[#f4f4f4] rounded-sm mb-6">
-                        <ShieldCheck className="h-8 w-8 text-[#0f1c2d]" />
-                    </div>
-                    <h1 className="text-3xl font-black text-[#0f1c2d] mb-2 tracking-tight">Admin Gateway</h1>
-                    <p className="text-gray-500 font-medium">Google Authenticator verification required</p>
-                </div>
-
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div>
-                        <label htmlFor="code" className="block text-sm font-bold text-[#0f1c2d] mb-3 uppercase tracking-wider text-center">
-                            Enter 6-Digit Code
-                        </label>
-                        <input
-                            type="text"
-                            id="code"
-                            maxLength={6}
-                            value={code}
-                            onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
-                            className="w-full px-4 py-4 rounded-sm border-2 border-gray-200 focus:border-[#e3000f] focus:outline-none transition-colors bg-[#f4f4f4] text-center text-3xl font-mono tracking-[0.5em] font-black text-[#0f1c2d]"
-                            placeholder="000000"
-                            autoComplete="off"
-                            autoFocus
-                        />
-                        {error && <p className="mt-3 text-[#e3000f] text-sm font-bold text-center animate-fade-in-up">{error}</p>}
-                    </div>
-
-                    <button
-                        type="submit"
-                        disabled={isLoading || code.length !== 6}
-                        className="w-full bg-[#0f1c2d] hover:bg-[#e3000f] text-white px-8 py-5 text-lg font-bold rounded-sm transition-all duration-300 shadow-md flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed group"
-                    >
-                        {isLoading ? (
-                            <Loader2 className="h-6 w-6 animate-spin" />
-                        ) : (
-                            <>
-                                Verify & Login
-                                <ArrowRight className="ml-2 h-5 w-5 transform group-hover:translate-x-1 transition-transform" />
-                            </>
-                        )}
-                    </button>
-                </form>
-            </div>
-        </div>
-    )
+  }
+  return (
+    <main
+      id="main-content"
+      className="site-main flex min-h-screen items-center justify-center px-5 py-28"
+    >
+      <section className="w-full max-w-md rounded-xl border bg-white p-7 md:p-10">
+        <ShieldCheck className="h-8 w-8 text-primary" aria-hidden="true" />
+        <h1 className="mt-5 text-3xl">
+          {zh ? "内容管理登录" : "Content management"}
+        </h1>
+        <p className="mt-4 text-sm">
+          {zh
+            ? "请输入已绑定的身份验证器中当前显示的六位验证码。"
+            : "Enter the current six-digit code from your linked authenticator."}
+        </p>
+        <form onSubmit={submit} className="mt-8 space-y-5" aria-busy={loading}>
+          <div>
+            <label htmlFor="code" className="field-label">
+              {zh ? "六位验证码" : "Six-digit code"}
+            </label>
+            <input
+              id="code"
+              name="code"
+              type="text"
+              inputMode="numeric"
+              autoComplete="one-time-code"
+              pattern="[0-9]{6}"
+              maxLength={6}
+              value={code}
+              onChange={(event) => {
+                setCode(event.target.value.replace(/\D/g, ""));
+                setError("");
+              }}
+              className="field text-center text-3xl font-semibold tabular-nums tracking-[0.35em]"
+              placeholder="000000"
+              aria-describedby={error ? "login-error" : undefined}
+              aria-invalid={!!error}
+              required
+            />
+          </div>
+          {error && (
+            <p
+              id="login-error"
+              role="alert"
+              className="text-sm text-destructive"
+            >
+              {error}
+            </p>
+          )}
+          <button
+            className="button-link w-full"
+            type="submit"
+            disabled={loading || code.length !== 6}
+          >
+            {loading ? (
+              <Loader2 className="animate-spin" aria-hidden="true" />
+            ) : (
+              <ArrowRight aria-hidden="true" />
+            )}
+            {loading
+              ? zh
+                ? "正在验证"
+                : "Verifying"
+              : zh
+                ? "验证并登录"
+                : "Verify and sign in"}
+          </button>
+        </form>
+      </section>
+    </main>
+  );
 }

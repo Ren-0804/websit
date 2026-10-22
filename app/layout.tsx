@@ -1,29 +1,35 @@
-import type React from "react"
-import type { Metadata, Viewport } from "next"
-import { IBM_Plex_Sans, Noto_Sans_SC } from "next/font/google"
-import Script from "next/script"
-import { Analytics } from "@vercel/analytics/react"
-import { SpeedInsights } from "@vercel/speed-insights/next"
-import Navbar from "@/components/navbar"
-import Footer from "@/components/footer"
-import { LanguageProvider } from "@/components/language-selector"
-import { Toaster } from "@/components/ui/toaster"
-import { companyName, contact, englishName, primaryBrand, siteUrl } from "@/lib/i18n"
-import "./globals.css"
+import type React from "react";
+import type { Metadata, Viewport } from "next";
+import { Barlow, Noto_Sans_SC } from "next/font/google";
+import Script from "next/script";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
+import { LanguageProvider } from "@/components/language-selector";
+import { Toaster } from "@/components/ui/toaster";
+import {
+  companyName,
+  contact,
+  englishName,
+  primaryBrand,
+  siteUrl,
+} from "@/lib/i18n";
+import "./globals.css";
 
-const plex = IBM_Plex_Sans({
-  subsets: ["latin", "cyrillic"],
+const display = Barlow({
+  subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   display: "swap",
-  variable: "--font-plex",
-})
+  variable: "--font-display",
+});
 
 const notoSansSc = Noto_Sans_SC({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   display: "swap",
   variable: "--font-noto-sc",
-})
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -84,22 +90,24 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-}
+};
 
 export const viewport: Viewport = {
-  themeColor: "#101820",
+  themeColor: "#1a4bbf",
   width: "device-width",
   initialScale: 1,
-}
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="zh-CN" suppressHydrationWarning>
-      <body className={`${plex.variable} ${notoSansSc.variable} antialiased`}>
+      <body
+        className={`${display.variable} ${notoSansSc.variable} antialiased`}
+      >
         <LanguageProvider>
           <script
             type="application/ld+json"
@@ -154,7 +162,10 @@ export default function RootLayout({
           <Analytics />
           {process.env.NEXT_PUBLIC_GA_ID && (
             <>
-              <Script src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`} strategy="afterInteractive" />
+              <Script
+                src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+                strategy="afterInteractive"
+              />
               <Script id="ga-init" strategy="afterInteractive">
                 {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${process.env.NEXT_PUBLIC_GA_ID}');`}
               </Script>
@@ -164,5 +175,5 @@ export default function RootLayout({
         </LanguageProvider>
       </body>
     </html>
-  )
+  );
 }

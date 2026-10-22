@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-21T10:58:36Z",
+  "title": "Design System: 丰吉国际",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "品牌蓝"
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "纸白"
+      },
+      "secondary": {
+        "role": "neutral",
+        "displayName": "浅冰蓝"
+      },
+      "navy": {
+        "role": "neutral",
+        "displayName": "深海军蓝"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "首页主张",
+        "purpose": "宽幅物流摄影中的主要标题"
+      },
+      "headline": {
+        "displayName": "通用页标题",
+        "purpose": "服务、地区与联系页的一级标题"
+      },
+      "body": {
+        "displayName": "正文",
+        "purpose": "中英文信息查阅"
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "link-arrow",
+        "value": "transform 180ms ease-out",
+        "purpose": "链接箭头位移3px"
+      },
+      {
+        "name": "hero-entry",
+        "value": "600ms cubic-bezier(.16,1,.3,1)",
+        "purpose": "一次整体进入；reduced-motion下关闭"
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
+      },
+      {
+        "name": "2xl",
+        "value": "1440px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary action",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "主要行动，含禁用、悬停与键盘焦点。",
+      "html": "<button class=\"ds-primary\">继续填写货物信息</button>",
+      "css": ".ds-primary{background:hsl(var(--primary));color:hsl(var(--primary-foreground));border:0;border-radius:10px;min-height:48px;padding:12px 24px;font:600 14px/1.5 sans-serif;cursor:pointer;transition:background 150ms}.ds-primary:hover{background:#153974}.ds-primary:focus-visible{outline:2px solid hsl(var(--ring));outline-offset:4px}.ds-primary:disabled{opacity:.5;cursor:not-allowed}"
+    },
+    {
+      "name": "Secondary action",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "白底次要行动。",
+      "html": "<button class=\"ds-secondary\">查看服务范围</button>",
+      "css": ".ds-secondary{background:white;color:hsl(var(--primary));border:1px solid hsl(var(--border));border-radius:10px;min-height:48px;padding:12px 24px;font:600 14px/1.5 sans-serif;cursor:pointer}.ds-secondary:hover{background:hsl(var(--secondary))}.ds-secondary:focus-visible{outline:2px solid hsl(var(--ring));outline-offset:4px}"
+    },
+    {
+      "name": "Labeled field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "白底字段，保持可见标签与16px正文。",
+      "html": "<label class=\"ds-label\">目的地<input class=\"ds-field\" placeholder=\"例如：塔什干\"></label>",
+      "css": ".ds-label{display:block;color:hsl(var(--foreground));font:600 14px/1.5 sans-serif}.ds-field{display:block;box-sizing:border-box;width:100%;margin-top:8px;padding:12px 16px;border:1px solid hsl(var(--input));border-radius:10px;background:white;color:hsl(var(--foreground));font:400 16px/1.5 sans-serif;caret-color:hsl(var(--primary))}.ds-field::placeholder{color:#60728c;opacity:1}.ds-field:focus-visible{border-color:hsl(var(--primary));outline:2px solid hsl(var(--ring));outline-offset:4px}"
+    },
+    {
+      "name": "Primary navigation",
+      "kind": "nav",
+      "description": "白色导航以文字和底边线标示选中态。",
+      "html": "<nav class=\"ds-nav\"><a href=\"#\" aria-current=\"page\">服务范围</a><a href=\"#\">线路区域</a><a href=\"#\">业务笔记</a></nav>",
+      "css": ".ds-nav{display:flex;gap:24px;flex-wrap:wrap;background:white;border-bottom:1px solid hsl(var(--border));font:500 14px/1.5 sans-serif}.ds-nav a{display:block;padding:20px 0;color:hsl(var(--muted-foreground));text-decoration:none;border-bottom:2px solid transparent}.ds-nav a[aria-current]{color:hsl(var(--primary));border-color:hsl(var(--primary))}.ds-nav a:hover{color:hsl(var(--primary))}.ds-nav a:focus-visible{outline:2px solid hsl(var(--ring));outline-offset:4px}"
+    },
+    {
+      "name": "Region filter",
+      "kind": "chip",
+      "refersTo": "filter-active",
+      "description": "目的地国家筛选，选中态通过文字语义和填色共同表达。",
+      "html": "<button class=\"ds-filter\" aria-pressed=\"true\">全部地区</button><button class=\"ds-filter\" aria-pressed=\"false\">哈萨克斯坦</button>",
+      "css": ".ds-filter{margin:4px;border:1px solid hsl(var(--border));background:white;color:hsl(var(--foreground));border-radius:10px;min-height:44px;padding:8px 16px;font:500 14px/1.5 sans-serif;cursor:pointer}.ds-filter[aria-pressed=true]{background:hsl(var(--primary));color:white;border-color:transparent}.ds-filter:hover{filter:brightness(.96)}.ds-filter:focus-visible{outline:2px solid hsl(var(--ring));outline-offset:4px}"
+    },
+    {
+      "name": "Information panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "承载完整表单或正文，不为每一行资料套卡片。",
+      "html": "<section class=\"ds-panel\"><h3>填写基础货物信息</h3><p>起运地、目的地、品名、重量体积和包装方式。</p></section>",
+      "css": ".ds-panel{padding:24px;border:1px solid hsl(var(--border));border-radius:12px;background:white;color:hsl(var(--foreground));font-family:sans-serif}.ds-panel h3{font-size:20px;line-height:1.4;margin:0 0 16px}.ds-panel p{font-size:14px;line-height:1.85;color:hsl(var(--muted-foreground));margin:0}"
+    }
+  ],
+  "narrative": {
+    "northStar": "航运企业识别手册",
+    "overview": "用户于 2026-10-21 选定品牌蓝配物流大图、稳重熟悉的企业官网。系统以清晰的双语层级、宽幅实景、水平目录与轻圆角字段组织内容。公开页面兼顾询价与资料查阅；后台使用同一视觉语言，减少装饰并保留操作密度。",
+    "keyCharacteristics": [
+      "品牌蓝、纸白、浅冰蓝与深海军蓝。",
+      "物流摄影用于展示场景，不能作为公司自有设施、运力或客户案例的证明。",
+      "导航、服务目录、表单与阅读页面共享排版和交互规则。"
+    ],
+    "rules": [
+      "首页中文标题按原文逗号分段，字号 clamp(1.5rem, 7vw, 3.9rem)，保留完整语义。",
+      "内页标题区使用 32px/40px 上下留白，紧随的首个内容区使用 32–48px。",
+      "手机联系页优先显示电话和邮件快捷入口及货物表单，完整联系方式随后展示。",
+      "完整表单用 * 标示必填并解释含义；手机文章目录在正文前折叠展示。"
+    ],
+    "dos": [
+      "Do 保留真实服务、目的地、公司信息及现有品牌标志。",
+      "Do 为官网、资料和后台选择各自适合的内容密度。",
+      "Do 用语义结构、文字与可见状态共同解释交互。"
+    ],
+    "donts": [
+      "Don't 把物流图片包装为未经证实的公司设施或运输案例。",
+      "Don't 用新数据、时效、运价、客户或资质填补视觉空间。",
+      "Don't 混用旧米白红色风格、渐变按钮或装饰性网格。"
+    ]
+  }
+}

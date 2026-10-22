@@ -1,99 +1,86 @@
-"use client"
+"use client";
 
-import { ArrowRight, Check, Route, Train, Warehouse } from "lucide-react"
-import Link from "next/link"
-import { useLanguage } from "@/components/language-selector"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { Button } from "@/components/ui/button"
-import { getCopy, type ServiceSlug } from "@/lib/i18n"
-
-const iconMap = {
-  train: Train,
-  route: Route,
-  warehouse: Warehouse,
-}
+import { ArrowRight, Check } from "lucide-react";
+import Link from "next/link";
+import { useLanguage } from "@/components/language-selector";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { PageIntro, InquiryCallout } from "@/components/site-sections";
+import { getCopy, type ServiceSlug } from "@/lib/i18n";
 
 export default function ServiceDetailClient({ slug }: { slug: ServiceSlug }) {
-  const { currentLanguage } = useLanguage()
-  const t = getCopy(currentLanguage.code)
-  const service = t.services.find((item) => item.slug === slug)
-
-  if (!service) return null
-
-  const Icon = iconMap[service.icon]
-
+  const { currentLanguage } = useLanguage();
+  const t = getCopy(currentLanguage.code);
+  const service = t.services.find((item) => item.slug === slug);
+  if (!service) return null;
   return (
-    <main className="min-h-screen bg-[#f7f2e8] pt-20 text-[#101820]">
-      <section className="border-b border-[#d8d1c5] bg-[#101820] py-20 text-white md:py-24">
-        <div className="container">
-          <div className="max-w-4xl">
-            <div className="site-eyebrow text-[#e05a62]">{t.nav.services}</div>
-            <h1 className="mt-5">{service.title}</h1>
-            <p className="mt-6 max-w-3xl text-lg leading-8 text-white/70">{service.summary}</p>
-            <Button asChild className="mt-9 h-12 rounded-none bg-[#b3262f] px-6 font-semibold text-white hover:bg-[#941f27]">
-              <Link href="/contact">
-                {t.cta.route}
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
+    <main id="main-content" className="site-main">
+      <PageIntro
+        title={service.title}
+        description={service.summary}
+        trail={[
+          { label: t.nav.services, href: "/services" },
+          { label: service.title },
+        ]}
+      >
+        <Link href="/contact" className="text-link mt-5">
+          {t.cta.route}
+          <ArrowRight aria-hidden="true" />
+        </Link>
+      </PageIntro>
       <section className="site-section">
-        <div className="container">
-          <div className="grid gap-10 lg:grid-cols-[0.74fr_1.26fr]">
-            <div className="site-panel p-7">
-              <Icon className="h-8 w-8 text-[#b3262f]" />
-              <h2 className="mt-6 text-3xl">{t.detail.overview}</h2>
-              <p className="mt-4">{service.short}</p>
-            </div>
-            <div className="grid gap-px overflow-hidden border border-[#d8d1c5] bg-[#d8d1c5] md:grid-cols-3">
-              {service.bullets.map((bullet) => (
-                <div key={bullet} className="bg-[#fbfaf7] p-5">
-                  <Check className="h-5 w-5 text-[#b3262f]" />
-                  <div className="mt-5 font-semibold text-[#101820]">{bullet}</div>
-                </div>
-              ))}
-            </div>
+        <div className="container grid gap-10 lg:grid-cols-[0.65fr_1.35fr] lg:gap-20">
+          <div>
+            <h2>{t.detail.execution}</h2>
+            <p className="mt-5">{service.short}</p>
           </div>
+          <ul className="divide-y border-y">
+            {service.bullets.map((point) => (
+              <li key={point} className="flex gap-4 py-6 text-lg font-medium">
+                <Check
+                  className="mt-1 h-5 w-5 flex-none text-primary"
+                  aria-hidden="true"
+                />
+                {point}
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
-
-      <section className="site-section route-grid border-y border-[#d8d1c5] bg-[#efe8dc]">
-        <div className="container">
-          <div className="grid gap-10 lg:grid-cols-2">
-            <div>
-              <div className="site-eyebrow">{t.detail.scenarios}</div>
-              <h2 className="mt-4">{t.detail.scenarios}</h2>
-            </div>
-            <div className="grid gap-3">
-              {service.scenarios.map((scenario) => (
-                <div key={scenario} className="border border-[#d8d1c5] bg-[#fbfaf7] p-4 font-semibold text-[#101820]">
-                  {scenario}
-                </div>
-              ))}
-            </div>
-          </div>
+      <section className="site-section bg-white">
+        <div className="container grid gap-10 lg:grid-cols-[0.65fr_1.35fr] lg:gap-20">
+          <h2>{t.detail.scenarios}</h2>
+          <ul className="grid gap-x-8 sm:grid-cols-2">
+            {service.scenarios.map((item) => (
+              <li key={item} className="border-t py-5 font-medium">
+                {item}
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
-
       <section className="site-section">
-        <div className="container max-w-4xl">
-          <div className="site-eyebrow">{t.detail.faq}</div>
-          <h2 className="mt-4">{t.detail.faq}</h2>
-          <Accordion type="single" collapsible className="mt-8 border-t border-[#d8d1c5]">
+        <div className="container grid gap-10 lg:grid-cols-[0.65fr_1.35fr] lg:gap-20">
+          <h2>{t.detail.faq}</h2>
+          <Accordion type="single" collapsible className="border-t">
             {service.faqs.map((faq, index) => (
-              <AccordionItem key={faq.q} value={`item-${index}`} className="border-[#d8d1c5]">
-                <AccordionTrigger className="text-left text-base font-semibold text-[#101820] hover:no-underline">
+              <AccordionItem key={faq.q} value={"faq-" + index}>
+                <AccordionTrigger className="py-6 text-left text-base font-medium hover:text-primary hover:no-underline">
                   {faq.q}
                 </AccordionTrigger>
-                <AccordionContent className="text-[#5b6266]">{faq.a}</AccordionContent>
+                <AccordionContent className="max-w-2xl pb-6 text-base leading-8 text-muted-foreground">
+                  {faq.a}
+                </AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
         </div>
       </section>
+      <InquiryCallout />
     </main>
-  )
+  );
 }

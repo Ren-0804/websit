@@ -1,26 +1,24 @@
-"use client"
+"use client";
 
-import { useMemo, useState } from "react"
-import Link from "next/link"
-import { ArrowLeft, Eye, Loader2, Save, Send } from "lucide-react"
-import ReactMarkdown from "react-markdown"
-import remarkGfm from "remark-gfm"
-import { Button } from "@/components/ui/button"
-import { toast } from "@/components/ui/use-toast"
+import { useMemo, useState } from "react";
+import Link from "next/link";
+import { ArrowLeft, Eye, Loader2, LogOut, Save, Send } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { toast } from "@/components/ui/use-toast";
+import { useLanguage } from "@/components/language-selector";
 
-type PostStatus = "published" | "draft"
-
+type PostStatus = "published" | "draft";
 type PublishForm = {
-  title: string
-  slug: string
-  category: string
-  summary: string
-  coverImage: string
-  seoTitle: string
-  seoDescription: string
-  content: string
-}
-
+  title: string;
+  slug: string;
+  category: string;
+  summary: string;
+  coverImage: string;
+  seoTitle: string;
+  seoDescription: string;
+  content: string;
+};
 const initialForm: PublishForm = {
   title: "",
   slug: "",
@@ -30,135 +28,298 @@ const initialForm: PublishForm = {
   seoTitle: "",
   seoDescription: "",
   content: "",
-}
-
+};
 function createSlug(value: string) {
   return value
     .toLowerCase()
     .trim()
     .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)+/g, "")
+    .replace(/(^-|-$)+/g, "");
 }
 
-const fieldClass = "mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-slate-400 focus:bg-white"
-
 export default function PublishPage() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [formData, setFormData] = useState<PublishForm>(initialForm)
-  const [showPreview, setShowPreview] = useState(true)
-
+  const { currentLanguage } = useLanguage();
+  const zh = currentLanguage.code === "zh";
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState<PublishForm>(initialForm);
+  const [preview, setPreview] = useState(true);
+  const [loggingOut, setLoggingOut] = useState(false);
   const effectiveSlug = useMemo(
-    () => createSlug(formData.slug || formData.title),
-    [formData.slug, formData.title],
-  )
-
-  function updateField(name: keyof PublishForm, value: string) {
-    setFormData((current) => ({
-      ...current,
-      [name]: value,
-      slug: name === "title" && !current.slug ? createSlug(value) : current.slug,
-    }))
+    () => createSlug(data.slug || data.title),
+    [data.slug, data.title],
+  );
+  function update(name: keyof PublishForm, value: string) {
+    setData((current) => {
+      const next = { ...current, [name]: value };
+      if (name === "title" && !current.slug) next.slug = createSlug(value);
+      return next;
+    });
   }
-
   async function submit(status: PostStatus) {
-    if (!formData.title.trim() || !formData.content.trim()) {
-      toast({ title: "内容不完整", description: "标题和正文是必填项。", variant: "destructive" })
-      return
+    if (!data.title.trim() || !data.content.trim()) {
+      toast({
+        title: zh ? "内容不完整" : "Missing content",
+        description: zh
+          ? "标题和正文是必填项。"
+          : "Title and body are required.",
+        variant: "destructive",
+      });
+      return;
     }
-
-    setIsLoading(true)
+    setLoading(true);
     try {
       const response = await fetch("/api/posts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, slug: effectiveSlug, status }),
-      })
-      const result = await response.json()
-      if (!response.ok) throw new Error(result.error || "保存失败")
-
+        body: JSON.stringify({ ...data, slug: effectiveSlug, status }),
+      });
+      const result = await response.json();
+      if (!response.ok)
+        throw new Error(result.error || (zh ? "保存失败" : "Save failed"));
       toast({
-        title: status === "draft" ? "草稿已提交" : "文章已提交发布",
+        title:
+          status === "draft"
+            ? zh
+              ? "草稿已提交"
+              : "Draft submitted"
+            : zh
+              ? "文章已提交发布"
+              : "Article submitted",
         description:
           status === "draft"
-            ? "草稿已写入内容仓库。"
-            : "内容已经提交到 Git 仓库，部署完成后会出现在公开站点。",
-      })
-      setFormData(initialForm)
+            ? zh
+              ? "草稿已写入内容仓库。"
+              : "The draft was saved to the content repository."
+            : zh
+              ? "内容已经提交到 Git 仓库，部署完成后会出现在公开站点。"
+              : "Content was committed to Git and will appear after deployment.",
+      });
+      setData(initialForm);
     } catch (error) {
       toast({
-        title: "保存失败",
-        description: error instanceof Error ? error.message : "请稍后再试。",
+        title: zh ? "保存失败" : "Save failed",
+        description:
+          error instanceof Error
+            ? error.message
+            : zh
+              ? "请稍后再试。"
+              : "Please try again.",
         variant: "destructive",
-      })
+      });
     } finally {
-      setIsLoading(false)
+      setLoading(false);
     }
   }
-
+  async function logout() {
+    setLoggingOut(true);
+    try {
+      const response = await fetch("/api/auth/logout", { method: "POST" });
+      if (!response.ok) throw new Error();
+      window.location.href = "/admin/login";
+    } catch {
+      setLoggingOut(false);
+      toast({
+        title: zh ? "退出失败，请重试" : "Unable to sign out. Try again.",
+        variant: "destructive",
+      });
+    }
+  }
+  function field(
+    name: keyof PublishForm,
+    label: string,
+    placeholder?: string,
+    rows?: number,
+  ) {
+    return (
+      <label className="block">
+        <span className="field-label">{label}</span>
+        {rows ? (
+          <textarea
+            className="field"
+            value={data[name]}
+            onChange={(event) => update(name, event.target.value)}
+            rows={rows}
+            placeholder={placeholder}
+          />
+        ) : (
+          <input
+            className="field"
+            value={data[name]}
+            onChange={(event) => update(name, event.target.value)}
+            placeholder={placeholder}
+          />
+        )}
+      </label>
+    );
+  }
   return (
-    <main className="min-h-screen bg-slate-100 pt-24">
-      <section className="border-b border-slate-200 bg-white">
-        <div className="container py-8">
-          <Link href="/news" className="inline-flex items-center text-sm font-semibold text-slate-500 hover:text-slate-950">
-            <ArrowLeft className="mr-2 h-4 w-4" />返回业务笔记
+    <main id="main-content" className="site-main">
+      <header className="border-b bg-white py-8">
+        <div className="container">
+          <Link href="/news" className="text-link text-sm">
+            <ArrowLeft aria-hidden="true" />
+            {zh ? "返回业务笔记" : "Back to notes"}
           </Link>
-          <div className="mt-6 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div className="mt-4 flex flex-col justify-between gap-5 md:flex-row md:items-end">
             <div>
-              <div className="text-sm font-semibold uppercase tracking-[0.2em] text-[#c91f28]">Admin CMS</div>
-              <h1 className="mt-3 text-4xl font-semibold text-slate-950">发布文章</h1>
-              <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600">
-                生产环境会把 Markdown 提交到 Git 仓库，再由 Vercel 完成部署。
+              <h1 className="text-3xl">
+                {zh ? "发布文章" : "Publish an article"}
+              </h1>
+              <p className="mt-3 max-w-2xl text-sm">
+                {zh
+                  ? "生产环境会把 Markdown 提交到 Git 仓库，再由 Vercel 完成部署。"
+                  : "Markdown is committed to Git; the article becomes public after Vercel deploys it."}
               </p>
             </div>
-            <Button type="button" variant="outline" onClick={() => setShowPreview((value) => !value)}>
-              <Eye className="h-4 w-4" />{showPreview ? "收起预览" : "打开预览"}
-            </Button>
+            <div className="flex flex-wrap gap-3">
+              <button
+                className="button-link button-outline min-h-10 px-4"
+                type="button"
+                onClick={() => setPreview((value) => !value)}
+                aria-expanded={preview}
+                aria-controls="article-preview"
+              >
+                <Eye aria-hidden="true" />
+                {preview
+                  ? zh
+                    ? "收起预览"
+                    : "Hide preview"
+                  : zh
+                    ? "打开预览"
+                    : "Show preview"}
+              </button>
+              <button
+                type="button"
+                className="text-link text-sm"
+                onClick={logout}
+                disabled={loggingOut}
+              >
+                <LogOut aria-hidden="true" />
+                {zh ? "退出登录" : "Sign out"}
+              </button>
+            </div>
           </div>
         </div>
-      </section>
-
+      </header>
       <section className="container py-8">
-        <div className={`grid gap-6 ${showPreview ? "xl:grid-cols-[1fr_0.86fr]" : ""}`}>
-          <form className="space-y-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8" onSubmit={(event) => event.preventDefault()}>
-            <div className="grid gap-5 md:grid-cols-2">
-              <label className="md:col-span-2"><span className="text-sm font-semibold text-slate-700">标题</span><input value={formData.title} onChange={(event) => updateField("title", event.target.value)} className={fieldClass} /></label>
-              <label><span className="text-sm font-semibold text-slate-700">Slug</span><input value={formData.slug} onChange={(event) => updateField("slug", event.target.value)} className={fieldClass} placeholder={effectiveSlug || "auto-generated-slug"} /></label>
-              <label><span className="text-sm font-semibold text-slate-700">分类</span><input value={formData.category} onChange={(event) => updateField("category", event.target.value)} className={fieldClass} /></label>
-              <label className="md:col-span-2"><span className="text-sm font-semibold text-slate-700">摘要</span><textarea value={formData.summary} onChange={(event) => updateField("summary", event.target.value)} rows={3} className={fieldClass} /></label>
-              <label className="md:col-span-2"><span className="text-sm font-semibold text-slate-700">封面图地址</span><input value={formData.coverImage} onChange={(event) => updateField("coverImage", event.target.value)} className={fieldClass} /></label>
-              <label><span className="text-sm font-semibold text-slate-700">SEO 标题</span><input value={formData.seoTitle} onChange={(event) => updateField("seoTitle", event.target.value)} className={fieldClass} /></label>
-              <label><span className="text-sm font-semibold text-slate-700">SEO 描述</span><input value={formData.seoDescription} onChange={(event) => updateField("seoDescription", event.target.value)} className={fieldClass} /></label>
-              <label className="md:col-span-2"><span className="text-sm font-semibold text-slate-700">Markdown 正文</span><textarea value={formData.content} onChange={(event) => updateField("content", event.target.value)} rows={18} className="mt-2 w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-4 font-mono text-sm leading-7 text-slate-100 outline-none focus:border-slate-500" /></label>
-            </div>
-
-            <div className="flex flex-col gap-3 border-t border-slate-200 pt-6 sm:flex-row sm:justify-end">
-              <Button type="button" variant="outline" disabled={isLoading} onClick={() => submit("draft")}>
-                {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}保存草稿
-              </Button>
-              <Button type="button" className="bg-[#c91f28] text-white hover:bg-[#a71921]" disabled={isLoading} onClick={() => submit("published")}>
-                {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}发布文章
-              </Button>
+        <div
+          className={
+            "grid items-start gap-8 " +
+            (preview ? "xl:grid-cols-[1fr_0.9fr]" : "")
+          }
+        >
+          <form
+            className="info-panel space-y-6"
+            onSubmit={(event) => event.preventDefault()}
+            aria-busy={loading}
+          >
+            <fieldset disabled={loading} className="space-y-6">
+              <legend className="sr-only">
+                {zh ? "文章编辑" : "Article editor"}
+              </legend>
+              {field("title", zh ? "标题（必填）" : "Title (required)")}
+              <div className="grid gap-5 md:grid-cols-2">
+                {field(
+                  "slug",
+                  zh ? "网址标识 Slug" : "URL slug",
+                  effectiveSlug || "article-slug",
+                )}
+                {field("category", zh ? "分类" : "Category")}
+              </div>
+              {field("summary", zh ? "摘要" : "Summary", undefined, 3)}
+              <label className="block">
+                <span className="field-label">
+                  {zh ? "Markdown 正文（必填）" : "Markdown body (required)"}
+                </span>
+                <textarea
+                  className="field min-h-[24rem] font-mono text-sm leading-7"
+                  value={data.content}
+                  onChange={(event) => update("content", event.target.value)}
+                  rows={18}
+                />
+              </label>
+              <details className="border-y py-5">
+                <summary className="cursor-pointer font-medium">
+                  {zh ? "封面与搜索设置" : "Cover and search settings"}
+                </summary>
+                <div className="mt-5 space-y-5">
+                  {field("coverImage", zh ? "封面图地址" : "Cover image URL")}
+                  {field("seoTitle", zh ? "SEO 标题" : "SEO title")}
+                  {field(
+                    "seoDescription",
+                    zh ? "SEO 描述" : "SEO description",
+                    undefined,
+                    3,
+                  )}
+                </div>
+              </details>
+            </fieldset>
+            <div className="flex flex-col justify-end gap-3 sm:flex-row">
+              <button
+                type="button"
+                className="button-link button-outline"
+                disabled={loading}
+                onClick={() => submit("draft")}
+              >
+                {loading ? (
+                  <Loader2 className="animate-spin" aria-hidden="true" />
+                ) : (
+                  <Save aria-hidden="true" />
+                )}
+                {zh ? "保存草稿" : "Save draft"}
+              </button>
+              <button
+                type="button"
+                className="button-link"
+                disabled={loading}
+                onClick={() => submit("published")}
+              >
+                {loading ? (
+                  <Loader2 className="animate-spin" aria-hidden="true" />
+                ) : (
+                  <Send aria-hidden="true" />
+                )}
+                {zh ? "发布文章" : "Publish article"}
+              </button>
             </div>
           </form>
-
-          {showPreview && (
-            <aside className="h-fit rounded-3xl border border-slate-200 bg-white p-6 shadow-sm xl:sticky xl:top-24">
-              <div className="rounded-2xl bg-slate-950 p-5 text-white">
-                <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Preview</div>
-                <h2 className="mt-4 text-2xl font-semibold leading-tight">{formData.title || "文章标题预览"}</h2>
-                <p className="mt-3 text-sm leading-7 text-slate-300">{formData.summary || "摘要会显示在新闻列表和文章开头。"}</p>
+          {preview && (
+            <aside
+              id="article-preview"
+              className="info-panel min-w-0 xl:sticky xl:top-28"
+            >
+              <h2 className="text-base text-primary">
+                {zh ? "文章预览" : "Article preview"}
+              </h2>
+              <h3 className="mt-5 break-words text-2xl leading-relaxed">
+                {data.title || (zh ? "文章标题预览" : "Article title")}
+              </h3>
+              <p className="mt-4 text-sm">
+                {data.summary ||
+                  (zh
+                    ? "摘要会显示在业务笔记列表和文章开头。"
+                    : "The summary appears in the notes list and article header.")}
+              </p>
+              <div className="mt-5 break-all border-y py-4 text-sm text-muted-foreground">
+                /news/{effectiveSlug || "article-slug"}
               </div>
-              <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm">
-                <span className="text-slate-500">URL</span>
-                <div className="mt-1 font-mono text-slate-950">/news/{effectiveSlug || "article-slug"}</div>
-              </div>
-              <div className="prose prose-slate mt-6 max-w-none rounded-2xl border border-slate-200 p-5 prose-headings:font-semibold prose-a:text-[#c91f28]">
-                {formData.content ? <ReactMarkdown remarkPlugins={[remarkGfm]}>{formData.content}</ReactMarkdown> : <p>Markdown 预览会显示在这里。</p>}
+              <div className="reading-content prose prose-slate mt-6 max-w-none">
+                {data.content ? (
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {data.content}
+                  </ReactMarkdown>
+                ) : (
+                  <p>
+                    {zh
+                      ? "Markdown 预览会显示在这里。"
+                      : "The Markdown preview will appear here."}
+                  </p>
+                )}
               </div>
             </aside>
           )}
         </div>
       </section>
     </main>
-  )
+  );
 }
