@@ -32,6 +32,7 @@ export default function RegionDetailClient({
     <main id="main-content" className="site-main">
       <PageIntro
         title={city.name + " · " + city.country}
+        scene="train"
         description={city.summary}
         trail={[
           { label: t.nav.regions, href: "/regions" },

@@ -30,6 +30,7 @@ export default function RegionsClient() {
     <main id="main-content" className="site-main">
       <PageIntro
         title={t.pages.regionsTitle}
+        scene="train"
         description={t.pages.regionsIntro}
       />
       <section className="site-section">

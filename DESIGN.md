@@ -1,6 +1,6 @@
 ---
 name: 丰吉国际
-description: 航运企业识别手册，品牌蓝、物流摄影与清晰的双语信息层级
+description: 品牌蓝、宽幅运输摄影与清晰双语层级的物流企业官网
 colors:
   primary: "hsl(222 76% 43%)"
   foreground: "hsl(216 55% 18%)"
@@ -12,14 +12,16 @@ colors:
   input-border: "hsl(215 26% 72%)"
   destructive: "hsl(354 66% 40%)"
   navy: "#112b54"
+  network: "#0b2849"
+  footer: "#081e37"
   primary-hover: "#153974"
 typography:
   display:
     fontFamily: "Barlow, Noto Sans SC, sans-serif"
-    fontSize: "clamp(2rem, 4.2vw, 3.9rem)"
+    fontSize: "clamp(2.25rem, 5vw, 5.5rem)"
     fontWeight: 600
-    lineHeight: 1.35
-    letterSpacing: "-0.02em"
+    lineHeight: 1.28
+    letterSpacing: "-0.035em"
   headline:
     fontFamily: "Barlow, Noto Sans SC, sans-serif"
     fontSize: "clamp(2rem, 4.3vw, 4rem)"
@@ -39,12 +41,13 @@ typography:
     fontSize: "14px"
     fontWeight: 600
 rounded:
-  control: "10px"
+  control: "6px"
+  filter: "4px"
   panel: "12px"
 spacing:
   compact: "8px"
   inline: "12px"
-  field-gap: "20px"
+  field-gap: "18px"
   panel-mobile: "24px"
   panel-desktop: "32px"
   section: "clamp(3.5rem, 6vw, 6rem)"
@@ -54,6 +57,7 @@ components:
     textColor: "{colors.paper}"
     rounded: "{rounded.control}"
     padding: "12px 24px"
+    height: "48px"
   button-primary-hover:
     backgroundColor: "{colors.primary-hover}"
   button-outline:
@@ -61,6 +65,12 @@ components:
     textColor: "{colors.primary}"
     rounded: "{rounded.control}"
     padding: "12px 24px"
+  hero-primary:
+    backgroundColor: "{colors.paper}"
+    textColor: "#123b78"
+    rounded: "{rounded.control}"
+    padding: "12px 26px"
+    height: "54px"
   field:
     backgroundColor: "{colors.paper}"
     textColor: "{colors.foreground}"
@@ -83,61 +93,62 @@ components:
 
 **Creative North Star: "航运企业识别手册"**
 
-用户于 2026-10-21 选定品牌蓝配物流大图、稳重熟悉的企业官网。系统以清晰的双语层级、宽幅实景、水平目录与轻圆角字段组织内容。公开页面兼顾询价与资料查阅；后台使用同一视觉语言，减少装饰并保留操作密度。
+用户选定品牌蓝配物流大图、稳重熟悉的企业官网。2026-10-22 根据用户对旧截图的反馈重建首页构图：铁路全景承担第一视觉，询价位于主画面之后，服务入口使用统一运输摄影。公开页面兼顾询价与资料查阅；阅读和后台页面保留操作密度。
 
 **Key Characteristics:**
 
-- 品牌蓝、纸白、浅冰蓝与深海军蓝。
-- 物流摄影用于展示场景，不能作为公司自有设施、运力或客户案例的证明。
-- 导航、服务目录、表单与阅读页面共享排版和交互规则。
+- 品牌蓝、纸白与深海军蓝交替形成页面层次。
+- 宽幅铁路主视觉、摄影服务入口与可筛选目的地构成核心阅读顺序。
+- AI 生成图为场景示意，始终披露来源，不证明公司设施或运力。
+- 中英文共享组件，按文字长度调整排版与移动端高度。
 
 ## Colors
 
-CSS 变量由 app/globals.css 定义，Tailwind 通过 HSL 变量映射。上方 token 保留实际源格式。
+CSS 变量由 app/globals.css 定义，Tailwind 通过 HSL 变量映射。主蓝用于主要行动、选中态、链接和功能图标；network 深蓝用于地区展示和摄影标题区，footer 深蓝用于页尾。纸白承载导航、表单和阅读内容，浅冰蓝区分段落。
 
-主蓝用于主要行动、导航选中态、链接和功能图标；深海军蓝用于暗色咨询区及摄影承托。纸白用于导航、表单和正文；浅冰蓝区分内容段落。次要文字使用带蓝调的正文色。破坏性状态采用独立错误色，并配合明确文案。
+**The Photography Contrast Rule.** 主视觉遮罩由左侧 rgb(4 24 48 / 88%) 过渡到右侧 12%，手机由 85% 过渡到 35%；以文字可读和列车辨识为准。暗色区正文采用浅蓝白，焦点环采用浅蓝。
 
 ## Typography
 
-Barlow 提供英文和数字的企业字体特征，Noto Sans SC 承担中文；通过 next/font 在站内分发。正文采用常规字重，标题采用半粗字重。段落行高为 1.85，文章正文独立约束阅读宽度。
+Barlow 提供英文和数字字形，Noto Sans SC 承担中文；两者通过 next/font 加载 400、500、600、700。正文为 16px、行高 1.7，普通段落 1.85，首页介绍为 18px/1.95，手机为 16px/1.9。导航为 15px，字段标签为 14px。
 
-通用页标题、首页主张与文章长标题按场景分别设置；文章标题不套首页的大字号。输入字段保持 16px，标签和目录采用 14px。数字信息使用等宽数字特性，Markdown 编辑器才使用等宽字体。
-
-首页中文主张按原文逗号分为两段，每段保持语义完整；中文字号使用 clamp(1.5rem, 7vw, 3.9rem)，英文沿用 display token。摄影遮罩从左侧深蓝过渡到右侧较透明的蓝色，兼顾文字和场景辨识。
+**The Display Rule.** 首页主张为两行完整语义，使用 display token；英文最大宽 19ch。摄影内页标题为 clamp(2rem, 3.7vw, 3.5rem)，手机 32px。文章长标题使用独立阅读排版，不套首页主张字号。
 
 ## Layout
 
-居中容器最大宽度 1440px。断点为 640、768、1024、1280、1440px；水平留白遵循现有 Tailwind container。桌面导航高 80px、手机 72px，主体顶部为其预留空间。
+居中容器最大宽度 1440px。断点为 640、768、1024、1280、1440px；固定导航在 >=1024px 高 88px，其余宽度高 72px，主体预留同等空间。
 
-服务使用有分隔线的水平目录；地区使用可筛选的目的地列表；资讯以摘要行和单篇重点文章呈现；详情与长文保留上下级导航。桌面表单分栏，手机自然堆叠，字段和长网址不得撑宽页面。
+首页顺序为铁路主视觉、线路询价、三类服务、目的地区域、企业工作方式、业务笔记、联系表单与页尾。主视觉高度为 clamp(620px, calc(100svh - 88px), 900px)，<=1023px 为 clamp(680px, calc(100svh - 72px), 900px)；<=359px 的英文主视觉最小高 800px，避免行动按钮与底部服务入口重叠。
 
-通用内页标题区上下留白为手机 32px、桌面 40px，紧随其后的首个内容区收紧至 32–48px。服务条目的手机图标与标题同行。联系页手机端先给电话、邮件快捷入口，再显示完整表单，联系方式明细与流程说明随后展示。
+线路询价为无外圆角的白色横栏。桌面标题和表单分栏，字段与按钮同行；手机两字段并排，按钮跨整行。服务概览桌面三列、照片 4:3，手机单列、照片 16:10；服务详解为图文两列，手机堆叠。地区保留筛选和真实目的地列表。
+
+展示内页使用 min-height 340px、上下 48px 的摄影标题区；手机 min-height 320px、上下 36px。联系、资讯与操作页面保留白底标题区。手机联系页先给电话和邮件快捷入口，再展示完整表单。文章目录在桌面右侧，在手机和平板正文前折叠展示。
 
 ## Elevation & Depth
 
-主要内容以色调分层和边框区分，常规面板不使用阴影。抽屉沿用 Radix 对话框的遮罩与浮层行为。主要行动采用纯色，摄影遮罩服务于文字可读性。
+**The Flat Surface Rule.** 常规内容依靠深浅色区、边界和摄影构图分层，不叠加卡片阴影。主视觉只保留文字所需遮罩；抽屉沿用 Radix 对话框遮罩、焦点约束和层级。
 
 ## Shapes
 
-面板和咨询条采用 panel 圆角；按钮、字段、筛选控件采用 control 圆角。注意项目自定义 Tailwind 的 rounded-md 实际为 10px，并非默认 Tailwind 的 6px。列表和区块本身无需逐项套卡片。
+按钮和字段的 rounded-md 实际为 6px，rounded-lg 为 8px，信息面板 rounded-xl 为 12px。首页深蓝区国家筛选为 4px；通用地区筛选沿用 6px。服务照片和线路询价横栏不加圆角，资料行无需逐项套卡片。
 
 ## Components
 
-主要按钮最小高度 48px，禁用态降低不透明度；次要按钮使用白底和边界。链接箭头在悬停时移动 3px，持续 180ms。
+主要按钮最小高 48px，主视觉按钮 54px。主视觉主行动为白底深蓝字，次行动为透明底细边界。其余主要行动使用品牌蓝，禁用态降低不透明度。链接箭头悬停移动 3px、持续 180ms；服务图片悬停缩放至 1.025、持续 500ms。
 
-字段有可见标签、明确的必填或选填说明。提交期间禁用字段组；成功与失败在表单内反馈。首页线路咨询使用 GET 将起运地、目的地带到联系页，由完整表单继续提交。
+字段保留可见标签。完整表单解释 * 为必填，并标示相应字段；提交期间禁用字段组，成功和失败在表单内反馈。首页 GET 询价将起运地与目的地带入联系页。国家筛选有 aria-pressed 和结果状态反馈。
 
-完整表单在开头解释 * 代表必填，并在对应标签标示；首页咨询条有可见任务标题。文章目录在桌面为右侧栏，在手机和平板为正文前的原生可折叠目录，复用同一组稳定锚点。
+白色导航显示当前页面，手机抽屉支持 Escape 和点击路径后关闭。键盘聚焦时显示跳转到主要内容的入口。文章目录使用实际渲染标题及稳定锚点，表格可横向滚动。
 
-白色固定导航显示当前页面；手机抽屉使用焦点约束、Escape 关闭和点击路径后关闭。跳转到主要内容的入口在键盘聚焦时出现。正文标题由 Markdown 源行生成稳定锚点，目录取自实际渲染的标题，支持 ATX 和 Setext。
+首页只做一次 600ms 整体进入；减少动态效果偏好关闭平滑滚动并压缩过渡。全局焦点为主蓝 2px 环与 4px 间隔；深色区使用浅蓝 2px 环与 5px 间隔。
 
-全局焦点为主蓝 2px 环及 4px 间隔。首页只做一次 600ms 整体进入；减少动态效果偏好关闭平滑滚动并压缩过渡。选区、光标与滚动条采用同一色系。
+铁路、公路、仓储图保存于 public/images，生成方式及完整提示词记录于 .impeccable/assets/imagegen-v3.json，并嵌入 PNG 元数据。可见图片使用 AI 生成场景示意说明，alt 文本也解释其性质。
 
 ## Do's and Don'ts
 
 - Do 保留真实服务、目的地、公司信息及现有品牌标志。
 - Do 为官网、资料和后台选择各自适合的内容密度。
 - Do 用语义结构、文字与可见状态共同解释交互。
-- Don't 把物流图片包装为未经证实的公司设施或运输案例。
-- Don't 用新数据、时效、运价、客户或资质填补视觉空间。
-- Don't 混用旧米白红色风格、渐变按钮或装饰性网格。
+- Don't 把生成图片包装为公司自有设施、车队或运输案例。
+- Don't 用未经确认的时效、运价、客户数或资质填补视觉空间。
+- Don't 恢复遮挡主画面的巨型询价卡、服务纯目录或装饰性阴影。

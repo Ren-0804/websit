@@ -14,7 +14,7 @@ export default function Footer() {
   const zh = currentLanguage.code === "zh";
   if (pathname.startsWith("/admin")) return null;
   return (
-    <footer className="border-t bg-white">
+    <footer className="site-footer border-t">
       <div className="container">
         <div className="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.35fr_0.7fr_1fr_1fr]">
           <div>

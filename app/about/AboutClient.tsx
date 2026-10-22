@@ -5,9 +5,11 @@ import {
   PageIntro,
   InquiryCallout,
   ProcessList,
+  SceneCaption,
 } from "@/components/site-sections";
 import { useLanguage } from "@/components/language-selector";
 import { getCopy } from "@/lib/i18n";
+import { logisticsScenes } from "@/lib/visual-assets";
 
 export default function AboutClient() {
   const { currentLanguage } = useLanguage();
@@ -16,23 +18,33 @@ export default function AboutClient() {
   return (
     <main id="main-content" className="site-main">
       <PageIntro
-        title={t.pages.aboutTitle}
+        title={zh ? "关于丰吉国际" : "About Fengji International"}
         description={t.pages.aboutIntro}
         trail={[{ label: t.nav.about }]}
+        scene="train"
       />
       <section className="site-section">
         <div className="container grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-20">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-xl">
+          <figure className="company-scene">
             <Image
-              src="/service-1.jpg"
-              alt={zh ? "仓储作业场景" : "Warehouse operations"}
+              src={logisticsScenes.warehouse.src}
+              alt={
+                zh
+                  ? logisticsScenes.warehouse.altZh
+                  : logisticsScenes.warehouse.altEn
+              }
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover"
             />
-          </div>
+            <figcaption>
+              <SceneCaption />
+            </figcaption>
+          </figure>
           <div>
-            <h2>{t.home.servicesTitle}</h2>
+            <h2>
+              {zh ? "从货物与线路条件出发" : "A route starts with the cargo."}
+            </h2>
             <p className="mt-5">{t.home.servicesIntro}</p>
             <dl className="mt-8 divide-y border-y">
               {t.home.metrics.map((item) => (

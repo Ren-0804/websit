@@ -48,7 +48,7 @@ export default function Navbar() {
         {zh ? "跳到主要内容" : "Skip to content"}
       </a>
       <header className="fixed inset-x-0 top-0 z-40 border-b bg-white">
-        <div className="container flex h-[4.5rem] items-center justify-between gap-4 md:h-20">
+        <div className="container flex h-[4.5rem] items-center justify-between gap-4 lg:h-[88px]">
           <Link
             href="/"
             className="flex min-w-0 items-center gap-3"
@@ -57,12 +57,12 @@ export default function Navbar() {
             <Image
               src="/brand-mark.svg"
               alt=""
-              width={42}
-              height={42}
+              width={46}
+              height={46}
               priority
             />
             <span className="min-w-0">
-              <span className="block text-lg font-semibold leading-tight tracking-wide">
+              <span className="block text-xl font-semibold leading-tight tracking-wide">
                 {t.brand}
               </span>
               <span className="mt-1 block text-[10px] font-semibold tracking-[0.12em] text-primary sm:text-[11px]">
@@ -92,7 +92,7 @@ export default function Navbar() {
                     key={item.href}
                     aria-current={active(item.href) ? "page" : undefined}
                     className={
-                      "flex h-full items-center border-b-2 pt-0.5 text-sm font-medium transition-colors " +
+                      "flex h-full items-center border-b-2 pt-0.5 text-[15px] font-medium transition-colors " +
                       (active(item.href)
                         ? "border-primary text-primary"
                         : "border-transparent text-muted-foreground hover:text-primary")

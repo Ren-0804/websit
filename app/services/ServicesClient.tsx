@@ -16,6 +16,7 @@ export default function ServicesClient() {
     <main id="main-content" className="site-main">
       <PageIntro
         title={t.pages.servicesTitle}
+        scene="train"
         description={t.pages.servicesIntro}
       />
       <section className="site-section bg-white">

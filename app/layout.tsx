@@ -59,10 +59,10 @@ export const metadata: Metadata = {
     siteName: primaryBrand,
     images: [
       {
-        url: "/logistics-background.jpg",
-        width: 1200,
-        height: 630,
-        alt: "丰吉国际跨境物流服务",
+        url: "/images/rail-corridor-v3.png",
+        width: 1916,
+        height: 821,
+        alt: "丰吉国际跨境物流 · AI 生成铁路运输场景示意",
       },
     ],
     locale: "zh_CN",
@@ -72,7 +72,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "丰吉国际供应链管理",
     description: "中亚铁路班列、跨境公路、多式联运、清关协同和目的国派送。",
-    images: ["/logistics-background.jpg"],
+    images: ["/images/rail-corridor-v3.png"],
   },
   robots: {
     index: true,

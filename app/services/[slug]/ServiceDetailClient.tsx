@@ -21,6 +21,7 @@ export default function ServiceDetailClient({ slug }: { slug: ServiceSlug }) {
     <main id="main-content" className="site-main">
       <PageIntro
         title={service.title}
+        scene={service.icon}
         description={service.summary}
         trail={[
           { label: t.nav.services, href: "/services" },

@@ -1,16 +1,23 @@
 "use client";
 
-import {
-  ArrowRight,
-  ChevronRight,
-  Route,
-  Train,
-  Warehouse,
-} from "lucide-react";
+import { ArrowRight, ArrowUpRight, Check, ChevronRight } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useId } from "react";
 import { useLanguage } from "@/components/language-selector";
 import { getCopy } from "@/lib/i18n";
+import { logisticsScenes, type LogisticsScene } from "@/lib/visual-assets";
+
+export function SceneCaption() {
+  const { currentLanguage } = useLanguage();
+  return (
+    <span className="scene-caption">
+      {currentLanguage.code === "zh"
+        ? "AI 生成 · 场景示意"
+        : "AI-generated illustrative scene"}
+    </span>
+  );
+}
 
 export function Breadcrumbs({
   items,
@@ -46,43 +53,56 @@ export function PageIntro({
   description,
   trail,
   children,
+  scene,
 }: {
   title: string;
   description?: string;
   trail?: { label: string; href?: string }[];
   children?: React.ReactNode;
+  scene?: LogisticsScene;
 }) {
+  const { currentLanguage } = useLanguage();
+  const image = scene ? logisticsScenes[scene] : undefined;
   return (
-    <section className="page-intro">
-      <div className="container">
-        <Breadcrumbs items={trail || [{ label: title }]} />
-        <h1>{title}</h1>
-        {description && <p>{description}</p>}
-        {children}
+    <section className={"page-intro " + (image ? "page-intro-visual" : "")}>
+      {image && (
+        <>
+          <Image
+            src={image.src}
+            alt={currentLanguage.code === "zh" ? image.altZh : image.altEn}
+            fill
+            priority
+            quality={85}
+            sizes="100vw"
+            className="page-intro-image"
+          />
+          <div className="page-intro-shade" />
+        </>
+      )}
+      <div className="container relative">
+        <div className={image ? "page-intro-copy" : ""}>
+          <Breadcrumbs items={trail || [{ label: title }]} />
+          <h1>{title}</h1>
+          {description && <p>{description}</p>}
+          {children}
+        </div>
+        {image && (
+          <div className="mt-8 flex justify-end">
+            <SceneCaption />
+          </div>
+        )}
       </div>
     </section>
   );
 }
 
-export function RouteInquiry({
-  showServiceLink = false,
-}: {
-  showServiceLink?: boolean;
-}) {
+export function RouteInquiry() {
   const { currentLanguage } = useLanguage();
   const t = getCopy(currentLanguage.code);
   const id = useId();
   return (
-    <div className="inquiry-strip">
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-x-5 gap-y-1">
-        <h2 className="text-base">{t.cta.route}</h2>
-        {showServiceLink && (
-          <Link href="/services" className="text-link text-sm">
-            {t.cta.services}
-            <ArrowRight aria-hidden="true" />
-          </Link>
-        )}
-      </div>
+    <div className="container route-console">
+      <h2>{t.cta.route}</h2>
       <form action="/contact" method="get" aria-label={t.cta.route}>
         <div>
           <label className="field-label" htmlFor={id + "-origin"}>
@@ -114,7 +134,7 @@ export function RouteInquiry({
             maxLength={120}
           />
         </div>
-        <button type="submit" className="button-link md:min-h-[50px]">
+        <button type="submit" className="button-link min-h-[50px]">
           {currentLanguage.code === "zh"
             ? "继续填写货物信息"
             : "Continue with cargo details"}
@@ -125,48 +145,76 @@ export function RouteInquiry({
   );
 }
 
-const icons = { train: Train, route: Route, warehouse: Warehouse };
 export function ServiceList({ detailed = false }: { detailed?: boolean }) {
   const { currentLanguage } = useLanguage();
   const t = getCopy(currentLanguage.code);
+  const zh = currentLanguage.code === "zh";
   return (
-    <div>
+    <div className={detailed ? "service-features" : "service-gallery"}>
       {t.services.map((service) => {
-        const Icon = icons[service.icon];
+        const scene = logisticsScenes[service.icon];
         return (
-          <article className="service-row" key={service.slug}>
-            <Icon aria-hidden="true" />
-            <h3>
-              <Link
-                href={"/services/" + service.slug}
-                className="hover:text-primary"
-              >
-                {service.title}
-              </Link>
-            </h3>
-            <div>
+          <article
+            className={detailed ? "service-feature" : "service-gallery-item"}
+            key={service.slug}
+          >
+            <Link
+              href={"/services/" + service.slug}
+              className="service-photograph group"
+              aria-label={service.title}
+            >
+              <Image
+                src={scene.src}
+                alt={zh ? scene.altZh : scene.altEn}
+                fill
+                quality={85}
+                sizes={
+                  detailed
+                    ? "(max-width: 1024px) 100vw, 50vw"
+                    : "(max-width: 768px) 100vw, 33vw"
+                }
+                className="object-cover transition-transform duration-500 group-hover:scale-[1.025] motion-reduce:transform-none"
+              />
+              {!detailed && (
+                <div className="service-photo-title">
+                  <h3>{service.title}</h3>
+                  <ArrowUpRight aria-hidden="true" />
+                </div>
+              )}
+              <div className="service-photo-disclosure">
+                <SceneCaption />
+              </div>
+            </Link>
+            <div className="service-description">
+              {detailed && (
+                <h2>
+                  <Link href={"/services/" + service.slug}>
+                    {service.title}
+                  </Link>
+                </h2>
+              )}
               <p>{detailed ? service.summary : service.short}</p>
               {detailed && (
-                <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+                <ul className="mt-6 space-y-3">
                   {service.bullets.map((point) => (
                     <li key={point} className="flex gap-3">
-                      <span
-                        className="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-primary"
+                      <Check
+                        className="mt-1 h-4 w-4 flex-none text-primary"
                         aria-hidden="true"
                       />
-                      {point}
+                      <span>{point}</span>
                     </li>
                   ))}
                 </ul>
               )}
+              <Link
+                href={"/services/" + service.slug}
+                className="text-link mt-4 text-sm"
+              >
+                {t.cta.read}
+                <ArrowRight aria-hidden="true" />
+              </Link>
             </div>
-            <Link
-              href={"/services/" + service.slug}
-              className="text-link text-sm"
-            >
-              {t.cta.read}
-              <ArrowRight aria-hidden="true" />
-            </Link>
           </article>
         );
       })}
