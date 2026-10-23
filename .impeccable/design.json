@@ -305,13 +305,6 @@
       "description": "承载完整表单和正文信息。",
       "html": "<section class=\"ds-panel\"><h3>填写基础货物信息</h3><p>起运地、目的地、品名、重量体积和包装方式。</p></section>",
       "css": ".ds-panel{font-family:var(--font-display),var(--font-noto-sc),sans-serif;padding:24px;border:1px solid hsl(var(--border));border-radius:12px;background:white;color:hsl(var(--foreground))}.ds-panel h3{font-size:20px;font-weight:600;line-height:1.4;margin:0 0 16px}.ds-panel p{font-size:14px;line-height:1.85;color:hsl(var(--muted-foreground));margin:0}"
-    },
-    {
-      "name": "AI scene disclosure",
-      "kind": "custom",
-      "description": "所有生成场景图的可见来源标识。",
-      "html": "<span class=\"ds-scene-caption\">AI 生成 · 场景示意</span>",
-      "css": ".ds-scene-caption{font-family:var(--font-display),var(--font-noto-sc),sans-serif;display:inline-block;padding:3px 7px;background:#102941;color:#e1eaf4;font-size:10px;font-weight:400;line-height:1.5}"
     }
   ],
   "narrative": {
@@ -320,7 +313,7 @@
     "keyCharacteristics": [
       "品牌蓝、纸白与深海军蓝交替形成页面层次。",
       "宽幅铁路主视觉、摄影服务入口与可筛选目的地构成核心阅读顺序。",
-      "AI 生成图为场景示意，始终披露来源，不证明公司设施或运力。",
+      "生成图仅作场景示意，来源保留于资产记录和图片说明，不证明公司设施或运力。",
       "中英文共享组件，按文字长度调整排版与移动端高度。"
     ],
     "rules": [

@@ -8,17 +8,6 @@ import { useLanguage } from "@/components/language-selector";
 import { getCopy } from "@/lib/i18n";
 import { logisticsScenes, type LogisticsScene } from "@/lib/visual-assets";
 
-export function SceneCaption() {
-  const { currentLanguage } = useLanguage();
-  return (
-    <span className="scene-caption">
-      {currentLanguage.code === "zh"
-        ? "AI 生成 · 场景示意"
-        : "AI-generated illustrative scene"}
-    </span>
-  );
-}
-
 export function Breadcrumbs({
   items,
 }: {
@@ -86,11 +75,6 @@ export function PageIntro({
           {description && <p>{description}</p>}
           {children}
         </div>
-        {image && (
-          <div className="mt-8 flex justify-end">
-            <SceneCaption />
-          </div>
-        )}
       </div>
     </section>
   );
@@ -181,9 +165,6 @@ export function ServiceList({ detailed = false }: { detailed?: boolean }) {
                   <ArrowUpRight aria-hidden="true" />
                 </div>
               )}
-              <div className="service-photo-disclosure">
-                <SceneCaption />
-              </div>
             </Link>
             <div className="service-description">
               {detailed && (

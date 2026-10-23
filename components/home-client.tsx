@@ -8,7 +8,6 @@ import { useLanguage } from "@/components/language-selector";
 import { ContactForm } from "@/components/contact-form";
 import {
   RouteInquiry,
-  SceneCaption,
   ServiceList,
 } from "@/components/site-sections";
 import { contact, getCopy } from "@/lib/i18n";
@@ -86,9 +85,6 @@ export default function HomeClient({
               </Link>
             ))}
           </nav>
-          <div className="container flex justify-end">
-            <SceneCaption />
-          </div>
         </div>
       </section>
 
@@ -213,9 +209,6 @@ export default function HomeClient({
               sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover"
             />
-            <figcaption>
-              <SceneCaption />
-            </figcaption>
           </figure>
         </div>
       </section>

@@ -5,7 +5,6 @@ import {
   PageIntro,
   InquiryCallout,
   ProcessList,
-  SceneCaption,
 } from "@/components/site-sections";
 import { useLanguage } from "@/components/language-selector";
 import { getCopy } from "@/lib/i18n";
@@ -37,9 +36,6 @@ export default function AboutClient() {
               sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover"
             />
-            <figcaption>
-              <SceneCaption />
-            </figcaption>
           </figure>
           <div>
             <h2>
